@@ -32,7 +32,7 @@ jobs:
             Write-Error "构建失败，dist目录不存在"
             exit 1
           }
-          dir .\dist\ /s /b
+          Get-ChildItem -Path .\dist -Recurse | Format-Table FullName
           7z a FacebookAdManager.zip .\dist\*
 
       - name: 上传成品
