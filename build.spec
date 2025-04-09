@@ -1,18 +1,25 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_all
 
 block_cipher = None
+
+# 添加隐藏导入
+hiddenimports = [
+    'selenium.webdriver.common.by',
+    'selenium.webdriver.support.ui',
+    'facebook_operations',
+    'browser_utils'
+]
+
+# 动态收集数据文件
+datas, binaries, hiddenimports = collect_all('fb_billing_operations')
 
 a = Analysis(
     ['main_gui.py'],
     pathex=[],
-    binaries=[],
-    datas=[
-        ('fb_billing_operations.py', '.'),
-        ('facebook_operations.py', '.'),
-        ('browser_utils.py', '.'),
-        ('task_utils.py', '.')
-    ],
-    hiddenimports=[],
+    binaries=binaries,
+    datas=datas,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
