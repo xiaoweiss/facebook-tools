@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
 
       - name: 缓存Python依赖
         uses: actions/cache@v3
@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: 设置Python环境
-        uses: actions/setup-python@v5.1.0
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
           architecture: "x64"
@@ -35,9 +35,7 @@ jobs:
       - name: 安装系统依赖
         run: |
           choco install googlechrome -y --force
-          $chromePath = "${env:ProgramFiles(x86)}\Google\Chrome\Application"
-          echo "Chrome路径: $chromePath"
-          echo "$chromePath" >> $env:GITHUB_PATH
+          echo "Chrome安装路径: ${env:ProgramFiles(x86)}\Google\Chrome\Application"
 
       - name: 安装Python依赖
         run: |
@@ -53,7 +51,7 @@ jobs:
           7z a -tzip FacebookAdManager.zip .\dist\*
 
       - name: 上传构建产物
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v4
         with:
           name: FacebookAdManager
           path: FacebookAdManager.zip
