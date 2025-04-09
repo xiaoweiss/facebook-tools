@@ -1,1 +1,38 @@
- 
+name: 广告管理工具自动化构建
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          architecture: x64
+
+      - name: 安装依赖
+        run: |
+          choco install googlechrome -y
+          choco install 7zip -y
+          pip install -r requirements.txt
+
+      - name: 执行打包
+        run: |
+          pyinstaller build.spec --onefile --noconsole --clean
+          7z a FacebookAdManager.zip .\dist\*
+
+      - name: 上传成品
+        uses: actions/upload-artifact@v4
+        with:
+          name: FacebookAdManager
+          path: FacebookAdManager.zip
