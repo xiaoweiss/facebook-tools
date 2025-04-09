@@ -1,0 +1,41 @@
+name: Build Windows Executable
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install customtkinter pyinstaller selenium webdriver-manager
+
+      - name: Add Chrome Driver to PATH
+        run: |
+          $chromePath = "${env:ProgramFiles(x86)}\Google\Chrome\Application"
+          echo "$chromePath" >> $env:GITHUB_PATH
+
+      - name: Build executable
+        run: |
+          pyinstaller build.spec --onefile --noconsole
+          Compress-Archive -Path dist\* -DestinationPath FacebookAdManager.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: FacebookAdManager
+          path: dist/FacebookAdManager.zip
