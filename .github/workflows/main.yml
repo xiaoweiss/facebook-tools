@@ -3,58 +3,51 @@ name: 广告管理工具自动化构建
 on:
   push:
     tags:
-      - "v*.*.*" # 语义化版本标签触发
-  workflow_dispatch: # 支持手动触发
+      - "v*.*.*"
+  workflow_dispatch:
 
 jobs:
   build-windows:
     name: 构建Windows应用
-    runs-on: windows-latest # 使用微软官方Windows镜像
-    timeout-minutes: 30 # 超时设置
+    runs-on: windows-latest
+    timeout-minutes: 30
 
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4.1.1
-        with:
-          fetch-depth: 0 # 获取完整提交历史
+    - name: 检出代码
+      uses: actions/checkout@v4.1.1
 
-      - name: 缓存Python依赖
-        uses: actions/cache@v3.3.2
-        with:
-          path: ~\AppData\Local\pip\Cache
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+    - name: 缓存Python依赖
+      uses: actions/cache@v3.3.2
+      with:
+        path: ~\AppData\Local\pip\Cache
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
 
-      - name: 设置Python环境
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: "3.10" # 指定Python版本
-          architecture: "x64" # 明确指定64位架构
+    - name: 设置Python环境
+      uses: actions/setup-python@v5.1.0
+      with:
+        python-version: "3.10"
+        architecture: "x64"
 
-      - name: 安装系统依赖
-        run: |
-          # 安装Chrome浏览器
-          choco install googlechrome -y
-          # 将Chrome添加到系统路径
-          $chromePath = "${env:ProgramFiles(x86)}\Google\Chrome\Application"
-          echo "$chromePath" >> $env:GITHUB_PATH
+    - name: 安装系统依赖
+      run: |
+        choco install googlechrome -y
+        $chromePath = "${env:ProgramFiles(x86)}\Google\Chrome\Application"
+        echo "$chromePath" >> $env:GITHUB_PATH
 
-      - name: 安装Python依赖
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # 建议使用requirements文件管理依赖
+    - name: 安装Python依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: 执行打包
-        run: |
-          # 检查图标文件是否存在
-          if not exist app_icon.ico (echo "##[error]缺少图标文件app_icon.ico" && exit 1)
-          # 执行PyInstaller打包
-          pyinstaller build.spec --onefile --noconsole
-          # 压缩生成文件
-          Compress-Archive -Path dist\* -DestinationPath FacebookAdManager.zip
+    - name: 执行打包
+      run: |
+        if not exist app_icon.ico (echo "##[error]缺少图标文件app_icon.ico" && exit 1)
+        pyinstaller build.spec --onefile --noconsole
+        Compress-Archive -Path dist\* -DestinationPath FacebookAdManager.zip
 
-      - name: 上传构建产物
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: FacebookAdManager
-          path: dist/FacebookAdManager.zip
-          retention-days: 7 # 自动清理旧构建
+    - name: 上传构建产物
+      uses: actions/upload-artifact@v4.3.3
+      with:
+        name: FacebookAdManager
+        path: dist/FacebookAdManager.zip
+        retention-days: 7
