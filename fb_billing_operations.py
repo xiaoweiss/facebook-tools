@@ -16,6 +16,7 @@ import re
 from urllib.parse import parse_qs, urlparse
 import time
 from enum import Enum
+from selenium.webdriver.remote.webdriver import WebDriver
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -29,29 +30,20 @@ class TaskType(Enum):
 
 def connect_browser(api_data):
     """增强浏览器连接稳定性"""
-    chrome_options = Options()
-
-    # 配置调试地址（格式：127.0.0.1:端口）
-    debug_address = api_data["ws"]["selenium"]
-    if ":" not in debug_address:
-        debug_address = f"127.0.0.1:{debug_address}"
-
-    chrome_options.add_experimental_option("debuggerAddress", debug_address)
-
-    # 更新反检测配置（移除非必要参数）
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-    chrome_options.add_argument("--disable-infobars")
-    chrome_options.add_argument("--start-maximized")
-
-    # 配置WebDriver服务
-    service = Service(
-        executable_path=api_data["webdriver"],
-        service_args=["--log-path=chromedriver.log"]
-    )
-
+    # 使用远程WebDriver配置
+    from selenium.webdriver.remote.webdriver import WebDriver
+    
+    executor = f"ws://{api_data['ws']['selenium']}/session"
+    capabilities = {
+        "browserName": "chrome",
+        "goog:chromeOptions": {
+            "debuggerAddress": api_data["ws"]["selenium"]
+        }
+    }
+    
     try:
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-        print(f"✅ 成功连接到浏览器实例 | 调试端口: {debug_address}")
+        driver = WebDriver(command_executor=executor, desired_capabilities=capabilities)
+        print(f"✅ 成功连接到远程浏览器实例 | 地址: {executor}")
         return driver
     except WebDriverException as e:
         print(f"‼️ 连接失败: {str(e)}")

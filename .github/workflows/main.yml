@@ -22,13 +22,14 @@ jobs:
 
       - name: 安装依赖
         run: |
-          choco install googlechrome -y
           choco install 7zip -y
           pip install -r requirements.txt
 
       - name: 执行打包
         run: |
-          pyinstaller build.spec --onefile --noconsole --clean
+          pyinstaller build.spec --clean
+          if not exist .\dist\ (echo "##[error]构建失败，dist目录不存在" && exit 1)
+          dir .\dist\ /s /b
           7z a FacebookAdManager.zip .\dist\*
 
       - name: 上传成品
