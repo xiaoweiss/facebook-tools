@@ -28,7 +28,10 @@ jobs:
       - name: 执行打包
         run: |
           pyinstaller build.spec --clean
-          if not exist .\dist\ (echo "##[error]构建失败，dist目录不存在" && exit 1)
+          if (-not (Test-Path .\dist\)) {
+            Write-Error "构建失败，dist目录不存在"
+            exit 1
+          }
           dir .\dist\ /s /b
           7z a FacebookAdManager.zip .\dist\*
 
