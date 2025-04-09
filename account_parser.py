@@ -1,0 +1,3 @@
+def parse_ad_accounts_table(driver, business_id, global_scope_id):
+    """解析广告账户表格"""
+    # 保持原有实现... 

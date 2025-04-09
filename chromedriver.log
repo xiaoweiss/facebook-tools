@@ -1,0 +1,1058 @@
+[1744187571.365][INFO]: Starting ChromeDriver 128.0.6613.85 (456698c1905991f20643b686ba49aeb0edcc3580-refs/branch-heads/6613@{#1336}) on port 51126
+[1744187571.365][INFO]: Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+[1744187571.395][INFO]: ChromeDriver was started successfully on port 51126
+[1744187571.415][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND InitSession {
+   "capabilities": {
+      "alwaysMatch": {
+         "browserName": "chrome",
+         "goog:chromeOptions": {
+            "args": [ "--disable-blink-features=AutomationControlled", "--disable-infobars", "--start-maximized" ],
+            "debuggerAddress": "127.0.0.1:61402",
+            "extensions": [  ]
+         },
+         "pageLoadStrategy": "normal"
+      },
+      "firstMatch": [ {
+      } ]
+   }
+}
+[1744187571.437][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE InitSession {
+   "capabilities": {
+      "acceptInsecureCerts": false,
+      "browserName": "chrome",
+      "browserVersion": "128.0.6613.85",
+      "chrome": {
+         "chromedriverVersion": "128.0.6613.85 (456698c1905991f20643b686ba49aeb0edcc3580-refs/branch-heads/6613@{#1336})"
+      },
+      "fedcm:accounts": true,
+      "goog:chromeOptions": {
+         "debuggerAddress": "127.0.0.1:61402"
+      },
+      "pageLoadStrategy": "normal",
+      "platformName": "",
+      "proxy": {
+      },
+      "setWindowRect": false,
+      "strictFileInteractability": false,
+      "timeouts": {
+         "implicit": 0,
+         "pageLoad": 300000,
+         "script": 30000
+      },
+      "unhandledPromptBehavior": "dismiss and notify",
+      "webauthn:extension:credBlob": true,
+      "webauthn:extension:largeBlob": true,
+      "webauthn:extension:minPinLength": true,
+      "webauthn:extension:prf": true,
+      "webauthn:virtualAuthenticators": true
+   },
+   "sessionId": "07d150cb001366e63eae90be12d6c419"
+}
+[1744187571.437][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND PerformActions {
+   "actions": [ {
+      "actions": [ {
+         "duration": 0,
+         "type": "pause"
+      }, {
+         "duration": 0,
+         "type": "pause"
+      }, {
+         "duration": 0,
+         "type": "pause"
+      }, {
+         "duration": 0,
+         "type": "pause"
+      } ],
+      "id": "mouse",
+      "parameters": {
+         "pointerType": "mouse"
+      },
+      "type": "pointer"
+   }, {
+      "actions": [ {
+         "type": "keyDown",
+         "value": ""
+      }, {
+         "type": "keyDown",
+         "value": "t"
+      }, {
+         "type": "keyUp",
+         "value": "t"
+      }, {
+         "type": "keyUp",
+         "value": ""
+      } ],
+      "id": "key",
+      "type": "key"
+   } ]
+}
+[1744187571.437][INFO]: Waiting for pending navigations...
+[1744187571.439][INFO]: Done waiting for pending navigations. Status: ok
+[1744187571.534][INFO]: Waiting for pending navigations...
+[1744187571.535][INFO]: Done waiting for pending navigations. Status: ok
+[1744187571.535][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE PerformActions
+[1744187571.536][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetWindows {
+}
+[1744187571.536][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetWindows [ "D73D51CC61BB0A3E4CD4E8F85C2C73D7", "0800E38407F52B7003AF46930B879936" ]
+[1744187571.536][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetWindows {
+}
+[1744187571.537][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetWindows [ "D73D51CC61BB0A3E4CD4E8F85C2C73D7", "0800E38407F52B7003AF46930B879936" ]
+[1744187571.537][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND SwitchToWindow {
+   "handle": "0800E38407F52B7003AF46930B879936"
+}
+[1744187571.552][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE SwitchToWindow
+[1744187571.553][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetWindow {
+}
+[1744187571.553][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetWindow "0800E38407F52B7003AF46930B879936"
+[1744187571.554][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND Navigate {
+   "url": "https://business.facebook.com/billing_hub/accounts"
+}
+[1744187571.554][INFO]: Waiting for pending navigations...
+[1744187571.729][INFO]: Done waiting for pending navigations. Status: ok
+[1744187573.043][INFO]: Waiting for pending navigations...
+[1744187574.307][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.308][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE Navigate
+[1744187574.312][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetUrl {
+}
+[1744187574.312][INFO]: Waiting for pending navigations...
+[1744187574.313][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.314][INFO]: Waiting for pending navigations...
+[1744187574.315][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.315][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetUrl "https://business.facebook.com/select/?next=https%3A%2F%2Fbusiness.facebook.com%2Fbilling_hub%2Faccounts&ext=1744187632&hash=Afli-QEn0zQrlAMcpXeocZN3Z6aTtFTARAYwjGZo2noYXQ"
+[1744187574.317][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//table[contains(@class,'uiGrid _51mz')]"
+}
+[1744187574.317][INFO]: Waiting for pending navigations...
+[1744187574.317][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.325][INFO]: Waiting for pending navigations...
+[1744187574.326][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.326][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.479"
+}
+[1744187574.327][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElements {
+   "using": "xpath",
+   "value": "//tr[@class='_51mx']"
+}
+[1744187574.328][INFO]: Waiting for pending navigations...
+[1744187574.328][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.334][INFO]: Waiting for pending navigations...
+[1744187574.334][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.334][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElements [ {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.480"
+}, {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.481"
+}, {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.482"
+}, {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.483"
+} ]
+[1744187574.336][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElements {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.480",
+   "using": "xpath",
+   "value": ".//td[@class='_2ph- _51m-'] | .//td[@class='_2ph- _51mw _51m-']"
+}
+[1744187574.336][INFO]: Waiting for pending navigations...
+[1744187574.337][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.343][INFO]: Waiting for pending navigations...
+[1744187574.344][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.344][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElements [ {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.484"
+}, {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.485"
+} ]
+[1744187574.346][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.484",
+   "using": "xpath",
+   "value": ".//a[contains(@class,'_5hw8')]"
+}
+[1744187574.346][INFO]: Waiting for pending navigations...
+[1744187574.346][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.353][INFO]: Waiting for pending navigations...
+[1744187574.353][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.353][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.486"
+}
+[1744187574.356][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND ExecuteScript {
+   "args": [ {
+      "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.486"
+   }, "href" ],
+   "script": "/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(){}c.prototype=b.prototype;a.prototype=new c;a.prototype.constructor=a};var h=Array.prototype.indexOf?function(a,b){return Array.prototype.indexOf.call(a,b,void 0)}:function(a,b){if(\"string\"===typeof a)return\"string\"!==typeof b||1!=b.length?-1:a.indexOf(b,0);for(var c=0;c\u003Ca.length;c++)if(c in a&&a[c]===b)return c;return-1},k=Array.prototype.forEach?function(a,b){Array.prototype.forEach.call(a,b,void 0)}:function(a,b){for(var c=a.length,e=\"string\"===typeof a?a.split(\"\"):a,g=0;g\u003Cc;g++)g in e&&b.call(void 0,e[g],g,a)};function l(a,b){this.code=a;this.a=m[a]||n;this.message=b||\"\";a=this.a.replace(/((?:^|\\s+)[a-z])/g,function(c){return c.toUpperCase().replace(/^[\\s\\xa0]+/g,\"\")});b=a.length-5;if(0>b||a.indexOf(\"Error\",b)!=b)a+=\"Error\";this.name=a;a=Error(this.message);a.name=this.name;this.stack=a.stack||\"\"}f(l,Error);var n=\"unknown error\",m={15:\"element not selectable\",11:\"element not visible\"};m[31]=n;m[30]=n;m[24]=\"invalid cookie domain\";m[29]=\"invalid element coordinates\";m[12]=\"invalid element state\";m[32]=\"invalid selector\";\nm[51]=\"invalid selector\";m[52]=\"invalid selector\";m[17]=\"javascript error\";m[405]=\"unsupported operation\";m[34]=\"move target out of bounds\";m[27]=\"no such alert\";m[7]=\"no such element\";m[8]=\"no such frame\";m[23]=\"no such window\";m[28]=\"script timeout\";m[33]=\"session not created\";m[10]=\"stale element reference\";m[21]=\"timeout\";m[25]=\"unable to set cookie\";m[26]=\"unexpected alert open\";m[13]=n;m[9]=\"unknown command\";var p;a:{var q=d.navigator;if(q){var r=q.userAgent;if(r){p=r;break a}}p=\"\"}function t(a){return-1!=p.indexOf(a)};function u(){return t(\"Firefox\")||t(\"FxiOS\")}function v(){return(t(\"Chrome\")||t(\"CriOS\"))&&!t(\"Edge\")};function w(){return t(\"iPhone\")&&!t(\"iPod\")&&!t(\"iPad\")};var y=t(\"Opera\"),z=t(\"Trident\")||t(\"MSIE\"),A=t(\"Edge\"),B=t(\"Gecko\")&&!(-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\"))&&!(t(\"Trident\")||t(\"MSIE\"))&&!t(\"Edge\"),C=-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\");function D(){var a=d.document;return a?a.documentMode:void 0}var E;\na:{var F=\"\",G=function(){var a=p;if(B)return/rv:([^\\);]+)(\\)|;)/.exec(a);if(A)return/Edge\\/([\\d\\.]+)/.exec(a);if(z)return/\\b(?:MSIE|rv)[: ]([^\\);]+)(\\)|;)/.exec(a);if(C)return/WebKit\\/(\\S+)/.exec(a);if(y)return/(?:Version)[ \\/]?(\\S+)/.exec(a)}();G&&(F=G?G[1]:\"\");if(z){var H=D();if(null!=H&&H>parseFloat(F)){E=String(H);break a}}E=F}var I;I=d.document&&z?D():void 0;var J=u(),K=w()||t(\"iPod\"),L=t(\"iPad\"),M=t(\"Android\")&&!(v()||u()||t(\"Opera\")||t(\"Silk\")),N=v(),aa=t(\"Safari\")&&!(v()||t(\"Coast\")||t(\"Opera\")||t(\"Edge\")||t(\"Edg/\")||t(\"OPR\")||u()||t(\"Silk\")||t(\"Android\"))&&!(w()||t(\"iPad\")||t(\"iPod\"));function O(a){return(a=a.exec(p))?a[1]:\"\"}(function(){if(J)return O(/Firefox\\/([0-9.]+)/);if(z||A||y)return E;if(N)return w()||t(\"iPad\")||t(\"iPod\")?O(/CriOS\\/([0-9.]+)/):O(/Chrome\\/([0-9.]+)/);if(aa&&!(w()||t(\"iPad\")||t(\"iPod\")))return O(/Version\\/([0-9.]+)/);if(K||L){var a=/Version\\/(\\S+).*Mobile\\/(\\S+)/.exec(p);if(a)return a[1]+\".\"+a[2]}else if(M)return(a=O(/Android\\s+([0-9.]+)/))?a:O(/Version\\/([0-9.]+)/);return\"\"})();var P=z&&!(8\u003C=Number(I)),ba=z&&!(9\u003C=Number(I));var ca={SCRIPT:1,STYLE:1,HEAD:1,IFRAME:1,OBJECT:1},Q={IMG:\" \",BR:\"\\n\"};function R(a,b,c){if(!(a.nodeName in ca))if(3==a.nodeType)c?b.push(String(a.nodeValue).replace(/(\\r\\n|\\r|\\n)/g,\"\")):b.push(a.nodeValue);else if(a.nodeName in Q)b.push(Q[a.nodeName]);else for(a=a.firstChild;a;)R(a,b,c),a=a.nextSibling};function S(a,b){b=b.toLowerCase();return\"style\"==b?da(a.style.cssText):P&&\"value\"==b&&T(a,\"INPUT\")?a.value:ba&&!0===a[b]?String(a.getAttribute(b)):(a=a.getAttributeNode(b))&&a.specified?a.value:null}var ea=/[;]+(?=(?:(?:[^\"]*\"){2})*[^\"]*$)(?=(?:(?:[^']*'){2})*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)/;\nfunction da(a){var b=[];k(a.split(ea),function(c){var e=c.indexOf(\":\");0\u003Ce&&(c=[c.slice(0,e),c.slice(e+1)],2==c.length&&b.push(c[0].toLowerCase(),\":\",c[1],\";\"))});b=b.join(\"\");return b=\";\"==b.charAt(b.length-1)?b:b+\";\"}function U(a,b){P&&\"value\"==b&&T(a,\"OPTION\")&&null===S(a,\"value\")?(b=[],R(a,b,!1),a=b.join(\"\")):a=a[b];return a}function T(a,b){b&&\"string\"!==typeof b&&(b=b.toString());return!!a&&1==a.nodeType&&(!b||a.tagName.toUpperCase()==b)}\nfunction V(a){return T(a,\"OPTION\")?!0:T(a,\"INPUT\")?(a=a.type.toLowerCase(),\"checkbox\"==a||\"radio\"==a):!1};var fa={\"class\":\"className\",readonly:\"readOnly\"},ha=\"allowfullscreen allowpaymentrequest allowusermedia async autofocus autoplay checked compact complete controls declare default defaultchecked defaultselected defer disabled ended formnovalidate hidden indeterminate iscontenteditable ismap itemscope loop multiple muted nohref nomodule noresize noshade novalidate nowrap open paused playsinline pubdate readonly required reversed scoped seamless seeking selected truespeed typemustmatch willvalidate\".split(\" \");function W(a,b){var c=null,e=b.toLowerCase();if(\"style\"==e)return(c=a.style)&&\"string\"!=typeof c&&(c=c.cssText),c;if((\"selected\"==e||\"checked\"==e)&&V(a)){if(!V(a))throw new l(15,\"Element is not selectable\");b=\"selected\";c=a.type&&a.type.toLowerCase();if(\"checkbox\"==c||\"radio\"==c)b=\"checked\";return U(a,b)?\"true\":null}var g=T(a,\"A\");if(T(a,\"IMG\")&&\"src\"==e||g&&\"href\"==e)return(c=S(a,e))&&(c=U(a,e)),c;if(\"spellcheck\"==e){c=S(a,e);if(null!==c){if(\"false\"==c.toLowerCase())return\"false\";if(\"true\"==c.toLowerCase())return\"true\"}return U(a,\ne)+\"\"}g=fa[b]||b;if(0\u003C=h(ha,e))return(c=null!==S(a,b)||U(a,g))?\"true\":null;try{var x=U(a,g)}catch(ia){}(e=null==x)||(e=typeof x,e=\"object\"==e&&null!=x||\"function\"==e);e?c=S(a,b):c=x;return null!=c?c.toString():null}var X=[\"_\"],Y=d;X[0]in Y||\"undefined\"==typeof Y.execScript||Y.execScript(\"var \"+X[0]);for(var Z;X.length&&(Z=X.shift());)X.length||void 0===W?Y[Z]&&Y[Z]!==Object.prototype[Z]?Y=Y[Z]:Y=Y[Z]={}:Y[Z]=W;; return this._.apply(null,arguments);}).apply({navigator:typeof window!='undefined'?window.navigator:null,document:typeof window!='undefined'?window.document:null}, arguments);}\n).apply(null, arguments);"
+}
+[1744187574.356][INFO]: Waiting for pending navigations...
+[1744187574.357][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.359][INFO]: Waiting for pending navigations...
+[1744187574.360][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.360][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE ExecuteScript "https://business.facebook.com/billing_hub/accounts?business_id=1030853730999082&global_scope_id=1030853730999082"
+[1744187574.360][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.486",
+   "using": "xpath",
+   "value": ".//span[contains(@style,'color: rgb(55, 55, 55)')]"
+}
+[1744187574.360][INFO]: Waiting for pending navigations...
+[1744187574.361][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.365][INFO]: Waiting for pending navigations...
+[1744187574.366][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.366][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.487"
+}
+[1744187574.366][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.487"
+}
+[1744187574.366][INFO]: Waiting for pending navigations...
+[1744187574.366][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.374][INFO]: Waiting for pending navigations...
+[1744187574.375][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.375][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "BT 1509"
+[1744187574.375][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.486",
+   "using": "xpath",
+   "value": ".//div[contains(@style,'color: rgb(141, 148, 158)')]"
+}
+[1744187574.375][INFO]: Waiting for pending navigations...
+[1744187574.375][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.381][INFO]: Waiting for pending navigations...
+[1744187574.382][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.382][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.488"
+}
+[1744187574.383][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.488"
+}
+[1744187574.383][INFO]: Waiting for pending navigations...
+[1744187574.383][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.387][INFO]: Waiting for pending navigations...
+[1744187574.387][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.387][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "6个广告账户 · 0个公共主页 · 7位用户"
+[1744187574.388][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.485",
+   "using": "xpath",
+   "value": ".//a[contains(@class,'_5hw8')]"
+}
+[1744187574.388][INFO]: Waiting for pending navigations...
+[1744187574.388][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.391][INFO]: Waiting for pending navigations...
+[1744187574.391][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.391][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.489"
+}
+[1744187574.392][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND ExecuteScript {
+   "args": [ {
+      "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.489"
+   }, "href" ],
+   "script": "/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(){}c.prototype=b.prototype;a.prototype=new c;a.prototype.constructor=a};var h=Array.prototype.indexOf?function(a,b){return Array.prototype.indexOf.call(a,b,void 0)}:function(a,b){if(\"string\"===typeof a)return\"string\"!==typeof b||1!=b.length?-1:a.indexOf(b,0);for(var c=0;c\u003Ca.length;c++)if(c in a&&a[c]===b)return c;return-1},k=Array.prototype.forEach?function(a,b){Array.prototype.forEach.call(a,b,void 0)}:function(a,b){for(var c=a.length,e=\"string\"===typeof a?a.split(\"\"):a,g=0;g\u003Cc;g++)g in e&&b.call(void 0,e[g],g,a)};function l(a,b){this.code=a;this.a=m[a]||n;this.message=b||\"\";a=this.a.replace(/((?:^|\\s+)[a-z])/g,function(c){return c.toUpperCase().replace(/^[\\s\\xa0]+/g,\"\")});b=a.length-5;if(0>b||a.indexOf(\"Error\",b)!=b)a+=\"Error\";this.name=a;a=Error(this.message);a.name=this.name;this.stack=a.stack||\"\"}f(l,Error);var n=\"unknown error\",m={15:\"element not selectable\",11:\"element not visible\"};m[31]=n;m[30]=n;m[24]=\"invalid cookie domain\";m[29]=\"invalid element coordinates\";m[12]=\"invalid element state\";m[32]=\"invalid selector\";\nm[51]=\"invalid selector\";m[52]=\"invalid selector\";m[17]=\"javascript error\";m[405]=\"unsupported operation\";m[34]=\"move target out of bounds\";m[27]=\"no such alert\";m[7]=\"no such element\";m[8]=\"no such frame\";m[23]=\"no such window\";m[28]=\"script timeout\";m[33]=\"session not created\";m[10]=\"stale element reference\";m[21]=\"timeout\";m[25]=\"unable to set cookie\";m[26]=\"unexpected alert open\";m[13]=n;m[9]=\"unknown command\";var p;a:{var q=d.navigator;if(q){var r=q.userAgent;if(r){p=r;break a}}p=\"\"}function t(a){return-1!=p.indexOf(a)};function u(){return t(\"Firefox\")||t(\"FxiOS\")}function v(){return(t(\"Chrome\")||t(\"CriOS\"))&&!t(\"Edge\")};function w(){return t(\"iPhone\")&&!t(\"iPod\")&&!t(\"iPad\")};var y=t(\"Opera\"),z=t(\"Trident\")||t(\"MSIE\"),A=t(\"Edge\"),B=t(\"Gecko\")&&!(-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\"))&&!(t(\"Trident\")||t(\"MSIE\"))&&!t(\"Edge\"),C=-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\");function D(){var a=d.document;return a?a.documentMode:void 0}var E;\na:{var F=\"\",G=function(){var a=p;if(B)return/rv:([^\\);]+)(\\)|;)/.exec(a);if(A)return/Edge\\/([\\d\\.]+)/.exec(a);if(z)return/\\b(?:MSIE|rv)[: ]([^\\);]+)(\\)|;)/.exec(a);if(C)return/WebKit\\/(\\S+)/.exec(a);if(y)return/(?:Version)[ \\/]?(\\S+)/.exec(a)}();G&&(F=G?G[1]:\"\");if(z){var H=D();if(null!=H&&H>parseFloat(F)){E=String(H);break a}}E=F}var I;I=d.document&&z?D():void 0;var J=u(),K=w()||t(\"iPod\"),L=t(\"iPad\"),M=t(\"Android\")&&!(v()||u()||t(\"Opera\")||t(\"Silk\")),N=v(),aa=t(\"Safari\")&&!(v()||t(\"Coast\")||t(\"Opera\")||t(\"Edge\")||t(\"Edg/\")||t(\"OPR\")||u()||t(\"Silk\")||t(\"Android\"))&&!(w()||t(\"iPad\")||t(\"iPod\"));function O(a){return(a=a.exec(p))?a[1]:\"\"}(function(){if(J)return O(/Firefox\\/([0-9.]+)/);if(z||A||y)return E;if(N)return w()||t(\"iPad\")||t(\"iPod\")?O(/CriOS\\/([0-9.]+)/):O(/Chrome\\/([0-9.]+)/);if(aa&&!(w()||t(\"iPad\")||t(\"iPod\")))return O(/Version\\/([0-9.]+)/);if(K||L){var a=/Version\\/(\\S+).*Mobile\\/(\\S+)/.exec(p);if(a)return a[1]+\".\"+a[2]}else if(M)return(a=O(/Android\\s+([0-9.]+)/))?a:O(/Version\\/([0-9.]+)/);return\"\"})();var P=z&&!(8\u003C=Number(I)),ba=z&&!(9\u003C=Number(I));var ca={SCRIPT:1,STYLE:1,HEAD:1,IFRAME:1,OBJECT:1},Q={IMG:\" \",BR:\"\\n\"};function R(a,b,c){if(!(a.nodeName in ca))if(3==a.nodeType)c?b.push(String(a.nodeValue).replace(/(\\r\\n|\\r|\\n)/g,\"\")):b.push(a.nodeValue);else if(a.nodeName in Q)b.push(Q[a.nodeName]);else for(a=a.firstChild;a;)R(a,b,c),a=a.nextSibling};function S(a,b){b=b.toLowerCase();return\"style\"==b?da(a.style.cssText):P&&\"value\"==b&&T(a,\"INPUT\")?a.value:ba&&!0===a[b]?String(a.getAttribute(b)):(a=a.getAttributeNode(b))&&a.specified?a.value:null}var ea=/[;]+(?=(?:(?:[^\"]*\"){2})*[^\"]*$)(?=(?:(?:[^']*'){2})*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)/;\nfunction da(a){var b=[];k(a.split(ea),function(c){var e=c.indexOf(\":\");0\u003Ce&&(c=[c.slice(0,e),c.slice(e+1)],2==c.length&&b.push(c[0].toLowerCase(),\":\",c[1],\";\"))});b=b.join(\"\");return b=\";\"==b.charAt(b.length-1)?b:b+\";\"}function U(a,b){P&&\"value\"==b&&T(a,\"OPTION\")&&null===S(a,\"value\")?(b=[],R(a,b,!1),a=b.join(\"\")):a=a[b];return a}function T(a,b){b&&\"string\"!==typeof b&&(b=b.toString());return!!a&&1==a.nodeType&&(!b||a.tagName.toUpperCase()==b)}\nfunction V(a){return T(a,\"OPTION\")?!0:T(a,\"INPUT\")?(a=a.type.toLowerCase(),\"checkbox\"==a||\"radio\"==a):!1};var fa={\"class\":\"className\",readonly:\"readOnly\"},ha=\"allowfullscreen allowpaymentrequest allowusermedia async autofocus autoplay checked compact complete controls declare default defaultchecked defaultselected defer disabled ended formnovalidate hidden indeterminate iscontenteditable ismap itemscope loop multiple muted nohref nomodule noresize noshade novalidate nowrap open paused playsinline pubdate readonly required reversed scoped seamless seeking selected truespeed typemustmatch willvalidate\".split(\" \");function W(a,b){var c=null,e=b.toLowerCase();if(\"style\"==e)return(c=a.style)&&\"string\"!=typeof c&&(c=c.cssText),c;if((\"selected\"==e||\"checked\"==e)&&V(a)){if(!V(a))throw new l(15,\"Element is not selectable\");b=\"selected\";c=a.type&&a.type.toLowerCase();if(\"checkbox\"==c||\"radio\"==c)b=\"checked\";return U(a,b)?\"true\":null}var g=T(a,\"A\");if(T(a,\"IMG\")&&\"src\"==e||g&&\"href\"==e)return(c=S(a,e))&&(c=U(a,e)),c;if(\"spellcheck\"==e){c=S(a,e);if(null!==c){if(\"false\"==c.toLowerCase())return\"false\";if(\"true\"==c.toLowerCase())return\"true\"}return U(a,\ne)+\"\"}g=fa[b]||b;if(0\u003C=h(ha,e))return(c=null!==S(a,b)||U(a,g))?\"true\":null;try{var x=U(a,g)}catch(ia){}(e=null==x)||(e=typeof x,e=\"object\"==e&&null!=x||\"function\"==e);e?c=S(a,b):c=x;return null!=c?c.toString():null}var X=[\"_\"],Y=d;X[0]in Y||\"undefined\"==typeof Y.execScript||Y.execScript(\"var \"+X[0]);for(var Z;X.length&&(Z=X.shift());)X.length||void 0===W?Y[Z]&&Y[Z]!==Object.prototype[Z]?Y=Y[Z]:Y=Y[Z]={}:Y[Z]=W;; return this._.apply(null,arguments);}).apply({navigator:typeof window!='undefined'?window.navigator:null,document:typeof window!='undefined'?window.document:null}, arguments);}\n).apply(null, arguments);"
+}
+[1744187574.392][INFO]: Waiting for pending navigations...
+[1744187574.392][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.394][INFO]: Waiting for pending navigations...
+[1744187574.394][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.394][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE ExecuteScript "https://business.facebook.com/billing_hub/accounts?business_id=2034841990345154&global_scope_id=2034841990345154"
+[1744187574.394][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.489",
+   "using": "xpath",
+   "value": ".//span[contains(@style,'color: rgb(55, 55, 55)')]"
+}
+[1744187574.394][INFO]: Waiting for pending navigations...
+[1744187574.395][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.398][INFO]: Waiting for pending navigations...
+[1744187574.398][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.398][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.490"
+}
+[1744187574.398][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.490"
+}
+[1744187574.398][INFO]: Waiting for pending navigations...
+[1744187574.399][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.403][INFO]: Waiting for pending navigations...
+[1744187574.403][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.403][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "GAO 836 5"
+[1744187574.404][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.489",
+   "using": "xpath",
+   "value": ".//div[contains(@style,'color: rgb(141, 148, 158)')]"
+}
+[1744187574.404][INFO]: Waiting for pending navigations...
+[1744187574.404][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.408][INFO]: Waiting for pending navigations...
+[1744187574.408][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.408][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.491"
+}
+[1744187574.409][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.491"
+}
+[1744187574.409][INFO]: Waiting for pending navigations...
+[1744187574.410][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.413][INFO]: Waiting for pending navigations...
+[1744187574.413][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.413][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "5个广告账户 · 0个公共主页 · 2位用户"
+[1744187574.414][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElements {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.481",
+   "using": "xpath",
+   "value": ".//td[@class='_2ph- _51m-'] | .//td[@class='_2ph- _51mw _51m-']"
+}
+[1744187574.414][INFO]: Waiting for pending navigations...
+[1744187574.414][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.418][INFO]: Waiting for pending navigations...
+[1744187574.418][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.418][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElements [ {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.492"
+}, {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.478"
+} ]
+[1744187574.420][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.492",
+   "using": "xpath",
+   "value": ".//a[contains(@class,'_5hw8')]"
+}
+[1744187574.420][INFO]: Waiting for pending navigations...
+[1744187574.420][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.426][INFO]: Waiting for pending navigations...
+[1744187574.426][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.426][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.493"
+}
+[1744187574.428][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND ExecuteScript {
+   "args": [ {
+      "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.493"
+   }, "href" ],
+   "script": "/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(){}c.prototype=b.prototype;a.prototype=new c;a.prototype.constructor=a};var h=Array.prototype.indexOf?function(a,b){return Array.prototype.indexOf.call(a,b,void 0)}:function(a,b){if(\"string\"===typeof a)return\"string\"!==typeof b||1!=b.length?-1:a.indexOf(b,0);for(var c=0;c\u003Ca.length;c++)if(c in a&&a[c]===b)return c;return-1},k=Array.prototype.forEach?function(a,b){Array.prototype.forEach.call(a,b,void 0)}:function(a,b){for(var c=a.length,e=\"string\"===typeof a?a.split(\"\"):a,g=0;g\u003Cc;g++)g in e&&b.call(void 0,e[g],g,a)};function l(a,b){this.code=a;this.a=m[a]||n;this.message=b||\"\";a=this.a.replace(/((?:^|\\s+)[a-z])/g,function(c){return c.toUpperCase().replace(/^[\\s\\xa0]+/g,\"\")});b=a.length-5;if(0>b||a.indexOf(\"Error\",b)!=b)a+=\"Error\";this.name=a;a=Error(this.message);a.name=this.name;this.stack=a.stack||\"\"}f(l,Error);var n=\"unknown error\",m={15:\"element not selectable\",11:\"element not visible\"};m[31]=n;m[30]=n;m[24]=\"invalid cookie domain\";m[29]=\"invalid element coordinates\";m[12]=\"invalid element state\";m[32]=\"invalid selector\";\nm[51]=\"invalid selector\";m[52]=\"invalid selector\";m[17]=\"javascript error\";m[405]=\"unsupported operation\";m[34]=\"move target out of bounds\";m[27]=\"no such alert\";m[7]=\"no such element\";m[8]=\"no such frame\";m[23]=\"no such window\";m[28]=\"script timeout\";m[33]=\"session not created\";m[10]=\"stale element reference\";m[21]=\"timeout\";m[25]=\"unable to set cookie\";m[26]=\"unexpected alert open\";m[13]=n;m[9]=\"unknown command\";var p;a:{var q=d.navigator;if(q){var r=q.userAgent;if(r){p=r;break a}}p=\"\"}function t(a){return-1!=p.indexOf(a)};function u(){return t(\"Firefox\")||t(\"FxiOS\")}function v(){return(t(\"Chrome\")||t(\"CriOS\"))&&!t(\"Edge\")};function w(){return t(\"iPhone\")&&!t(\"iPod\")&&!t(\"iPad\")};var y=t(\"Opera\"),z=t(\"Trident\")||t(\"MSIE\"),A=t(\"Edge\"),B=t(\"Gecko\")&&!(-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\"))&&!(t(\"Trident\")||t(\"MSIE\"))&&!t(\"Edge\"),C=-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\");function D(){var a=d.document;return a?a.documentMode:void 0}var E;\na:{var F=\"\",G=function(){var a=p;if(B)return/rv:([^\\);]+)(\\)|;)/.exec(a);if(A)return/Edge\\/([\\d\\.]+)/.exec(a);if(z)return/\\b(?:MSIE|rv)[: ]([^\\);]+)(\\)|;)/.exec(a);if(C)return/WebKit\\/(\\S+)/.exec(a);if(y)return/(?:Version)[ \\/]?(\\S+)/.exec(a)}();G&&(F=G?G[1]:\"\");if(z){var H=D();if(null!=H&&H>parseFloat(F)){E=String(H);break a}}E=F}var I;I=d.document&&z?D():void 0;var J=u(),K=w()||t(\"iPod\"),L=t(\"iPad\"),M=t(\"Android\")&&!(v()||u()||t(\"Opera\")||t(\"Silk\")),N=v(),aa=t(\"Safari\")&&!(v()||t(\"Coast\")||t(\"Opera\")||t(\"Edge\")||t(\"Edg/\")||t(\"OPR\")||u()||t(\"Silk\")||t(\"Android\"))&&!(w()||t(\"iPad\")||t(\"iPod\"));function O(a){return(a=a.exec(p))?a[1]:\"\"}(function(){if(J)return O(/Firefox\\/([0-9.]+)/);if(z||A||y)return E;if(N)return w()||t(\"iPad\")||t(\"iPod\")?O(/CriOS\\/([0-9.]+)/):O(/Chrome\\/([0-9.]+)/);if(aa&&!(w()||t(\"iPad\")||t(\"iPod\")))return O(/Version\\/([0-9.]+)/);if(K||L){var a=/Version\\/(\\S+).*Mobile\\/(\\S+)/.exec(p);if(a)return a[1]+\".\"+a[2]}else if(M)return(a=O(/Android\\s+([0-9.]+)/))?a:O(/Version\\/([0-9.]+)/);return\"\"})();var P=z&&!(8\u003C=Number(I)),ba=z&&!(9\u003C=Number(I));var ca={SCRIPT:1,STYLE:1,HEAD:1,IFRAME:1,OBJECT:1},Q={IMG:\" \",BR:\"\\n\"};function R(a,b,c){if(!(a.nodeName in ca))if(3==a.nodeType)c?b.push(String(a.nodeValue).replace(/(\\r\\n|\\r|\\n)/g,\"\")):b.push(a.nodeValue);else if(a.nodeName in Q)b.push(Q[a.nodeName]);else for(a=a.firstChild;a;)R(a,b,c),a=a.nextSibling};function S(a,b){b=b.toLowerCase();return\"style\"==b?da(a.style.cssText):P&&\"value\"==b&&T(a,\"INPUT\")?a.value:ba&&!0===a[b]?String(a.getAttribute(b)):(a=a.getAttributeNode(b))&&a.specified?a.value:null}var ea=/[;]+(?=(?:(?:[^\"]*\"){2})*[^\"]*$)(?=(?:(?:[^']*'){2})*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)/;\nfunction da(a){var b=[];k(a.split(ea),function(c){var e=c.indexOf(\":\");0\u003Ce&&(c=[c.slice(0,e),c.slice(e+1)],2==c.length&&b.push(c[0].toLowerCase(),\":\",c[1],\";\"))});b=b.join(\"\");return b=\";\"==b.charAt(b.length-1)?b:b+\";\"}function U(a,b){P&&\"value\"==b&&T(a,\"OPTION\")&&null===S(a,\"value\")?(b=[],R(a,b,!1),a=b.join(\"\")):a=a[b];return a}function T(a,b){b&&\"string\"!==typeof b&&(b=b.toString());return!!a&&1==a.nodeType&&(!b||a.tagName.toUpperCase()==b)}\nfunction V(a){return T(a,\"OPTION\")?!0:T(a,\"INPUT\")?(a=a.type.toLowerCase(),\"checkbox\"==a||\"radio\"==a):!1};var fa={\"class\":\"className\",readonly:\"readOnly\"},ha=\"allowfullscreen allowpaymentrequest allowusermedia async autofocus autoplay checked compact complete controls declare default defaultchecked defaultselected defer disabled ended formnovalidate hidden indeterminate iscontenteditable ismap itemscope loop multiple muted nohref nomodule noresize noshade novalidate nowrap open paused playsinline pubdate readonly required reversed scoped seamless seeking selected truespeed typemustmatch willvalidate\".split(\" \");function W(a,b){var c=null,e=b.toLowerCase();if(\"style\"==e)return(c=a.style)&&\"string\"!=typeof c&&(c=c.cssText),c;if((\"selected\"==e||\"checked\"==e)&&V(a)){if(!V(a))throw new l(15,\"Element is not selectable\");b=\"selected\";c=a.type&&a.type.toLowerCase();if(\"checkbox\"==c||\"radio\"==c)b=\"checked\";return U(a,b)?\"true\":null}var g=T(a,\"A\");if(T(a,\"IMG\")&&\"src\"==e||g&&\"href\"==e)return(c=S(a,e))&&(c=U(a,e)),c;if(\"spellcheck\"==e){c=S(a,e);if(null!==c){if(\"false\"==c.toLowerCase())return\"false\";if(\"true\"==c.toLowerCase())return\"true\"}return U(a,\ne)+\"\"}g=fa[b]||b;if(0\u003C=h(ha,e))return(c=null!==S(a,b)||U(a,g))?\"true\":null;try{var x=U(a,g)}catch(ia){}(e=null==x)||(e=typeof x,e=\"object\"==e&&null!=x||\"function\"==e);e?c=S(a,b):c=x;return null!=c?c.toString():null}var X=[\"_\"],Y=d;X[0]in Y||\"undefined\"==typeof Y.execScript||Y.execScript(\"var \"+X[0]);for(var Z;X.length&&(Z=X.shift());)X.length||void 0===W?Y[Z]&&Y[Z]!==Object.prototype[Z]?Y=Y[Z]:Y=Y[Z]={}:Y[Z]=W;; return this._.apply(null,arguments);}).apply({navigator:typeof window!='undefined'?window.navigator:null,document:typeof window!='undefined'?window.document:null}, arguments);}\n).apply(null, arguments);"
+}
+[1744187574.428][INFO]: Waiting for pending navigations...
+[1744187574.428][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.432][INFO]: Waiting for pending navigations...
+[1744187574.432][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.432][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE ExecuteScript "https://business.facebook.com/billing_hub/accounts?business_id=971045168173252&global_scope_id=971045168173252"
+[1744187574.433][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.493",
+   "using": "xpath",
+   "value": ".//span[contains(@style,'color: rgb(55, 55, 55)')]"
+}
+[1744187574.433][INFO]: Waiting for pending navigations...
+[1744187574.434][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.442][INFO]: Waiting for pending navigations...
+[1744187574.442][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.442][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.494"
+}
+[1744187574.444][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.494"
+}
+[1744187574.444][INFO]: Waiting for pending navigations...
+[1744187574.444][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.449][INFO]: Waiting for pending navigations...
+[1744187574.450][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.450][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "XIONG 40"
+[1744187574.457][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.493",
+   "using": "xpath",
+   "value": ".//div[contains(@style,'color: rgb(141, 148, 158)')]"
+}
+[1744187574.457][INFO]: Waiting for pending navigations...
+[1744187574.457][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.472][INFO]: Waiting for pending navigations...
+[1744187574.473][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.473][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.495"
+}
+[1744187574.475][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.495"
+}
+[1744187574.475][INFO]: Waiting for pending navigations...
+[1744187574.476][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.480][INFO]: Waiting for pending navigations...
+[1744187574.481][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.481][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "6个广告账户 · 0个公共主页 · 2位用户"
+[1744187574.486][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.478",
+   "using": "xpath",
+   "value": ".//a[contains(@class,'_5hw8')]"
+}
+[1744187574.486][INFO]: Waiting for pending navigations...
+[1744187574.488][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.492][INFO]: Waiting for pending navigations...
+[1744187574.493][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.493][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.496"
+}
+[1744187574.494][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND ExecuteScript {
+   "args": [ {
+      "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.496"
+   }, "href" ],
+   "script": "/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(){}c.prototype=b.prototype;a.prototype=new c;a.prototype.constructor=a};var h=Array.prototype.indexOf?function(a,b){return Array.prototype.indexOf.call(a,b,void 0)}:function(a,b){if(\"string\"===typeof a)return\"string\"!==typeof b||1!=b.length?-1:a.indexOf(b,0);for(var c=0;c\u003Ca.length;c++)if(c in a&&a[c]===b)return c;return-1},k=Array.prototype.forEach?function(a,b){Array.prototype.forEach.call(a,b,void 0)}:function(a,b){for(var c=a.length,e=\"string\"===typeof a?a.split(\"\"):a,g=0;g\u003Cc;g++)g in e&&b.call(void 0,e[g],g,a)};function l(a,b){this.code=a;this.a=m[a]||n;this.message=b||\"\";a=this.a.replace(/((?:^|\\s+)[a-z])/g,function(c){return c.toUpperCase().replace(/^[\\s\\xa0]+/g,\"\")});b=a.length-5;if(0>b||a.indexOf(\"Error\",b)!=b)a+=\"Error\";this.name=a;a=Error(this.message);a.name=this.name;this.stack=a.stack||\"\"}f(l,Error);var n=\"unknown error\",m={15:\"element not selectable\",11:\"element not visible\"};m[31]=n;m[30]=n;m[24]=\"invalid cookie domain\";m[29]=\"invalid element coordinates\";m[12]=\"invalid element state\";m[32]=\"invalid selector\";\nm[51]=\"invalid selector\";m[52]=\"invalid selector\";m[17]=\"javascript error\";m[405]=\"unsupported operation\";m[34]=\"move target out of bounds\";m[27]=\"no such alert\";m[7]=\"no such element\";m[8]=\"no such frame\";m[23]=\"no such window\";m[28]=\"script timeout\";m[33]=\"session not created\";m[10]=\"stale element reference\";m[21]=\"timeout\";m[25]=\"unable to set cookie\";m[26]=\"unexpected alert open\";m[13]=n;m[9]=\"unknown command\";var p;a:{var q=d.navigator;if(q){var r=q.userAgent;if(r){p=r;break a}}p=\"\"}function t(a){return-1!=p.indexOf(a)};function u(){return t(\"Firefox\")||t(\"FxiOS\")}function v(){return(t(\"Chrome\")||t(\"CriOS\"))&&!t(\"Edge\")};function w(){return t(\"iPhone\")&&!t(\"iPod\")&&!t(\"iPad\")};var y=t(\"Opera\"),z=t(\"Trident\")||t(\"MSIE\"),A=t(\"Edge\"),B=t(\"Gecko\")&&!(-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\"))&&!(t(\"Trident\")||t(\"MSIE\"))&&!t(\"Edge\"),C=-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\");function D(){var a=d.document;return a?a.documentMode:void 0}var E;\na:{var F=\"\",G=function(){var a=p;if(B)return/rv:([^\\);]+)(\\)|;)/.exec(a);if(A)return/Edge\\/([\\d\\.]+)/.exec(a);if(z)return/\\b(?:MSIE|rv)[: ]([^\\);]+)(\\)|;)/.exec(a);if(C)return/WebKit\\/(\\S+)/.exec(a);if(y)return/(?:Version)[ \\/]?(\\S+)/.exec(a)}();G&&(F=G?G[1]:\"\");if(z){var H=D();if(null!=H&&H>parseFloat(F)){E=String(H);break a}}E=F}var I;I=d.document&&z?D():void 0;var J=u(),K=w()||t(\"iPod\"),L=t(\"iPad\"),M=t(\"Android\")&&!(v()||u()||t(\"Opera\")||t(\"Silk\")),N=v(),aa=t(\"Safari\")&&!(v()||t(\"Coast\")||t(\"Opera\")||t(\"Edge\")||t(\"Edg/\")||t(\"OPR\")||u()||t(\"Silk\")||t(\"Android\"))&&!(w()||t(\"iPad\")||t(\"iPod\"));function O(a){return(a=a.exec(p))?a[1]:\"\"}(function(){if(J)return O(/Firefox\\/([0-9.]+)/);if(z||A||y)return E;if(N)return w()||t(\"iPad\")||t(\"iPod\")?O(/CriOS\\/([0-9.]+)/):O(/Chrome\\/([0-9.]+)/);if(aa&&!(w()||t(\"iPad\")||t(\"iPod\")))return O(/Version\\/([0-9.]+)/);if(K||L){var a=/Version\\/(\\S+).*Mobile\\/(\\S+)/.exec(p);if(a)return a[1]+\".\"+a[2]}else if(M)return(a=O(/Android\\s+([0-9.]+)/))?a:O(/Version\\/([0-9.]+)/);return\"\"})();var P=z&&!(8\u003C=Number(I)),ba=z&&!(9\u003C=Number(I));var ca={SCRIPT:1,STYLE:1,HEAD:1,IFRAME:1,OBJECT:1},Q={IMG:\" \",BR:\"\\n\"};function R(a,b,c){if(!(a.nodeName in ca))if(3==a.nodeType)c?b.push(String(a.nodeValue).replace(/(\\r\\n|\\r|\\n)/g,\"\")):b.push(a.nodeValue);else if(a.nodeName in Q)b.push(Q[a.nodeName]);else for(a=a.firstChild;a;)R(a,b,c),a=a.nextSibling};function S(a,b){b=b.toLowerCase();return\"style\"==b?da(a.style.cssText):P&&\"value\"==b&&T(a,\"INPUT\")?a.value:ba&&!0===a[b]?String(a.getAttribute(b)):(a=a.getAttributeNode(b))&&a.specified?a.value:null}var ea=/[;]+(?=(?:(?:[^\"]*\"){2})*[^\"]*$)(?=(?:(?:[^']*'){2})*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)/;\nfunction da(a){var b=[];k(a.split(ea),function(c){var e=c.indexOf(\":\");0\u003Ce&&(c=[c.slice(0,e),c.slice(e+1)],2==c.length&&b.push(c[0].toLowerCase(),\":\",c[1],\";\"))});b=b.join(\"\");return b=\";\"==b.charAt(b.length-1)?b:b+\";\"}function U(a,b){P&&\"value\"==b&&T(a,\"OPTION\")&&null===S(a,\"value\")?(b=[],R(a,b,!1),a=b.join(\"\")):a=a[b];return a}function T(a,b){b&&\"string\"!==typeof b&&(b=b.toString());return!!a&&1==a.nodeType&&(!b||a.tagName.toUpperCase()==b)}\nfunction V(a){return T(a,\"OPTION\")?!0:T(a,\"INPUT\")?(a=a.type.toLowerCase(),\"checkbox\"==a||\"radio\"==a):!1};var fa={\"class\":\"className\",readonly:\"readOnly\"},ha=\"allowfullscreen allowpaymentrequest allowusermedia async autofocus autoplay checked compact complete controls declare default defaultchecked defaultselected defer disabled ended formnovalidate hidden indeterminate iscontenteditable ismap itemscope loop multiple muted nohref nomodule noresize noshade novalidate nowrap open paused playsinline pubdate readonly required reversed scoped seamless seeking selected truespeed typemustmatch willvalidate\".split(\" \");function W(a,b){var c=null,e=b.toLowerCase();if(\"style\"==e)return(c=a.style)&&\"string\"!=typeof c&&(c=c.cssText),c;if((\"selected\"==e||\"checked\"==e)&&V(a)){if(!V(a))throw new l(15,\"Element is not selectable\");b=\"selected\";c=a.type&&a.type.toLowerCase();if(\"checkbox\"==c||\"radio\"==c)b=\"checked\";return U(a,b)?\"true\":null}var g=T(a,\"A\");if(T(a,\"IMG\")&&\"src\"==e||g&&\"href\"==e)return(c=S(a,e))&&(c=U(a,e)),c;if(\"spellcheck\"==e){c=S(a,e);if(null!==c){if(\"false\"==c.toLowerCase())return\"false\";if(\"true\"==c.toLowerCase())return\"true\"}return U(a,\ne)+\"\"}g=fa[b]||b;if(0\u003C=h(ha,e))return(c=null!==S(a,b)||U(a,g))?\"true\":null;try{var x=U(a,g)}catch(ia){}(e=null==x)||(e=typeof x,e=\"object\"==e&&null!=x||\"function\"==e);e?c=S(a,b):c=x;return null!=c?c.toString():null}var X=[\"_\"],Y=d;X[0]in Y||\"undefined\"==typeof Y.execScript||Y.execScript(\"var \"+X[0]);for(var Z;X.length&&(Z=X.shift());)X.length||void 0===W?Y[Z]&&Y[Z]!==Object.prototype[Z]?Y=Y[Z]:Y=Y[Z]={}:Y[Z]=W;; return this._.apply(null,arguments);}).apply({navigator:typeof window!='undefined'?window.navigator:null,document:typeof window!='undefined'?window.document:null}, arguments);}\n).apply(null, arguments);"
+}
+[1744187574.494][INFO]: Waiting for pending navigations...
+[1744187574.495][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.499][INFO]: Waiting for pending navigations...
+[1744187574.499][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.499][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE ExecuteScript "https://business.facebook.com/billing_hub/accounts?business_id=1583561209242885&global_scope_id=1583561209242885"
+[1744187574.501][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.496",
+   "using": "xpath",
+   "value": ".//span[contains(@style,'color: rgb(55, 55, 55)')]"
+}
+[1744187574.501][INFO]: Waiting for pending navigations...
+[1744187574.501][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.505][INFO]: Waiting for pending navigations...
+[1744187574.505][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.505][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.497"
+}
+[1744187574.506][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.497"
+}
+[1744187574.506][INFO]: Waiting for pending navigations...
+[1744187574.506][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.509][INFO]: Waiting for pending navigations...
+[1744187574.509][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.509][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "马山县白山镇同兴美食店"
+[1744187574.510][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.496",
+   "using": "xpath",
+   "value": ".//div[contains(@style,'color: rgb(141, 148, 158)')]"
+}
+[1744187574.510][INFO]: Waiting for pending navigations...
+[1744187574.510][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.512][INFO]: Waiting for pending navigations...
+[1744187574.513][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.513][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.498"
+}
+[1744187574.513][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.498"
+}
+[1744187574.513][INFO]: Waiting for pending navigations...
+[1744187574.513][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.517][INFO]: Waiting for pending navigations...
+[1744187574.517][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.517][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "6个广告账户 · 2个公共主页 · 4位用户"
+[1744187574.518][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElements {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.482",
+   "using": "xpath",
+   "value": ".//td[@class='_2ph- _51m-'] | .//td[@class='_2ph- _51mw _51m-']"
+}
+[1744187574.518][INFO]: Waiting for pending navigations...
+[1744187574.518][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.521][INFO]: Waiting for pending navigations...
+[1744187574.522][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.522][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElements [ {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.499"
+} ]
+[1744187574.522][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.499",
+   "using": "xpath",
+   "value": ".//a[contains(@class,'_5hw8')]"
+}
+[1744187574.522][INFO]: Waiting for pending navigations...
+[1744187574.522][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.525][INFO]: Waiting for pending navigations...
+[1744187574.525][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.525][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.500"
+}
+[1744187574.526][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND ExecuteScript {
+   "args": [ {
+      "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.500"
+   }, "href" ],
+   "script": "/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(){}c.prototype=b.prototype;a.prototype=new c;a.prototype.constructor=a};var h=Array.prototype.indexOf?function(a,b){return Array.prototype.indexOf.call(a,b,void 0)}:function(a,b){if(\"string\"===typeof a)return\"string\"!==typeof b||1!=b.length?-1:a.indexOf(b,0);for(var c=0;c\u003Ca.length;c++)if(c in a&&a[c]===b)return c;return-1},k=Array.prototype.forEach?function(a,b){Array.prototype.forEach.call(a,b,void 0)}:function(a,b){for(var c=a.length,e=\"string\"===typeof a?a.split(\"\"):a,g=0;g\u003Cc;g++)g in e&&b.call(void 0,e[g],g,a)};function l(a,b){this.code=a;this.a=m[a]||n;this.message=b||\"\";a=this.a.replace(/((?:^|\\s+)[a-z])/g,function(c){return c.toUpperCase().replace(/^[\\s\\xa0]+/g,\"\")});b=a.length-5;if(0>b||a.indexOf(\"Error\",b)!=b)a+=\"Error\";this.name=a;a=Error(this.message);a.name=this.name;this.stack=a.stack||\"\"}f(l,Error);var n=\"unknown error\",m={15:\"element not selectable\",11:\"element not visible\"};m[31]=n;m[30]=n;m[24]=\"invalid cookie domain\";m[29]=\"invalid element coordinates\";m[12]=\"invalid element state\";m[32]=\"invalid selector\";\nm[51]=\"invalid selector\";m[52]=\"invalid selector\";m[17]=\"javascript error\";m[405]=\"unsupported operation\";m[34]=\"move target out of bounds\";m[27]=\"no such alert\";m[7]=\"no such element\";m[8]=\"no such frame\";m[23]=\"no such window\";m[28]=\"script timeout\";m[33]=\"session not created\";m[10]=\"stale element reference\";m[21]=\"timeout\";m[25]=\"unable to set cookie\";m[26]=\"unexpected alert open\";m[13]=n;m[9]=\"unknown command\";var p;a:{var q=d.navigator;if(q){var r=q.userAgent;if(r){p=r;break a}}p=\"\"}function t(a){return-1!=p.indexOf(a)};function u(){return t(\"Firefox\")||t(\"FxiOS\")}function v(){return(t(\"Chrome\")||t(\"CriOS\"))&&!t(\"Edge\")};function w(){return t(\"iPhone\")&&!t(\"iPod\")&&!t(\"iPad\")};var y=t(\"Opera\"),z=t(\"Trident\")||t(\"MSIE\"),A=t(\"Edge\"),B=t(\"Gecko\")&&!(-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\"))&&!(t(\"Trident\")||t(\"MSIE\"))&&!t(\"Edge\"),C=-1!=p.toLowerCase().indexOf(\"webkit\")&&!t(\"Edge\");function D(){var a=d.document;return a?a.documentMode:void 0}var E;\na:{var F=\"\",G=function(){var a=p;if(B)return/rv:([^\\);]+)(\\)|;)/.exec(a);if(A)return/Edge\\/([\\d\\.]+)/.exec(a);if(z)return/\\b(?:MSIE|rv)[: ]([^\\);]+)(\\)|;)/.exec(a);if(C)return/WebKit\\/(\\S+)/.exec(a);if(y)return/(?:Version)[ \\/]?(\\S+)/.exec(a)}();G&&(F=G?G[1]:\"\");if(z){var H=D();if(null!=H&&H>parseFloat(F)){E=String(H);break a}}E=F}var I;I=d.document&&z?D():void 0;var J=u(),K=w()||t(\"iPod\"),L=t(\"iPad\"),M=t(\"Android\")&&!(v()||u()||t(\"Opera\")||t(\"Silk\")),N=v(),aa=t(\"Safari\")&&!(v()||t(\"Coast\")||t(\"Opera\")||t(\"Edge\")||t(\"Edg/\")||t(\"OPR\")||u()||t(\"Silk\")||t(\"Android\"))&&!(w()||t(\"iPad\")||t(\"iPod\"));function O(a){return(a=a.exec(p))?a[1]:\"\"}(function(){if(J)return O(/Firefox\\/([0-9.]+)/);if(z||A||y)return E;if(N)return w()||t(\"iPad\")||t(\"iPod\")?O(/CriOS\\/([0-9.]+)/):O(/Chrome\\/([0-9.]+)/);if(aa&&!(w()||t(\"iPad\")||t(\"iPod\")))return O(/Version\\/([0-9.]+)/);if(K||L){var a=/Version\\/(\\S+).*Mobile\\/(\\S+)/.exec(p);if(a)return a[1]+\".\"+a[2]}else if(M)return(a=O(/Android\\s+([0-9.]+)/))?a:O(/Version\\/([0-9.]+)/);return\"\"})();var P=z&&!(8\u003C=Number(I)),ba=z&&!(9\u003C=Number(I));var ca={SCRIPT:1,STYLE:1,HEAD:1,IFRAME:1,OBJECT:1},Q={IMG:\" \",BR:\"\\n\"};function R(a,b,c){if(!(a.nodeName in ca))if(3==a.nodeType)c?b.push(String(a.nodeValue).replace(/(\\r\\n|\\r|\\n)/g,\"\")):b.push(a.nodeValue);else if(a.nodeName in Q)b.push(Q[a.nodeName]);else for(a=a.firstChild;a;)R(a,b,c),a=a.nextSibling};function S(a,b){b=b.toLowerCase();return\"style\"==b?da(a.style.cssText):P&&\"value\"==b&&T(a,\"INPUT\")?a.value:ba&&!0===a[b]?String(a.getAttribute(b)):(a=a.getAttributeNode(b))&&a.specified?a.value:null}var ea=/[;]+(?=(?:(?:[^\"]*\"){2})*[^\"]*$)(?=(?:(?:[^']*'){2})*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)/;\nfunction da(a){var b=[];k(a.split(ea),function(c){var e=c.indexOf(\":\");0\u003Ce&&(c=[c.slice(0,e),c.slice(e+1)],2==c.length&&b.push(c[0].toLowerCase(),\":\",c[1],\";\"))});b=b.join(\"\");return b=\";\"==b.charAt(b.length-1)?b:b+\";\"}function U(a,b){P&&\"value\"==b&&T(a,\"OPTION\")&&null===S(a,\"value\")?(b=[],R(a,b,!1),a=b.join(\"\")):a=a[b];return a}function T(a,b){b&&\"string\"!==typeof b&&(b=b.toString());return!!a&&1==a.nodeType&&(!b||a.tagName.toUpperCase()==b)}\nfunction V(a){return T(a,\"OPTION\")?!0:T(a,\"INPUT\")?(a=a.type.toLowerCase(),\"checkbox\"==a||\"radio\"==a):!1};var fa={\"class\":\"className\",readonly:\"readOnly\"},ha=\"allowfullscreen allowpaymentrequest allowusermedia async autofocus autoplay checked compact complete controls declare default defaultchecked defaultselected defer disabled ended formnovalidate hidden indeterminate iscontenteditable ismap itemscope loop multiple muted nohref nomodule noresize noshade novalidate nowrap open paused playsinline pubdate readonly required reversed scoped seamless seeking selected truespeed typemustmatch willvalidate\".split(\" \");function W(a,b){var c=null,e=b.toLowerCase();if(\"style\"==e)return(c=a.style)&&\"string\"!=typeof c&&(c=c.cssText),c;if((\"selected\"==e||\"checked\"==e)&&V(a)){if(!V(a))throw new l(15,\"Element is not selectable\");b=\"selected\";c=a.type&&a.type.toLowerCase();if(\"checkbox\"==c||\"radio\"==c)b=\"checked\";return U(a,b)?\"true\":null}var g=T(a,\"A\");if(T(a,\"IMG\")&&\"src\"==e||g&&\"href\"==e)return(c=S(a,e))&&(c=U(a,e)),c;if(\"spellcheck\"==e){c=S(a,e);if(null!==c){if(\"false\"==c.toLowerCase())return\"false\";if(\"true\"==c.toLowerCase())return\"true\"}return U(a,\ne)+\"\"}g=fa[b]||b;if(0\u003C=h(ha,e))return(c=null!==S(a,b)||U(a,g))?\"true\":null;try{var x=U(a,g)}catch(ia){}(e=null==x)||(e=typeof x,e=\"object\"==e&&null!=x||\"function\"==e);e?c=S(a,b):c=x;return null!=c?c.toString():null}var X=[\"_\"],Y=d;X[0]in Y||\"undefined\"==typeof Y.execScript||Y.execScript(\"var \"+X[0]);for(var Z;X.length&&(Z=X.shift());)X.length||void 0===W?Y[Z]&&Y[Z]!==Object.prototype[Z]?Y=Y[Z]:Y=Y[Z]={}:Y[Z]=W;; return this._.apply(null,arguments);}).apply({navigator:typeof window!='undefined'?window.navigator:null,document:typeof window!='undefined'?window.document:null}, arguments);}\n).apply(null, arguments);"
+}
+[1744187574.526][INFO]: Waiting for pending navigations...
+[1744187574.526][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.528][INFO]: Waiting for pending navigations...
+[1744187574.528][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.528][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE ExecuteScript "https://business.facebook.com/billing_hub/accounts?business_id=1244000300283682&global_scope_id=1244000300283682"
+[1744187574.529][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.500",
+   "using": "xpath",
+   "value": ".//span[contains(@style,'color: rgb(55, 55, 55)')]"
+}
+[1744187574.529][INFO]: Waiting for pending navigations...
+[1744187574.529][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.532][INFO]: Waiting for pending navigations...
+[1744187574.532][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.532][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.501"
+}
+[1744187574.533][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.501"
+}
+[1744187574.533][INFO]: Waiting for pending navigations...
+[1744187574.533][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.536][INFO]: Waiting for pending navigations...
+[1744187574.539][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.539][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "马山县白山镇粥大叔小吃店"
+[1744187574.540][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElement {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.500",
+   "using": "xpath",
+   "value": ".//div[contains(@style,'color: rgb(141, 148, 158)')]"
+}
+[1744187574.540][INFO]: Waiting for pending navigations...
+[1744187574.540][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.543][INFO]: Waiting for pending navigations...
+[1744187574.544][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.544][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElement {
+   "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.502"
+}
+[1744187574.544][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.502"
+}
+[1744187574.544][INFO]: Waiting for pending navigations...
+[1744187574.544][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.549][INFO]: Waiting for pending navigations...
+[1744187574.549][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.549][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "6个广告账户 · 0个公共主页 · 3位用户"
+[1744187574.550][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindChildElements {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.483",
+   "using": "xpath",
+   "value": ".//td[@class='_2ph- _51m-'] | .//td[@class='_2ph- _51mw _51m-']"
+}
+[1744187574.551][INFO]: Waiting for pending navigations...
+[1744187574.552][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.554][INFO]: Waiting for pending navigations...
+[1744187574.556][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.556][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindChildElements [  ]
+[1744187574.556][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetElementText {
+   "id": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.486"
+}
+[1744187574.558][INFO]: Waiting for pending navigations...
+[1744187574.559][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.564][INFO]: Waiting for pending navigations...
+[1744187574.564][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.564][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetElementText "BT 1509\n6个广告账户 · 0个公共主页 · 7位用户"
+[1744187574.565][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND PerformActions {
+   "actions": [ {
+      "actions": [ {
+         "duration": 250,
+         "origin": {
+            "element-6066-11e4-a52e-4f735466cecf": "f.0800E38407F52B7003AF46930B879936.d.475E64E1CDD906017E881354005D02C1.e.486"
+         },
+         "type": "pointerMove",
+         "x": 0,
+         "y": 0
+      }, {
+         "button": 0,
+         "duration": 0,
+         "type": "pointerDown"
+      }, {
+         "button": 0,
+         "duration": 0,
+         "type": "pointerUp"
+      } ],
+      "id": "mouse",
+      "parameters": {
+         "pointerType": "mouse"
+      },
+      "type": "pointer"
+   }, {
+      "actions": [ {
+         "duration": 0,
+         "type": "pause"
+      }, {
+         "duration": 0,
+         "type": "pause"
+      }, {
+         "duration": 0,
+         "type": "pause"
+      } ],
+      "id": "key",
+      "type": "key"
+   } ]
+}
+[1744187574.565][INFO]: Waiting for pending navigations...
+[1744187574.565][INFO]: Done waiting for pending navigations. Status: ok
+[1744187574.877][INFO]: Waiting for pending navigations...
+[1744187578.098][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.098][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE PerformActions
+[1744187578.122][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetUrl {
+}
+[1744187578.122][INFO]: Waiting for pending navigations...
+[1744187578.131][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.137][INFO]: Waiting for pending navigations...
+[1744187578.137][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.137][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetUrl "https://business.facebook.com/billing_hub/accounts?business_id=1030853730999082&global_scope_id=1030853730999082"
+[1744187578.139][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND GetUrl {
+}
+[1744187578.139][INFO]: Waiting for pending navigations...
+[1744187578.141][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.144][INFO]: Waiting for pending navigations...
+[1744187578.145][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.145][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE GetUrl "https://business.facebook.com/billing_hub/accounts?business_id=1030853730999082&global_scope_id=1030853730999082"
+[1744187578.146][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND Navigate {
+   "url": "https://business.facebook.com/billing_hub/accounts?business_id=1030853730999082&global_scope_id=1030853730999082"
+}
+[1744187578.146][INFO]: Waiting for pending navigations...
+[1744187578.147][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.565][INFO]: Waiting for pending navigations...
+[1744187578.696][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.696][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE Navigate
+[1744187578.697][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187578.698][INFO]: Waiting for pending navigations...
+[1744187578.698][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.704][INFO]: Waiting for pending navigations...
+[1744187578.704][INFO]: Done waiting for pending navigations. Status: ok
+[1744187578.705][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187579.209][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187579.209][INFO]: Waiting for pending navigations...
+[1744187579.210][INFO]: Done waiting for pending navigations. Status: ok
+[1744187579.218][INFO]: Waiting for pending navigations...
+[1744187579.219][INFO]: Done waiting for pending navigations. Status: ok
+[1744187579.219][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187579.726][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187579.726][INFO]: Waiting for pending navigations...
+[1744187579.727][INFO]: Done waiting for pending navigations. Status: ok
+[1744187579.734][INFO]: Waiting for pending navigations...
+[1744187579.735][INFO]: Done waiting for pending navigations. Status: ok
+[1744187579.735][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187580.238][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187580.238][INFO]: Waiting for pending navigations...
+[1744187580.238][INFO]: Done waiting for pending navigations. Status: ok
+[1744187580.248][INFO]: Waiting for pending navigations...
+[1744187580.249][INFO]: Done waiting for pending navigations. Status: ok
+[1744187580.249][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187580.754][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187580.754][INFO]: Waiting for pending navigations...
+[1744187580.754][INFO]: Done waiting for pending navigations. Status: ok
+[1744187580.760][INFO]: Waiting for pending navigations...
+[1744187580.760][INFO]: Done waiting for pending navigations. Status: ok
+[1744187580.760][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187581.266][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187581.266][INFO]: Waiting for pending navigations...
+[1744187581.267][INFO]: Done waiting for pending navigations. Status: ok
+[1744187581.272][INFO]: Waiting for pending navigations...
+[1744187581.273][INFO]: Done waiting for pending navigations. Status: ok
+[1744187581.273][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187581.778][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187581.778][INFO]: Waiting for pending navigations...
+[1744187581.779][INFO]: Done waiting for pending navigations. Status: ok
+[1744187581.783][INFO]: Waiting for pending navigations...
+[1744187581.784][INFO]: Done waiting for pending navigations. Status: ok
+[1744187581.784][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187582.289][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187582.289][INFO]: Waiting for pending navigations...
+[1744187582.290][INFO]: Done waiting for pending navigations. Status: ok
+[1744187582.297][INFO]: Waiting for pending navigations...
+[1744187582.298][INFO]: Done waiting for pending navigations. Status: ok
+[1744187582.298][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187582.822][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187582.822][INFO]: Waiting for pending navigations...
+[1744187582.824][INFO]: Done waiting for pending navigations. Status: ok
+[1744187582.831][INFO]: Waiting for pending navigations...
+[1744187582.832][INFO]: Done waiting for pending navigations. Status: ok
+[1744187582.832][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187583.340][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187583.340][INFO]: Waiting for pending navigations...
+[1744187583.342][INFO]: Done waiting for pending navigations. Status: ok
+[1744187583.351][INFO]: Waiting for pending navigations...
+[1744187583.351][INFO]: Done waiting for pending navigations. Status: ok
+[1744187583.351][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187583.857][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187583.865][INFO]: Waiting for pending navigations...
+[1744187583.872][INFO]: Done waiting for pending navigations. Status: ok
+[1744187583.885][INFO]: Waiting for pending navigations...
+[1744187583.886][INFO]: Done waiting for pending navigations. Status: ok
+[1744187583.886][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187584.399][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187584.399][INFO]: Waiting for pending navigations...
+[1744187584.547][INFO]: Done waiting for pending navigations. Status: ok
+[1744187584.698][INFO]: Waiting for pending navigations...
+[1744187584.699][INFO]: Done waiting for pending navigations. Status: ok
+[1744187584.700][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187585.594][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187585.594][INFO]: Waiting for pending navigations...
+[1744187585.596][INFO]: Done waiting for pending navigations. Status: ok
+[1744187585.607][INFO]: Waiting for pending navigations...
+[1744187585.608][INFO]: Done waiting for pending navigations. Status: ok
+[1744187585.608][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187586.117][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187586.117][INFO]: Waiting for pending navigations...
+[1744187586.118][INFO]: Done waiting for pending navigations. Status: ok
+[1744187586.124][INFO]: Waiting for pending navigations...
+[1744187586.125][INFO]: Done waiting for pending navigations. Status: ok
+[1744187586.125][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187586.631][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187586.631][INFO]: Waiting for pending navigations...
+[1744187586.632][INFO]: Done waiting for pending navigations. Status: ok
+[1744187586.638][INFO]: Waiting for pending navigations...
+[1744187586.638][INFO]: Done waiting for pending navigations. Status: ok
+[1744187586.638][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187587.142][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187587.142][INFO]: Waiting for pending navigations...
+[1744187587.143][INFO]: Done waiting for pending navigations. Status: ok
+[1744187587.148][INFO]: Waiting for pending navigations...
+[1744187587.149][INFO]: Done waiting for pending navigations. Status: ok
+[1744187587.149][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187587.660][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187587.660][INFO]: Waiting for pending navigations...
+[1744187587.662][INFO]: Done waiting for pending navigations. Status: ok
+[1744187587.675][INFO]: Waiting for pending navigations...
+[1744187587.676][INFO]: Done waiting for pending navigations. Status: ok
+[1744187587.676][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187588.181][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187588.181][INFO]: Waiting for pending navigations...
+[1744187588.181][INFO]: Done waiting for pending navigations. Status: ok
+[1744187588.187][INFO]: Waiting for pending navigations...
+[1744187588.187][INFO]: Done waiting for pending navigations. Status: ok
+[1744187588.187][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187588.690][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187588.690][INFO]: Waiting for pending navigations...
+[1744187588.691][INFO]: Done waiting for pending navigations. Status: ok
+[1744187588.700][INFO]: Waiting for pending navigations...
+[1744187588.700][INFO]: Done waiting for pending navigations. Status: ok
+[1744187588.701][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187589.205][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187589.205][INFO]: Waiting for pending navigations...
+[1744187589.205][INFO]: Done waiting for pending navigations. Status: ok
+[1744187589.211][INFO]: Waiting for pending navigations...
+[1744187589.211][INFO]: Done waiting for pending navigations. Status: ok
+[1744187589.211][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187589.715][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187589.716][INFO]: Waiting for pending navigations...
+[1744187589.717][INFO]: Done waiting for pending navigations. Status: ok
+[1744187589.723][INFO]: Waiting for pending navigations...
+[1744187589.723][INFO]: Done waiting for pending navigations. Status: ok
+[1744187589.723][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187590.244][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187590.245][INFO]: Waiting for pending navigations...
+[1744187590.248][INFO]: Done waiting for pending navigations. Status: ok
+[1744187590.256][INFO]: Waiting for pending navigations...
+[1744187590.257][INFO]: Done waiting for pending navigations. Status: ok
+[1744187590.257][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187590.764][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187590.764][INFO]: Waiting for pending navigations...
+[1744187590.766][INFO]: Done waiting for pending navigations. Status: ok
+[1744187590.773][INFO]: Waiting for pending navigations...
+[1744187590.773][INFO]: Done waiting for pending navigations. Status: ok
+[1744187590.773][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187591.280][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187591.280][INFO]: Waiting for pending navigations...
+[1744187591.281][INFO]: Done waiting for pending navigations. Status: ok
+[1744187591.287][INFO]: Waiting for pending navigations...
+[1744187591.288][INFO]: Done waiting for pending navigations. Status: ok
+[1744187591.288][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187591.795][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187591.795][INFO]: Waiting for pending navigations...
+[1744187591.796][INFO]: Done waiting for pending navigations. Status: ok
+[1744187591.802][INFO]: Waiting for pending navigations...
+[1744187591.803][INFO]: Done waiting for pending navigations. Status: ok
+[1744187591.803][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187592.307][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187592.307][INFO]: Waiting for pending navigations...
+[1744187592.308][INFO]: Done waiting for pending navigations. Status: ok
+[1744187592.325][INFO]: Waiting for pending navigations...
+[1744187592.325][INFO]: Done waiting for pending navigations. Status: ok
+[1744187592.325][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187592.832][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187592.832][INFO]: Waiting for pending navigations...
+[1744187592.834][INFO]: Done waiting for pending navigations. Status: ok
+[1744187592.848][INFO]: Waiting for pending navigations...
+[1744187592.848][INFO]: Done waiting for pending navigations. Status: ok
+[1744187592.848][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187593.355][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187593.355][INFO]: Waiting for pending navigations...
+[1744187593.355][INFO]: Done waiting for pending navigations. Status: ok
+[1744187593.360][INFO]: Waiting for pending navigations...
+[1744187593.360][INFO]: Done waiting for pending navigations. Status: ok
+[1744187593.360][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187593.866][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187593.867][INFO]: Waiting for pending navigations...
+[1744187593.867][INFO]: Done waiting for pending navigations. Status: ok
+[1744187593.874][INFO]: Waiting for pending navigations...
+[1744187593.875][INFO]: Done waiting for pending navigations. Status: ok
+[1744187593.875][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187594.379][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187594.379][INFO]: Waiting for pending navigations...
+[1744187594.380][INFO]: Done waiting for pending navigations. Status: ok
+[1744187594.388][INFO]: Waiting for pending navigations...
+[1744187594.389][INFO]: Done waiting for pending navigations. Status: ok
+[1744187594.389][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187594.892][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187594.892][INFO]: Waiting for pending navigations...
+[1744187594.893][INFO]: Done waiting for pending navigations. Status: ok
+[1744187594.903][INFO]: Waiting for pending navigations...
+[1744187594.903][INFO]: Done waiting for pending navigations. Status: ok
+[1744187594.903][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187595.407][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187595.407][INFO]: Waiting for pending navigations...
+[1744187595.408][INFO]: Done waiting for pending navigations. Status: ok
+[1744187595.413][INFO]: Waiting for pending navigations...
+[1744187595.413][INFO]: Done waiting for pending navigations. Status: ok
+[1744187595.413][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187595.920][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187595.920][INFO]: Waiting for pending navigations...
+[1744187595.921][INFO]: Done waiting for pending navigations. Status: ok
+[1744187595.926][INFO]: Waiting for pending navigations...
+[1744187595.927][INFO]: Done waiting for pending navigations. Status: ok
+[1744187595.927][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187596.430][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187596.430][INFO]: Waiting for pending navigations...
+[1744187596.437][INFO]: Done waiting for pending navigations. Status: ok
+[1744187596.448][INFO]: Waiting for pending navigations...
+[1744187596.448][INFO]: Done waiting for pending navigations. Status: ok
+[1744187596.448][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187596.957][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187596.957][INFO]: Waiting for pending navigations...
+[1744187596.958][INFO]: Done waiting for pending navigations. Status: ok
+[1744187596.965][INFO]: Waiting for pending navigations...
+[1744187596.966][INFO]: Done waiting for pending navigations. Status: ok
+[1744187596.966][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187597.493][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187597.493][INFO]: Waiting for pending navigations...
+[1744187597.505][INFO]: Done waiting for pending navigations. Status: ok
+[1744187597.567][INFO]: Waiting for pending navigations...
+[1744187597.568][INFO]: Done waiting for pending navigations. Status: ok
+[1744187597.568][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187598.072][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187598.072][INFO]: Waiting for pending navigations...
+[1744187598.073][INFO]: Done waiting for pending navigations. Status: ok
+[1744187598.080][INFO]: Waiting for pending navigations...
+[1744187598.080][INFO]: Done waiting for pending navigations. Status: ok
+[1744187598.080][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187598.588][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187598.588][INFO]: Waiting for pending navigations...
+[1744187598.589][INFO]: Done waiting for pending navigations. Status: ok
+[1744187598.611][INFO]: Waiting for pending navigations...
+[1744187598.611][INFO]: Done waiting for pending navigations. Status: ok
+[1744187598.611][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187599.119][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187599.119][INFO]: Waiting for pending navigations...
+[1744187599.120][INFO]: Done waiting for pending navigations. Status: ok
+[1744187599.128][INFO]: Waiting for pending navigations...
+[1744187599.128][INFO]: Done waiting for pending navigations. Status: ok
+[1744187599.128][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187599.687][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187599.687][INFO]: Waiting for pending navigations...
+[1744187599.688][INFO]: Done waiting for pending navigations. Status: ok
+[1744187599.702][INFO]: Waiting for pending navigations...
+[1744187599.703][INFO]: Done waiting for pending navigations. Status: ok
+[1744187599.703][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187600.209][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187600.210][INFO]: Waiting for pending navigations...
+[1744187600.210][INFO]: Done waiting for pending navigations. Status: ok
+[1744187600.217][INFO]: Waiting for pending navigations...
+[1744187600.218][INFO]: Done waiting for pending navigations. Status: ok
+[1744187600.218][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187600.725][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187600.725][INFO]: Waiting for pending navigations...
+[1744187600.727][INFO]: Done waiting for pending navigations. Status: ok
+[1744187600.736][INFO]: Waiting for pending navigations...
+[1744187600.736][INFO]: Done waiting for pending navigations. Status: ok
+[1744187600.736][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187601.239][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187601.239][INFO]: Waiting for pending navigations...
+[1744187601.240][INFO]: Done waiting for pending navigations. Status: ok
+[1744187601.245][INFO]: Waiting for pending navigations...
+[1744187601.245][INFO]: Done waiting for pending navigations. Status: ok
+[1744187601.245][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187601.753][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187601.753][INFO]: Waiting for pending navigations...
+[1744187601.755][INFO]: Done waiting for pending navigations. Status: ok
+[1744187601.763][INFO]: Waiting for pending navigations...
+[1744187601.763][INFO]: Done waiting for pending navigations. Status: ok
+[1744187601.763][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187602.270][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187602.270][INFO]: Waiting for pending navigations...
+[1744187602.272][INFO]: Done waiting for pending navigations. Status: ok
+[1744187602.278][INFO]: Waiting for pending navigations...
+[1744187602.278][INFO]: Done waiting for pending navigations. Status: ok
+[1744187602.279][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187602.785][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187602.786][INFO]: Waiting for pending navigations...
+[1744187602.786][INFO]: Done waiting for pending navigations. Status: ok
+[1744187602.794][INFO]: Waiting for pending navigations...
+[1744187602.795][INFO]: Done waiting for pending navigations. Status: ok
+[1744187602.795][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
+[1744187603.298][INFO]: [07d150cb001366e63eae90be12d6c419] COMMAND FindElement {
+   "using": "xpath",
+   "value": "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"
+}
+[1744187603.298][INFO]: Waiting for pending navigations...
+[1744187603.298][INFO]: Done waiting for pending navigations. Status: ok
+[1744187603.304][INFO]: Waiting for pending navigations...
+[1744187603.305][INFO]: Done waiting for pending navigations. Status: ok
+[1744187603.305][INFO]: [07d150cb001366e63eae90be12d6c419] RESPONSE FindElement ERROR no such element: Unable to locate element: {"method":"xpath","selector":"//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"}
+  (Session info: chrome=128.0.6613.85)
