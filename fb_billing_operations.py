@@ -8,42 +8,45 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from facebook_operations import click_create_button, select_sales_objective, open_new_tab
 from browser_utils import get_active_session
-from task_utils import get_billing_info
+from task_utils import TaskType, get_billing_info
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from datetime import datetime
 import re
 from urllib.parse import parse_qs, urlparse
 import time
-from enum import Enum
-from selenium.webdriver.remote.webdriver import WebDriver
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
 
 PROCESSED = set()
 
-class TaskType(Enum):
-    CHECK_BALANCE = 1
-    CREATE_AD = 2
-
 
 def connect_browser(api_data):
     """增强浏览器连接稳定性"""
-    # 使用远程WebDriver配置
-    from selenium.webdriver.remote.webdriver import WebDriver
-    
-    executor = f"ws://{api_data['ws']['selenium']}/session"
-    capabilities = {
-        "browserName": "chrome",
-        "goog:chromeOptions": {
-            "debuggerAddress": api_data["ws"]["selenium"]
-        }
-    }
-    
+    chrome_options = Options()
+
+    # 配置调试地址（格式：127.0.0.1:端口）
+    debug_address = api_data["ws"]["selenium"]
+    if ":" not in debug_address:
+        debug_address = f"127.0.0.1:{debug_address}"
+
+    chrome_options.add_experimental_option("debuggerAddress", debug_address)
+
+    # 更新反检测配置（移除非必要参数）
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--start-maximized")
+
+    # 配置WebDriver服务
+    service = Service(
+        executable_path=api_data["webdriver"],
+        service_args=["--log-path=chromedriver.log"]
+    )
+
     try:
-        driver = WebDriver(command_executor=executor, desired_capabilities=capabilities)
-        print(f"✅ 成功连接到远程浏览器实例 | 地址: {executor}")
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        print(f"✅ 成功连接到浏览器实例 | 调试端口: {debug_address}")
         return driver
     except WebDriverException as e:
         print(f"‼️ 连接失败: {str(e)}")
@@ -71,27 +74,12 @@ def execute_task(driver, task_type):
 
 
 def should_process(account_info):
-    """判断是否需要处理该广告账户（增强版）"""
-    required_fields = ['status', 'payment_method', 'asset_id']
-    
-    # 验证必要字段存在
-    if any(field not in account_info for field in required_fields):
-        print(f"⚠️ 账户信息缺失关键字段: {account_info}")
-        return False
-    
-    # 验证字段值
-    status_ok = account_info['status'] == "使用中"
-    payment_ok = account_info['payment_method'] == "额度"
-    not_processed = account_info['asset_id'] not in PROCESSED
-    
-    if not status_ok:
-        print(f"➖ 跳过账户 {account_info['asset_id']}: 状态不符合")
-    if not payment_ok:
-        print(f"➖ 跳过账户 {account_info['asset_id']}: 付款方式不符合")
-    if not not_processed:
-        print(f"➖ 跳过账户 {account_info['asset_id']}: 已处理过")
-    
-    return status_ok and payment_ok and not_processed
+    """判断是否需要处理该广告账户（新版）"""
+    return (
+            "使用中" in account_info.get("状态", "") and
+            "额度" in account_info.get("付款方式", "") and
+            account_info.get("asset_id") not in PROCESSED
+    )
 
 
 def check_balance_operation(driver):
@@ -135,14 +123,35 @@ def check_balance_operation(driver):
             driver = initialize_new_browser(get_active_session(USER_ID))
 
 
-def main_operation(task_type, account_info=None):
+def main_operation(task_type):
     try:
         session_data = get_active_session(USER_ID)
         driver = connect_browser(session_data)
         open_new_tab(driver)
         execute_task(driver, task_type)
+        input("操作完成，按回车退出...")
     except Exception as e:
         print(f"❌ 操作失败: {str(e)}")
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    print("🚀 Facebook自动化工具 v1.0")
+    print("请选择要执行的任务：")
+    print("1. 查询账户余额")
+    print("2. 创建广告活动")
+
+    task_choice = input("请输入选项数字（1/2）: ").strip()
+
+    if task_choice == "1":
+        main_operation(TaskType.CHECK_BALANCE)
+    elif task_choice == "2":
+        main_operation(TaskType.CREATE_AD)
+    else:
+        print("❌ 无效的选项")
+
+
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 def get_business_accounts(driver):
     """获取所有业务账户的链接和信息"""
@@ -221,84 +230,43 @@ def process_first_account(driver):
         if not click_business_account(driver, first_account['element']):
             raise Exception("无法进入业务账户详情页")
 
-        # ================= 强制导航到广告账户列表页 =================
-        print("🌐 正在强制跳转到广告账户列表页...")
-        ad_accounts_url = f"https://business.facebook.com/billing_hub/accounts?business_id={business_id}&global_scope_id={global_scope_id}"
-        driver.get(ad_accounts_url)
-        
-        # 使用更可靠的等待条件
-        try:
-            WebDriverWait(driver, 25).until(
-                EC.presence_of_element_located((By.XPATH, "//h3[contains(text(),'广告账户')] | //div[contains(text(),'无广告账户')]"))
-            )
-            print("✅ 成功加载广告账户列表")
-        except TimeoutException:
-            print("⏳ 广告账户列表加载超时")
-            return []
-        except Exception as e:
-            print(f"❌ 广告账户列表加载失败: {str(e)}")
-            return []
-
         # 等待广告账户表格加载
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.XPATH, "//table[contains(@aria-label,'广告账户')]"))
         )
+        print("✅ 成功进入广告账户列表页")
 
-        # ================= 核心修改点 =================
-        # 解析广告账户表格
-        ad_accounts = parse_ad_accounts_table(driver, business_id, global_scope_id)
-        print("\n=== 解析到的广告账户 ===")
-        for idx, acc in enumerate(ad_accounts, 1):
-            print(f"{idx}. ID: {acc['asset_id']}")
-            print(f"   状态: {acc['status']}")
-            print(f"   付款方式: {acc['payment_method']}")
-            print(f"   余额: {acc['balance']}")
-        print("="*40 + "\n")
-
-        # 执行后续业务处理
-        if ad_accounts:
-            process_qualified_accounts(driver, ad_accounts)
-        else:
-            print("⚠️ 无有效广告账户可供处理")
-        # ================= 修改结束 =================
+        return parse_ad_accounts_table(driver, business_id, global_scope_id)
 
     except Exception as e:
-        print(f"处理首个业务账户失败: {str(e)}")
-        driver.save_screenshot("first_account_error.png")
+        print(f"处理首个账户失败: {str(e)}")
+        return None
 
 
 def parse_ad_accounts_table(driver, business_id, global_scope_id):
-    """解析广告账户表格（增强稳定版）"""
+    """解析广告账户表格（最终修复版）"""
     try:
-        # 使用更稳定的等待条件
-        WebDriverWait(driver, 25).until(
-            EC.presence_of_element_located((By.XPATH, "//table[contains(@aria-label,'广告账户')]//th[contains(.,'编号')]"))
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.XPATH, "//table[contains(@aria-label,'广告账户')]"))
         )
 
         accounts = []
         rows = driver.find_elements(By.XPATH, "//table[contains(@aria-label,'广告账户')]//tbody//tr")
-        print(f"发现 {len(rows)} 行广告账户数据")
 
-        for idx, row in enumerate(rows, 1):
+        for idx, row in enumerate(rows):
             try:
-                # 使用相对定位提高稳定性
-                cells = row.find_elements(By.XPATH, ".//td")
-                if len(cells) < 4:
-                    print(f"❌ 行{idx} | 列数不足: {len(cells)}/4")
-                    continue
+                # 提取各列数据（列索引根据实际页面结构调整）
+                number_cell = row.find_element(By.XPATH, './/td[1]')  # 编号列
+                status_cell = row.find_element(By.XPATH, './/td[2]')  # 状态列
+                payment_cell = row.find_element(By.XPATH, './/td[3]')  # 付款方式列
+                balance_cell = row.find_element(By.XPATH, './/td[4]')  # 余额列
 
-                # 提取各列数据
-                number_cell = cells[0]
-                status_cell = cells[1]
-                payment_cell = cells[2]
-                balance_cell = cells[3]
-
-                # 提取asset_id（增强匹配模式）
-                asset_id_match = re.search(r'\b\d{14,16}\b', number_cell.text)
+                # 提取asset_id
+                asset_id_match = re.search(r'(\d{15,})', number_cell.text)
                 if not asset_id_match:
-                    print(f"❌ 行{idx} | 无效编号格式: {number_cell.text}")
+                    print(f"❌ 行{idx + 1} | 无效编号格式: {number_cell.text}")
                     continue
-                asset_id = asset_id_match.group()
+                asset_id = asset_id_match.group(1)
 
                 account_info = {
                     'business_id': business_id,
@@ -306,181 +274,170 @@ def parse_ad_accounts_table(driver, business_id, global_scope_id):
                     'asset_id': asset_id,
                     'status': status_cell.text.strip(),
                     'payment_method': payment_cell.text.strip(),
-                    'balance': balance_cell.text.strip(),
-                    'raw_data': {  # 添加原始数据用于调试
-                        'number': number_cell.text,
-                        'status': status_cell.text,
-                        'payment': payment_cell.text,
-                        'balance': balance_cell.text
-                    }
+                    'balance': balance_cell.text.strip()
                 }
 
-                # 有效性预筛选
-                if account_info['status'] == "使用中" and "额度" in account_info['payment_method']:
-                    print(f"✅ 行{idx} | 有效账户 ID:{asset_id}")
+                # 简化的日志输出
+                if "使用中" in account_info['status'] and "额度" in account_info['payment_method']:
+                    print(f"✅ 有效账户 | ID:{asset_id} | 余额:{account_info['balance']}")
                     accounts.append(account_info)
                 else:
-                    print(f"➖ 行{idx} | 跳过 ID:{asset_id} 原因: "
-                        f"状态={account_info['status']} 付款方式={account_info['payment_method']}")
+                    print(f"➖ 跳过账户 | ID:{asset_id} | 原因:状态/付款方式不匹配")
 
             except Exception as e:
-                print(f"⚠️ 行{idx}解析异常: {str(e)[:50]}")
-                driver.save_screenshot(f"table_row_error_{idx}.png")
+                print(f"❌ 行{idx + 1}解析异常 | {str(e)[:50]}")
 
-        print(f"\n📊 有效账户统计: 共{len(accounts)}/{len(rows)} 符合条件")
+        print(f"\n📊 有效账户: {len(accounts)}/{len(rows)}")
         return accounts
 
-    except TimeoutException:
-        print("⏳ 广告账户表格加载超时")
-        return []
     except Exception as e:
-        print(f"❌ 表格解析严重错误: {str(e)}")
-        driver.save_screenshot("table_parse_fatal.png")
+        print(f"解析表格失败: {str(e)}")
         return []
-
-def process_ad(driver, biz_id):
-    """广告账户核心处理逻辑"""
-    try:
-        # 等待并获取有效账户行
-        rows = WebDriverWait(driver, 15).until(
-            EC.presence_of_all_elements_located((By.XPATH,
-                                                 "//tr[.//*[contains(text(),'用中')] and .//*[contains(text(),'额度')]]"
-                                                 ))
-        )
-
-        if rows:
-            # 处理第一个有效账户
-            row = rows[0]
-            btn = row.find_element(By.XPATH, ".//div[contains(.,'查看详情')]")
-            ActionChains(driver).click(btn).perform()
-
-            # 验证跳转结果
-            WebDriverWait(driver, 10).until(
-                EC.url_contains("payment_methods") |
-                EC.url_contains("billing/")
-            )
-
-            # 使用asset_id替代账户名称
-            asset_id = re.search(r'\d{15}', row.text).group()
-            PROCESSED.add(f"{biz_id}_{asset_id}")
-            return True
-        return False
-
-    except Exception as e:
-        print(f"处理异常: {str(e)}")
-        return False
 
 
 def process_qualified_accounts(driver, accounts):
+    """处理符合条件的广告账户（时间选择优化版）"""
     processed = []
-    
-    for acc in accounts:
-        if not should_process(acc):
-            continue
+
+    for idx, acc in enumerate(accounts):
         try:
-            print(f"\n⏰ [{datetime.now().strftime('%H:%M:%S')}] 开始处理账户 {acc['asset_id']}")
-            
-            # ================= 步骤1：进入广告列表页 =================
-            ads_manager_url = f"https://adsmanager.facebook.com/adsmanager/manage/campaigns?act={acc['asset_id']}"
-            print(f"🌐 正在跳转至广告管理页面: {ads_manager_url[:60]}...")
-            driver.get(ads_manager_url)
-            print(f"✅ 页面加载完成 | 当前URL: {driver.current_url[:60]}...")
-
-            # ================= 步骤2：解析广告账户列表 =================
-            print("📋 正在解析广告账户列表...")
-            ad_accounts = parse_ad_accounts_list(driver)
-            if not ad_accounts:
-                print("⚠️ 未找到有效广告账户，跳过处理")
-                acc['total_spend'] = 0.00
-                processed.append(acc)
-                continue
-            print(f"✅ 发现 {len(ad_accounts)} 个广告账户")
-
-            # ================= 步骤3：执行有效性判断 =================
-            valid_accounts = []
-            for ad_acc in ad_accounts:
-                if should_process_ad_account(ad_acc):
-                    valid_accounts.append(ad_acc)
-                    print(f"✅ 有效广告账户: {ad_acc['account_id']}")
-                else:
-                    print(f"➖ 跳过无效账户: {ad_acc['account_id']} (状态: {ad_acc['status']})")
-            
-            if not valid_accounts:
-                print("⚠️ 无有效广告账户，跳过处理")
-                acc['total_spend'] = 0.00
-                processed.append(acc)
-                continue
-
-            # ================= 步骤4：处理第一个有效账户 =================
-            target_account = valid_accounts[0]
-            print(f"🔍 开始处理广告账户 {target_account['account_id']}")
-            ActionChains(driver).click(target_account['element']).perform()
-            
-            # 等待详情页加载
-            WebDriverWait(driver, 15).until(
-                EC.presence_of_element_located((By.XPATH, "//div[contains(text(),'账户详情')]"))
+            # ================= 余额查询部分 =================
+            detail_url = (
+                f"https://business.facebook.com/billing_hub/accounts/details/?"
+                f"business_id={acc['business_id']}&"
+                f"asset_id={acc['asset_id']}&"
+                f"global_scope_id={acc['global_scope_id']}&"
+                f"placement=standalone&"
+                f"selected_view=transactions"
             )
-
-            # ================= 步骤3：进入详情页获取余额 =================
-            detail_url = build_detail_url(acc)
-            print(f"🔗 进入详情页获取余额: {detail_url}")
+            print(f"\n🔗 进入账户详情页: {detail_url}")
             driver.get(detail_url)
 
-            # 获取精确余额
-            exact_balance = get_exact_balance(driver)
+            # 等待余额加载
+            balance_element = WebDriverWait(driver, 25).until(
+                EC.visibility_of_element_located((
+                    By.XPATH,
+                    "//div[@role='heading' and contains(text(), '余额：')]"
+                ))
+            )
+
+            # 提取精确余额
+            amount_text = balance_element.text.split('$')[-1].strip()
+            exact_balance = float(amount_text)
             acc['exact_balance'] = exact_balance
             print(f"✅ 精确余额: ${exact_balance:.2f}")
 
-            # 返回广告列表页
-            driver.back()
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'_3pzj')]"))
+            # ================= 广告管理页面 =================
+            ads_manager_url = (
+                f"https://adsmanager.facebook.com/adsmanager/manage/campaigns?"
+                f"act={acc['asset_id']}&"
+                f"nav_entry_point=lep_237&"
+                f"business_id={acc['business_id']}&"
+                f"nav_source=no_referrer"
             )
+            print(f"🌐 正在跳转至广告管理页面: {ads_manager_url[:80]}...")
+            driver.get(ads_manager_url)
 
-            # ================= 步骤4：广告数据检测 =================
-            if not check_ad_data_exists(driver):
-                print("⚠️ 未发现广告数据，总花费按0处理")
-                acc['total_spend'] = 0.00
-                processed.append(acc)
-                continue
+            try:
+                # 等待页面核心元素加载
+                WebDriverWait(driver, 20).until(
+                    EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'_3pzj')]"))
+                )
+                time.sleep(2)
 
-            # ================= 步骤5：时间筛选操作 =================
-            apply_time_filter(driver)
+                # ================= 新增广告数据检测 =================
+                print("🔍 检测广告数据...")
+                footer = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.XPATH, "//div[@data-pagelet='FixedDataTableNew_footerRow']"))
+                )
 
-            # ================= 步骤6：横向滚动 =================
-            perform_horizontal_scroll(driver)
+                # 检查是否存在数据行（通过子元素判断）
+                if not footer.find_elements(By.XPATH, "./div"):
+                    print("⚠️ 未发现广告数据，总花费按$0处理")
+                    acc['total_spend'] = 0.00
+                    processed.append(acc)
+                    continue  # 跳过后续操作
 
-            # ================= 步骤7：获取总花费 =================
-            total_spend = locate_total_spend(driver)
+            except TimeoutException:
+                print("⏳ 广告数据加载超时，继续执行后续操作")
+
+            # ================= 新增时间筛选操作 =================
+            print("⏰ 执行时间筛选操作...")
+            try:
+                # 点击时间筛选器
+                time_filter = WebDriverWait(driver, 15).until(
+                    EC.element_to_be_clickable((By.XPATH, "(//div[contains(@class,'xw3qccf')])[8]"))
+                )
+                driver.execute_script("arguments[0].scrollIntoView({block:'center'});", time_filter)
+                ActionChains(driver).move_to_element(time_filter).pause(0.3).click().perform()
+                print("✅ 时间筛选器点击成功")
+                time.sleep(1.5)
+
+                # 选择昨天范围
+                yesterday_radio = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((
+                        By.XPATH,
+                        "//input[@type='radio' and @value='yesterday']"
+                        "/ancestor::div[contains(@class,'x1n2onr6')]"
+                        "//div[contains(text(),'昨天')]"
+                    ))
+                )
+                driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", yesterday_radio)
+                ActionChains(driver).move_to_element(yesterday_radio).click().perform()
+                print("✅ 昨天范围选择成功")
+                time.sleep(1.5)
+            except Exception as filter_e:
+                print(f"⚠️ 时间筛选失败: {str(filter_e)[:50]}")
+
+            # ================= 增强版横向滚动操作 =================
+            print("🔄 执行复合滚动策略...")
+
+            # 策略1：模拟拖拽滚动
+            try:
+                scroll_container = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'_3h1k _3h1m')]"))
+                )
+                thumb = scroll_container.find_element(By.CSS_SELECTOR, '._1t0w')
+                track_width = scroll_container.size['width']
+                thumb_width = thumb.size['width']
+
+                ActionChains(driver) \
+                    .click_and_hold(thumb) \
+                    .move_by_offset(track_width - thumb_width, 0) \
+                    .pause(0.5) \
+                    .release() \
+                    .perform()
+                print("✅ 拖拽滚动完成")
+            except Exception as e:
+                print(f"⚠️ 拖拽滚动失败: {str(e)[:50]}")
+            time.sleep(1)
+
+            # ================= 智能定位总花费 =================
+            print("🔍 执行智能定位...")
+            total_spend = None
+
+            try:
+                elements = driver.find_elements(By.XPATH, "//span[contains(@class,'_3dfi')]")
+                rightmost_element = max(elements, key=lambda e: e.location['x'])
+                total_spend = float(rightmost_element.text.replace('$', '').replace(',', ''))
+                print("✅ 使用坐标定位方案")
+            except Exception as e:
+                print(f"⚠️ 坐标定位失败: {str(e)[:50]}")
+
+
             acc['total_spend'] = total_spend
             print(f"✅ 总花费: ${total_spend:.2f}")
 
-            # ================= 结果汇总 =================
             processed.append(acc)
-            print(f"\n📊 账户 {acc['asset_id']} 处理完成")
-            print(f"   余额: ${exact_balance:.2f}")
-            print(f"   总花费: ${total_spend:.2f}")
-            print("-"*50)
 
-        except Exception as e:
-            print(f"❌ 处理失败: {str(e)}")
-            continue
-            
+        except WebDriverException as e:
+            if "no such window" in str(e):
+                print("‼️ 窗口异常，尝试恢复会话...")
+                driver = recover_browser_session(driver, get_active_session(USER_ID))
+                return process_qualified_accounts(driver, accounts[idx:])
+            raise
+
     return processed
-
-
-def verify_valid_ad_account(driver):
-    """验证有效广告账户"""
-    try:
-        print("🕵️ 正在验证账户有效性...")
-        WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, "//div[text()='有效账户']"))
-        )
-        print("✅ 有效账户验证通过")
-        return True
-    except TimeoutException:
-        print("⏳ 未检测到有效账户标识")
-        return False
 
 
 def recover_browser_session(driver, session_data):
@@ -523,194 +480,3 @@ def is_window_valid(driver):
         return False
 
 
-def get_total_spend_via_api(asset_id):
-    """通过API获取总花费"""
-    try:
-        session = requests.Session()
-        response = session.get(
-            f"https://adsmanager.facebook.com/api/getStats",
-            params={"act": asset_id, "time_range": "last_30d"}
-        )
-        if response.status_code == 200:
-            return response.json().get('total_spend', 0.0)
-        return None
-    except Exception as e:
-        print(f"API请求失败: {str(e)}")
-        return None
-
-
-def highlight_element(driver, element):
-    """高亮元素用于调试（增强版）"""
-    original_style = element.get_attribute("style")
-    driver.execute_script(
-        "arguments[0].setAttribute('style', arguments[1]);",
-        element,
-        "border: 3px solid #00ff00 !important; box-shadow: 0 0 10px rgba(0,255,0,0.5) !important;"  # 使用绿色高亮更醒目
-    )
-    time.sleep(0.5)
-    driver.execute_script(
-        "arguments[0].setAttribute('style', arguments[1]);",
-        element,
-        original_style
-    )
-
-
-def parse_ad_accounts_list(driver):
-    """解析广告账户列表（增强稳定性版）"""
-    try:
-        WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'_8tk7')]"))  # 列表容器
-        )
-        accounts = []
-        rows = driver.find_elements(By.XPATH, "//div[contains(@class,'_8tk7')]//div[@role='row']")
-        
-        for row in rows:
-            try:
-                # 使用更稳定的定位方式
-                account_id = row.find_element(By.XPATH, ".//div[contains(@class,'_8tk8')]").text
-                status = row.find_element(By.XPATH, ".//div[contains(@class,'_8tk9')]").text
-                accounts.append({
-                    'account_id': re.search(r'\d{15}', account_id).group(),
-                    'status': status,
-                    'element': row
-                })
-            except Exception as e:
-                print(f"⚠️ 列表项解析失败: {str(e)[:50]}")
-        return accounts
-    except TimeoutException:
-        print("⏳ 广告账户列表加载超时")
-        return []
-    except Exception as e:
-        print(f"❌ 列表解析失败: {str(e)}")
-        return []
-
-
-def should_process_ad_account(ad_account):
-    """判断广告账户是否有效"""
-    return (
-        ad_account.get('status') == "有效" 
-        and ad_account.get('account_id') not in PROCESSED
-    )
-
-def build_detail_url(account_info):
-    """构建账户详情页URL"""
-    return (
-        f"https://business.facebook.com/billing_hub/accounts/details/?"
-        f"business_id={account_info['business_id']}&"
-        f"asset_id={account_info['asset_id']}&"
-        f"global_scope_id={account_info['global_scope_id']}&"
-        f"placement=standalone&"
-        f"selected_view=transactions"
-    )
-
-def get_exact_balance(driver):
-    """获取精确余额"""
-    balance_element = WebDriverWait(driver, 25).until(
-        EC.visibility_of_element_located((
-            By.XPATH,
-            "//div[@role='heading' and contains(text(), '余额：')]"
-        ))
-    )
-    amount_text = balance_element.text.split('$')[-1].strip()
-    return float(amount_text)
-
-
-def apply_time_filter(driver):
-    """应用时间筛选器"""
-    print("🗓️ 定位时间筛选器...")
-    time_filter = WebDriverWait(driver, 15).until(
-        EC.element_to_be_clickable((By.XPATH, "(//div[contains(@class,'xw3qccf')])[8]"))
-    )
-    driver.execute_script("arguments[0].scrollIntoView({block:'center'});", time_filter)
-    ActionChains(driver).move_to_element(time_filter).pause(0.3).click().perform()
-    print("✅ 时间筛选器点击成功")
-    time.sleep(1.5)
-
-    print("🕒 选择昨天范围...")
-    yesterday_radio = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((
-            By.XPATH,
-            "//input[@type='radio' and @value='yesterday']"
-            "/ancestor::div[contains(@class,'x1n2onr6')]"
-            "//div[contains(text(),'昨天')]"
-        ))
-    )
-    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", yesterday_radio)
-    ActionChains(driver).move_to_element(yesterday_radio).click().perform()
-
-    WebDriverWait(driver, 3).until(
-        lambda d: d.find_element(By.XPATH, "//input[@value='yesterday']")
-                  .get_attribute('aria-checked') == 'true'
-    )
-    print("✅ 昨天范围选择成功")
-    time.sleep(1)
-
-def check_ad_data_exists(driver):
-    """检测广告数据存在性"""
-    try:
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//div[@data-pagelet='FixedDataTableNew_footerRow']"))
-        )
-        return True
-    except TimeoutException:
-        print("⏳ 广告数据加载超时")
-        return False
-
-def locate_total_spend(driver):
-    """定位总花费金额"""
-    try:
-        print("🔍 定位总花费元素...")
-        total_spend_element = WebDriverWait(driver, 15).until(
-            EC.visibility_of_element_located((
-                By.XPATH,
-                "//div[contains(text(),'总花费')]/following-sibling::div//div[contains(@class,'x1n2onr6')]"
-            ))
-        )
-        amount_text = total_spend_element.text.replace('$', '').strip()
-        return float(amount_text)
-    except TimeoutException:
-        print("⏳ 总花费元素定位超时")
-        return 0.0
-    except Exception as e:
-        print(f"❌ 获取总花费失败: {str(e)}")
-        return 0.0
-
-def perform_horizontal_scroll(driver):
-    """执行横向滚动操作（增强版）"""
-    print("🔄 开始执行横向滚动...")
-    try:
-        # 定位滚动容器
-        scroll_container = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((
-                By.XPATH,
-                "//div[contains(@class,'_8tk7') and contains(@class,'_8tk8')]"
-            ))
-        )
-
-        # 执行多次滚动确保数据加载
-        for _ in range(3):
-            driver.execute_script(
-                "arguments[0].scrollLeft += 500;",
-                scroll_container
-            )
-            time.sleep(0.5)
-            driver.execute_script(
-                "arguments[0].scrollLeft -= 300;",
-                scroll_container
-            )
-            time.sleep(0.3)
-
-        print("✅ 横向滚动完成")
-    except TimeoutException:
-        print("⏳ 滚动容器定位超时")
-    except Exception as e:
-        print(f"❌ 滚动操作失败: {str(e)}")
-
-def get_ad_accounts(driver):
-    """获取广告账户列表（清理版）"""
-    return [{
-        "状态": row.find_element(By.XPATH, './/td[2]').text,
-        "付款方式": row.find_element(By.XPATH, './/td[3]').text
-    } for row in driver.find_elements(
-        By.XPATH, "//table[contains(@aria-label,'广告账户')]//tbody//tr")
-    ]

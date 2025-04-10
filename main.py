@@ -3,26 +3,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from facebook_operations import click_create_button, select_sales_objective, open_new_tab
 from browser_utils import get_active_session
 from task_utils import TaskType, get_billing_info
 from fb_billing_operations import (
-    get_business_accounts,
-    click_business_account,
     is_window_valid,
-    get_ad_accounts,
-    process_ad,
-    click_business_account,
     process_first_account,
     process_qualified_accounts
 )
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from datetime import datetime
-import re
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -79,18 +67,12 @@ def execute_task(driver, task_type):
         check_balance_operation(driver)
 
 
-def take_screenshot(driver, name):
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"debug_{name}_{timestamp}.png"
-    driver.save_screenshot(filename)
-    print(f"⚠️ 已保存截图: {filename}")
-
-
 def should_process(account_info):
     """判断是否需要处理该广告账户"""
     return (
             "使用中" in account_info.get("状态", "") and
             "额度" in account_info.get("付款方式", "") and
+            account_info.get("原始余额", 0) <= 1000 and
             account_info.get("asset_id", "") not in PROCESSED_ACCOUNTS
     )
 
@@ -107,6 +89,7 @@ def check_balance_operation(driver):
 
         # 处理业务账户并获取广告账户
         raw_accounts = process_first_account(driver)
+
         if raw_accounts:
             processed_accounts = process_qualified_accounts(driver, raw_accounts)
         else:
@@ -117,26 +100,13 @@ def check_balance_operation(driver):
             for acc in processed_accounts:
                 print(f"账户ID: {acc['asset_id']}")
                 print(f"  状态: {acc['status']}")
-                print(f"  原始余额: {acc['balance']}")
-                exact_balance = acc.get('exact_balance')
-                if isinstance(exact_balance, (int, float)):
-                    print(f"  精确余额: ${exact_balance:.2f}")
-                else:
-                    print(f"  精确余额: {exact_balance or 'N/A'}")
+                print(f"  精确余额: {acc['exact_balance']}")
+                print(f"  总花费: {acc['total_spend']}")
                 print("-" * 40)
 
     except WebDriverException as e:
         print(f"窗口异常: {str(e)}")
         driver.switch_to.window(current_handle)
-        take_screenshot(driver, "window_crash")
-
-
-def check_network(driver):
-    try:
-        driver.execute_script("return navigator.onLine")
-    except:
-        return False
-    return True
 
 
 def main_operation(task_type):
@@ -147,22 +117,8 @@ def main_operation(task_type):
         execute_task(driver, task_type)
         input("操作完成，按回车退出...")
     except Exception as e:
-        print(f"操作失败: {str(e)}")
+        print(f"❌ 操作失败: {str(e)}")
 
-
-def balance_check(driver):
-    """余额检查主流程"""
-    for biz in get_businesses(driver):
-        try:
-            ActionChains(driver).click(biz['element']).perform()
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH,
-                                                "//table[contains(@aria-label,'广告账户')] | //div[contains(.,'无广告账户')]"
-                                                ))
-            )
-            process_ad(driver, biz['id'])
-        finally:
-            driver.back()
 
 
 # Press the green button in the gutter to run the script.

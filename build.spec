@@ -8,7 +8,10 @@ hiddenimports = [
     'selenium.webdriver.common.by',
     'selenium.webdriver.support.ui',
     'facebook_operations',
-    'browser_utils'
+    'browser_utils',
+    'websockets',
+    'selenium.webdriver.remote',
+    'schedule'
 ]
 
 # 动态收集数据文件

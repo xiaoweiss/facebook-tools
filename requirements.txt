@@ -6,4 +6,5 @@ requests==2.31.0
 python-dateutil==2.8.2
 pywin32==306
 pyinstaller-hooks-contrib==2023.6
-websockets==12.0 
+websockets==12.0
+schedule==1.2.0 
