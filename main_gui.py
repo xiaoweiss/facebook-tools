@@ -27,7 +27,7 @@ class BillingApp(ctk.CTk):
                                      font=("Microsoft YaHei", 12))
         self.task_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
         
-        self.task_combobox = ctk.CCTkComboBox(main_frame,
+        self.task_combobox = ctk.CTkComboBox(main_frame,
                                             values=["账户检测", "创建广告"],
                                             font=("Microsoft YaHei", 12),
                                             dropdown_font=("Microsoft YaHei", 11),
