@@ -63,16 +63,6 @@ def initialize_new_browser(api_data):
     return webdriver.Chrome(service=service)
 
 
-def execute_task(driver, task_type):
-    """执行指定类型任务"""
-    if task_type == TaskType.CREATE_AD:
-        # 广告创建逻辑...
-        if click_create_button(driver):
-            select_sales_objective(driver)
-    elif task_type == TaskType.CHECK_BALANCE:
-        check_balance_operation(driver)
-
-
 def should_process(account_info):
     """判断是否需要处理该广告账户（新版）"""
     return (
@@ -80,78 +70,6 @@ def should_process(account_info):
             "额度" in account_info.get("付款方式", "") and
             account_info.get("asset_id") not in PROCESSED
     )
-
-
-def check_balance_operation(driver):
-    """保留业务账户处理框架"""
-    current_handle = driver.current_window_handle
-
-    try:
-        driver.get("https://business.facebook.com/billing_hub/accounts")
-
-        if not is_window_valid(driver):
-            raise WebDriverException("主窗口已失效")
-
-        business_accounts = get_business_accounts(driver)
-
-        print(f"\n发现 {len(business_accounts)} 个业务账户:")
-        for idx, acc in enumerate(business_accounts, 1):
-            print(f"{idx}. {acc['name']} (广告账户: {acc['id']} 个)")
-
-        for account in business_accounts:
-            business_id = account['id']
-
-            for attempt in range(3):
-                try:
-                    if process_ad(driver, business_id):
-                        break
-
-                except Exception as e:
-                    print(f"第{attempt + 1}次尝试失败: {str(e)}")
-                    driver.refresh()
-                    WebDriverWait(driver, 10).until(
-                        EC.presence_of_element_located((By.CSS_SELECTOR, "table.uiGrid._51mz"))
-                    )
-
-            if attempt == 2:
-                print(f"⚠️ 跳过 {account['name']} 因多次尝试失败")
-
-    except WebDriverException as e:
-        print(f"窗口异常: {str(e)}")
-        driver.switch_to.window(current_handle)
-        if not is_window_valid(driver):
-            driver = initialize_new_browser(get_active_session(USER_ID))
-
-
-def main_operation(task_type):
-    try:
-        session_data = get_active_session(USER_ID)
-        driver = connect_browser(session_data)
-        open_new_tab(driver)
-        execute_task(driver, task_type)
-        input("操作完成，按回车退出...")
-    except Exception as e:
-        print(f"❌ 操作失败: {str(e)}")
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print("🚀 Facebook自动化工具 v1.0")
-    print("请选择要执行的任务：")
-    print("1. 查询账户余额")
-    print("2. 创建广告活动")
-
-    task_choice = input("请输入选项数字（1/2）: ").strip()
-
-    if task_choice == "1":
-        main_operation(TaskType.CHECK_BALANCE)
-    elif task_choice == "2":
-        main_operation(TaskType.CREATE_AD)
-    else:
-        print("❌ 无效的选项")
-
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 def get_business_accounts(driver):
     """获取所有业务账户的链接和信息"""
@@ -207,27 +125,74 @@ def get_business_accounts(driver):
         return []
 
 
-def process_first_account(driver):
-    """处理第一个业务账户"""
+def process_business_accounts(driver, accounts):
+    """处理所有业务账户（优化导航版）"""
+    try:
+        # 获取所有账户链接（提前获取避免元素失效）
+        account_links = [a.get_attribute('href') for a in accounts]
+        
+        for index, link in enumerate(account_links, 1):
+            print(f"\n➡️ 正在处理第 {index} 个业务账户")
+            
+            # 直接导航代替点击元素
+            driver.get(link)
+            
+            # 等待页面核心元素加载
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//table[contains(@aria-label,'广告账户')]"))
+            )
+            
+            # 从URL解析参数（保持原有参数获取方式）
+            parsed_url = urlparse(link)
+            query_params = parse_qs(parsed_url.query)
+            business_id = query_params['business_id'][0]
+            global_scope_id = query_params['global_scope_id'][0]
+            print(f"📌 提取参数: business_id={business_id} global_scope_id={global_scope_id}")
+
+            # 保留原有广告账户处理流程
+            ad_accounts = parse_ad_accounts_table(driver, business_id, global_scope_id)
+            if not ad_accounts:
+                print(f"⚠️ 未获取到广告账户，跳过当前业务账户")
+                continue
+
+            # 执行原有详细处理流程
+            processed = process_qualified_accounts(driver, ad_accounts)
+            
+            # 保持原有结果输出
+            print("\n🧾 单账户处理结果：")
+            for acc in processed:
+                print(f"账户ID: {acc['asset_id']}")
+                print(f"  状态: {acc['status']}")
+                print(f"  精确余额: {acc['exact_balance']}")
+                print(f"  总花费: {acc['total_spend']}")
+                print("-" * 40)
+
+    except Exception as e:
+        print(f"❌ 处理流程异常: {str(e)}")
+        raise
+
+
+def process_business_account(driver, account):
+    """处理单个业务账户，返回广告账户数据列表"""
     try:
         # 获取第一个业务账户
-        accounts = get_business_accounts(driver)
-        if not accounts:
-            print("⚠️ 未找到有效业务账户")
-            return
-
-        first_account = accounts[0]
-        print(f"\n🔍 开始处理首个业务账户: {first_account['name']}")
+        # accounts = get_business_accounts(driver)
+        # if not accounts:
+        #     print("⚠️ 未找到有效业务账户")
+        #     return
+        #
+        # first_account = accounts[0]
+        # print(f"\n🔍 开始处理首个业务账户: {first_account['name']}")
 
         # 从href提取参数
-        query = parse_qs(urlparse(first_account['href']).query)
+        query = parse_qs(urlparse(account['href']).query)
         business_id = query.get('business_id', [''])[0]
         global_scope_id = query.get('global_scope_id', [''])[0]
         print(f"📌 提取参数: business_id={business_id} global_scope_id={global_scope_id}")
 
         # 点击进入账户
         print("🖱️ 正在点击业务账户进入详情页...")
-        if not click_business_account(driver, first_account['element']):
+        if not click_business_account(driver, account['element']):
             raise Exception("无法进入业务账户详情页")
 
         # 等待广告账户表格加载
@@ -239,7 +204,7 @@ def process_first_account(driver):
         return parse_ad_accounts_table(driver, business_id, global_scope_id)
 
     except Exception as e:
-        print(f"处理首个账户失败: {str(e)}")
+        print(f"❌ 处理失败: {account['name']}，错误原因: {str(e)}")
         return None
 
 
@@ -417,10 +382,20 @@ def process_qualified_accounts(driver, accounts):
             total_spend = None
 
             try:
-                elements = driver.find_elements(By.XPATH, "//span[contains(@class,'_3dfi')]")
-                rightmost_element = max(elements, key=lambda e: e.location['x'])
-                total_spend = float(rightmost_element.text.replace('$', '').replace(',', ''))
-                print("✅ 使用坐标定位方案")
+                # elements = driver.find_elements(By.XPATH, "//span[contains(@class,'_3dfi')]")
+                # rightmost_element = max(elements, key=lambda e: e.location['x'])
+                # total_spend = float(rightmost_element.text.replace('$', '').replace(',', ''))
+                # print("✅ 使用坐标定位方案")
+                spend_element = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located(
+                        (By.XPATH, "(//span[contains(@class,'_3dfi') and contains(@class,'_3dfj')])[last()]"))
+                )
+
+                # 增强文本处理
+                raw_text = spend_element.text.replace('$', '').replace(',', '')
+                clean_text = re.search(r'[\d,]+\.?\d*', raw_text).group()
+                total_spend = float(clean_text)
+                print("✅ 使用末位定位方案")
             except Exception as e:
                 print(f"⚠️ 坐标定位失败: {str(e)[:50]}")
 
@@ -477,6 +452,38 @@ def is_window_valid(driver):
         driver.current_url  # 简单验证窗口是否有效
         return True
     except WebDriverException:
+        return False
+
+def process_ad(driver, biz_id):
+    """广告账户核心处理逻辑"""
+    try:
+        # 等待并获取有效账户行
+        rows = WebDriverWait(driver, 15).until(
+            EC.presence_of_all_elements_located((By.XPATH,
+                                                 "//tr[.//*[contains(text(),'用中')] and .//*[contains(text(),'额度')]]"
+                                                 ))
+        )
+
+        if rows:
+            # 处理第一个有效账户
+            row = rows[0]
+            btn = row.find_element(By.XPATH, ".//div[contains(.,'查看详情')]")
+            ActionChains(driver).click(btn).perform()
+
+            # 验证跳转结果
+            WebDriverWait(driver, 10).until(
+                EC.url_contains("payment_methods") |
+                EC.url_contains("billing/")
+            )
+
+            # 使用asset_id替代账户名称
+            asset_id = re.search(r'\d{15}', row.text).group()
+            PROCESSED.add(f"{biz_id}_{asset_id}")
+            return True
+        return False
+
+    except Exception as e:
+        print(f"处理异常: {str(e)}")
         return False
 
 

@@ -11,7 +11,9 @@ hiddenimports = [
     'browser_utils',
     'websockets',
     'selenium.webdriver.remote',
-    'schedule'
+    'schedule',
+    'tzlocal',  # 新增时区支持
+    'pytz'      # 时区支持
 ]
 
 # 动态收集数据文件

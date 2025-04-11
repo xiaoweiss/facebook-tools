@@ -8,9 +8,11 @@ from browser_utils import get_active_session
 from task_utils import TaskType, get_billing_info
 from fb_billing_operations import (
     is_window_valid,
-    process_first_account,
+    process_business_accounts,
+    get_business_accounts,
     process_qualified_accounts
 )
+from selenium.webdriver.common.by import By
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -78,7 +80,7 @@ def should_process(account_info):
 
 
 def check_balance_operation(driver):
-    """保留业务账户处理框架"""
+    """处理所有业务账户，逐个获取并输出广告账户余额等信息"""
     current_handle = driver.current_window_handle
 
     try:
@@ -87,25 +89,14 @@ def check_balance_operation(driver):
         if not is_window_valid(driver):
             raise WebDriverException("主窗口已失效")
 
-        # 处理业务账户并获取广告账户
-        raw_accounts = process_first_account(driver)
+        # 获取账户元素后立即处理（避免元素失效）
+        account_elements = driver.find_elements(By.XPATH, "//a[contains(@href,'billing_hub/accounts')]")
 
-        if raw_accounts:
-            processed_accounts = process_qualified_accounts(driver, raw_accounts)
-        else:
-            processed_accounts = []
-
-        if processed_accounts:
-            print("\n📝 处理结果汇总:")
-            for acc in processed_accounts:
-                print(f"账户ID: {acc['asset_id']}")
-                print(f"  状态: {acc['status']}")
-                print(f"  精确余额: {acc['exact_balance']}")
-                print(f"  总花费: {acc['total_spend']}")
-                print("-" * 40)
+        # 执行优化后的处理流程（保持原有业务逻辑）
+        process_business_accounts(driver, account_elements)
 
     except WebDriverException as e:
-        print(f"窗口异常: {str(e)}")
+        print(f"🚨 窗口异常: {str(e)}")
         driver.switch_to.window(current_handle)
 
 
@@ -120,8 +111,6 @@ def main_operation(task_type):
         print(f"❌ 操作失败: {str(e)}")
 
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print("🚀 Facebook自动化工具 v1.0")
     print("请选择要执行的任务：")
