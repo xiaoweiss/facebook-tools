@@ -12,7 +12,14 @@ from pathlib import Path
 from components.path_selector import PathSelector
 
 ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("blue")
+# 添加Windows深色模式支持
+try:
+    from ctypes import windll
+    windll.shcore.SetProcessDpiAwareness(1)
+    if ctk.get_appearance_mode() == "Dark":
+        windll.uxtheme.SetWindowTheme(0, "DarkMode_Explorer", None)
+except:
+    pass
 
 class BillingApp(ctk.CTk):
     def __init__(self):
@@ -335,12 +342,12 @@ class BillingApp(ctk.CTk):
             messagebox.showerror("错误", "请先选择安装路径")
             return
         
-        if Path(path).name.lower() == "ads.exe" and Path(path).exists():
+        if Path(path).exists() and path.lower().endswith('.exe'):
             self.adspower_path = path
             AppConfig.adspower_path = path
-            messagebox.showinfo("验证成功", "路径有效")
+            messagebox.showinfo("验证成功", f"已选择主程序: {Path(path).name}")
         else:
-            messagebox.showerror("无效路径", "请选择正确的ads.exe文件")
+            messagebox.showerror("无效路径", "请选择有效的可执行文件")
 
 if __name__ == "__main__":
     app = BillingApp()

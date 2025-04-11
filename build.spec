@@ -20,6 +20,8 @@ hiddenimports = [
     'selenium.webdriver.common.action_chains',
     'adspower_detector',  # 新增自动检测模块
     'tkinter.filedialog',  # 确保文件对话框支持
+    'win32api',  # 添加Windows API支持
+    'win32con',
 ]
 
 # 动态收集数据文件
