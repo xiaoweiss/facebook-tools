@@ -27,16 +27,32 @@ jobs:
 
       - name: 执行打包
         run: |
-          pyinstaller build.spec --clean
+          pyinstaller build.spec --clean --onefile
           if (-not (Test-Path .\dist\)) {
             Write-Error "构建失败，dist目录不存在"
             exit 1
           }
           Get-ChildItem -Path .\dist -Recurse | Format-Table FullName
-          7z a FacebookAdManager.zip .\dist\*
+          # Windows系统生成exe
+          if ($env:RUNNER_OS -eq "Windows") {
+            Rename-Item -Path ".\dist\FacebookAdManager.exe" -NewName "FacebookAdManager-${{ github.run_number }}.exe"
+            7z a FacebookAdManager-${{ github.run_number }}.zip .\dist\FacebookAdManager-${{ github.run_number }}.exe
+          }
+          # Linux系统生成可执行文件
+          elseif ($env:RUNNER_OS -eq "Linux") {
+            mv ./dist/FacebookAdManager ./dist/FacebookAdManager-${{ github.run_number }}
+            tar -czvf FacebookAdManager-${{ github.run_number }}.tar.gz -C ./dist FacebookAdManager-${{ github.run_number }}
+          }
+          # macOS系统生成可执行文件
+          else {
+            mv ./dist/FacebookAdManager ./dist/FacebookAdManager-${{ github.run_number }}
+            zip -r FacebookAdManager-${{ github.run_number }}.zip ./dist/FacebookAdManager-${{ github.run_number }}
+          }
 
       - name: 上传成品
         uses: actions/upload-artifact@v4
         with:
-          name: FacebookAdManager
-          path: FacebookAdManager.zip
+          name: FacebookAdManager-${{ runner.os }}
+          path: |
+            FacebookAdManager-*
+          retention-days: 7

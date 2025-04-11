@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
+import sys
 
 block_cipher = None
 
@@ -13,11 +14,17 @@ hiddenimports = [
     'selenium.webdriver.remote',
     'schedule',
     'tzlocal',  # 新增时区支持
-    'pytz'      # 时区支持
+    'pytz',      # 时区支持
+    'curl_helper', # API客户端
+    'selenium.webdriver.chrome.options',
+    'selenium.webdriver.common.action_chains'
 ]
 
 # 动态收集数据文件
 datas, binaries, hiddenimports = collect_all('fb_billing_operations')
+
+# 确保包含数据文件
+datas.append(('curl_config.json', '.'))  # 配置文件
 
 a = Analysis(
     ['main_gui.py'],
@@ -53,7 +60,14 @@ exe = EXE(
     console=True,   # 临时启用控制台用于调试
     icon='app_icon.ico',  # 准备一个ICO文件
     disable_windowed_traceback=False,
+    onefile=True,  # 关键参数：生成单个文件
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-) 
+)
+
+# 添加Windows图标支持
+if sys.platform == 'win32':
+    exe.icon = 'app_icon.ico'
+else:
+    exe.icon = None 

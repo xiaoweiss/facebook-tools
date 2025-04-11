@@ -119,7 +119,7 @@ class BillingApp(ctk.CTk):
             self.time_frame,
             placeholder_text="HH:MM",
             state="disabled",
-            textvariable=ctk.StringVar(value=self.schedule_config['start_time'])
+            textvariable=ctk.StringVar(value="00:00")
         )
         self.start_label.grid(row=2, column=0, padx=5, sticky="e")
         self.start_time.grid(row=2, column=1, padx=5, sticky="w")
@@ -152,6 +152,14 @@ class BillingApp(ctk.CTk):
                                      font=("Consolas", 10),
                                      wrap="word")
         self.log_text.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+        # 添加版本号显示
+        version_label = ctk.CTkLabel(
+            main_frame, 
+            text="v1.2.0",
+            text_color="#666666"
+        )
+        version_label.grid(row=7, column=1, sticky="se")
 
     def toggle_execution(self):
         if self.running:
