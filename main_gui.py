@@ -10,6 +10,7 @@ from tkinter import messagebox
 import sys
 from pathlib import Path
 from components.path_selector import PathSelector
+import queue
 
 ctk.set_appearance_mode("System")
 # 添加Windows深色模式支持
@@ -24,6 +25,10 @@ except:
 class BillingApp(ctk.CTk):
     def __init__(self):
         super().__init__()
+        
+        # 初始化日志队列
+        self.log_queue = queue.Queue()
+        self.after(100, self._process_log_queue)
         
         self.title("Facebook广告管理工具")
         self.geometry("800x600")
@@ -81,13 +86,28 @@ class BillingApp(ctk.CTk):
         # 主容器
         main_frame = ctk.CTkFrame(self, corner_radius=15)
         main_frame.pack(pady=5, padx=20, fill="both", expand=True)
+        
+        # 使用标签页布局
+        self.tab_view = ctk.CTkTabview(main_frame)
+        self.tab_view.add("任务配置")
+        self.tab_view.add("执行日志")
+        self.tab_view.pack(pady=10, padx=10, fill="both", expand=True)
+        
+        # 任务配置标签页
+        config_tab = self.tab_view.tab("任务配置")
+        self._create_config_ui(config_tab)
+        
+        # 日志标签页
+        log_tab = self.tab_view.tab("执行日志")
+        self._create_log_ui(log_tab)
 
+    def _create_config_ui(self, parent):
         # 任务类型选择
-        self.task_label = ctk.CTkLabel(main_frame, text="选择任务类型:", 
-                                     font=("Microsoft YaHei", 12))
+        self.task_label = ctk.CTkLabel(parent, text="选择任务类型:", 
+                                      font=("Microsoft YaHei", 12))
         self.task_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
         
-        self.task_combobox = ctk.CTkComboBox(main_frame,
+        self.task_combobox = ctk.CTkComboBox(parent,
                                             values=["余额监控", "创建广告"],
                                             font=("Microsoft YaHei", 12),
                                             dropdown_font=("Microsoft YaHei", 11),
@@ -95,18 +115,18 @@ class BillingApp(ctk.CTk):
         self.task_combobox.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
         # 账户输入
-        self.accounts_label = ctk.CTkLabel(main_frame, text="输入账户(每行一个):",
+        self.accounts_label = ctk.CTkLabel(parent, text="输入账户(每行一个):",
                                          font=("Microsoft YaHei", 12))
         self.accounts_label.grid(row=1, column=0, padx=10, pady=10, sticky="nw")
         
-        self.accounts_text = ctk.CTkTextbox(main_frame, width=300, height=150,
+        self.accounts_text = ctk.CTkTextbox(parent, width=300, height=150,
                                           font=("Microsoft YaHei", 11),
                                           border_width=1,
                                           corner_radius=10)
         self.accounts_text.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
 
         # 定时设置
-        self.time_frame = ctk.CTkFrame(main_frame, corner_radius=10)
+        self.time_frame = ctk.CTkFrame(parent, corner_radius=10)
         self.time_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
         
         # 时间选择器
@@ -151,7 +171,7 @@ class BillingApp(ctk.CTk):
         self.date_picker.grid(row=3, column=1, padx=5, sticky="w")
 
         # 控制按钮
-        self.start_btn = ctk.CTkButton(main_frame, text="开始执行", 
+        self.start_btn = ctk.CTkButton(parent, text="开始执行", 
                                      command=self.toggle_execution,
                                      font=("Microsoft YaHei", 12),
                                      corner_radius=20,
@@ -159,32 +179,16 @@ class BillingApp(ctk.CTk):
                                      hover_color="#45a049")
         self.start_btn.grid(row=4, column=0, columnspan=2, pady=20)
 
+    def _create_log_ui(self, parent):
         # 日志输出
-        self.log_label = ctk.CTkLabel(main_frame, text="执行日志:")
-        self.log_label.grid(row=5, column=0, padx=10, sticky="w")
-        
-        self.log_text = ctk.CTkTextbox(
-            main_frame,
-            width=700,
-            height=150,  # 减小初始高度
+        self.log_text = ctk.CTkTextbox(parent)
+        self.log_text.pack(pady=10, padx=10, fill="both", expand=True)
+        self.log_text.configure(
             font=("Consolas", 10),
             wrap="word",
             scrollbar_button_color="#4B4B4B",
-            fg_color="#2B2B2B"  # 深色背景提高可读性
+            fg_color="#2B2B2B"
         )
-        self.log_text.grid(row=6, column=0, columnspan=2, padx=10, pady=5, sticky="nsew")
-
-        # 添加版本号显示
-        version_label = ctk.CTkLabel(
-            main_frame, 
-            text="v1.2.0",
-            text_color="#666666"
-        )
-        version_label.grid(row=7, column=1, sticky="se")
-
-        # 调整主容器布局
-        main_frame.grid_rowconfigure(6, weight=1)  # 允许日志区域扩展
-        main_frame.grid_columnconfigure(1, weight=1)
 
     def toggle_execution(self):
         if self.running:
@@ -194,7 +198,10 @@ class BillingApp(ctk.CTk):
 
     def start_execution(self):
         """启动任务执行"""
-        # 获取有效账户列表
+        if not self.adspower_path:
+            messagebox.showerror("错误", "请先验证AdsPower路径")
+            return
+
         accounts = [acc.strip() for acc in self.accounts_text.get("1.0", "end-1c").split('\n') if acc.strip()]
         
         if not accounts:
@@ -203,7 +210,11 @@ class BillingApp(ctk.CTk):
 
         # 立即执行或定时执行
         if self.schedule_config['interval'] == "立即执行":
-            threading.Thread(target=self.execute_task, args=(self.task_combobox.get(), accounts)).start()
+            threading.Thread(
+                target=self.execute_task,
+                args=(self.task_combobox.get(), accounts),
+                daemon=True  # 添加守护线程
+            ).start()
         else:
             self._setup_scheduler()
 
@@ -270,9 +281,8 @@ class BillingApp(ctk.CTk):
                 continue
 
     def log(self, message):
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.log_text.insert("end", f"[{timestamp}] {message}\n")
-        self.log_text.see("end")
+        """线程安全的日志记录"""
+        self.log_queue.put(message)
 
     def toggle_time_selection(self):
         """切换时间选择组件状态"""
@@ -348,6 +358,19 @@ class BillingApp(ctk.CTk):
             messagebox.showinfo("验证成功", f"已选择主程序: {Path(path).name}")
         else:
             messagebox.showerror("无效路径", "请选择有效的可执行文件")
+
+    def _process_log_queue(self):
+        """处理日志队列"""
+        while not self.log_queue.empty():
+            msg = self.log_queue.get()
+            self._safe_log(msg)
+        self.after(100, self._process_log_queue)
+
+    def _safe_log(self, message):
+        """线程安全的日志记录"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.log_text.insert("end", f"[{timestamp}] {message}\n")
+        self.log_text.see("end")
 
 if __name__ == "__main__":
     app = BillingApp()

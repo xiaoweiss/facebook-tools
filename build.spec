@@ -22,6 +22,7 @@ hiddenimports = [
     'tkinter.filedialog',  # 确保文件对话框支持
     'win32api',  # 添加Windows API支持
     'win32con',
+    'queue',  # 添加队列支持
 ]
 
 # 动态收集数据文件
