@@ -6,10 +6,10 @@ from datetime import datetime, timedelta
 import schedule
 import time
 import re
-from adspower_detector import find_adspower
 from tkinter import messagebox
 import sys
 from pathlib import Path
+from components.path_selector import PathSelector
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
@@ -18,19 +18,14 @@ class BillingApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        # 启动时检测AdsPower
-        self.adspower_path = self._check_adspower()
-        if not self.adspower_path:
-            messagebox.showerror("错误", "未找到AdsPower安装路径，请手动选择安装目录")
-            self._manual_select_path()
-            if not self.adspower_path:
-                sys.exit(1)
-                
         self.title("Facebook广告管理工具")
         self.geometry("800x600")
         self.running = False
         self.scheduler_thread = None
+        self.adspower_path = None
+        
         self._show_auth_dialog()
+        self._create_path_selector()
         self._create_widgets()
         self._setup_validation()
         self._bind_events()
@@ -41,9 +36,6 @@ class BillingApp(ctk.CTk):
             'start_time': '00:00',
             'days': '每天'
         }
-
-        # 初始化配置
-        AppConfig.adspower_path = self.adspower_path
 
     def _show_auth_dialog(self):
         """显示授权码输入对话框"""
@@ -310,21 +302,35 @@ class BillingApp(ctk.CTk):
             'days': self.date_picker.get()
         })
 
-    def _check_adspower(self):
-        """自动检测AdsPower路径"""
-        path = find_adspower()
-        if path:
-            print(f"✅ 检测到AdsPower路径: {path}")
-            return path
-        return None
-
-    def _manual_select_path(self):
-        """手动选择路径"""
-        path = ctk.filedialog.askdirectory(title="请选择AdsPower安装目录")
-        if path and Path(path).joinpath('ads.exe').exists():
+    def _create_path_selector(self):
+        """创建路径选择区域"""
+        path_frame = ctk.CTkFrame(self)
+        path_frame.pack(pady=10, padx=20, fill="x")
+        
+        self.path_selector = PathSelector(path_frame)
+        self.path_selector.pack(pady=5, padx=5)
+        
+        # 验证按钮
+        validate_btn = ctk.CTkButton(
+            path_frame,
+            text="验证路径",
+            command=self._validate_path
+        )
+        validate_btn.pack(pady=5)
+        
+    def _validate_path(self):
+        """验证用户选择的路径"""
+        path = self.path_selector.path
+        if not path:
+            messagebox.showerror("错误", "请先选择安装路径")
+            return
+        
+        if (Path(path) / "ads.exe").exists():
             self.adspower_path = path
+            AppConfig.adspower_path = path
+            messagebox.showinfo("验证成功", "路径有效")
         else:
-            messagebox.showerror("路径无效", "选择的目录不包含AdsPower主程序")
+            messagebox.showerror("无效路径", "未找到ads.exe主程序")
 
 if __name__ == "__main__":
     app = BillingApp()
