@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 from components.path_selector import PathSelector
 import queue
+import traceback
 
 ctk.set_appearance_mode("System")
 # 添加Windows深色模式支持
@@ -177,7 +178,14 @@ class BillingApp(ctk.CTk):
                                      corner_radius=20,
                                      fg_color="#4CAF50",
                                      hover_color="#45a049")
-        self.start_btn.grid(row=4, column=0, columnspan=2, pady=20)
+        self.start_btn.grid(row=3, column=0, columnspan=2, pady=10, sticky="ew")
+
+        # 添加滚动条到账户输入框
+        self.accounts_text.configure(scrollbar_button_color="#4B4B4B")
+        
+        # 配置网格布局权重
+        parent.grid_rowconfigure(1, weight=1)
+        parent.grid_columnconfigure(1, weight=1)
 
     def _create_log_ui(self, parent):
         # 日志输出
@@ -213,8 +221,10 @@ class BillingApp(ctk.CTk):
             threading.Thread(
                 target=self.execute_task,
                 args=(self.task_combobox.get(), accounts),
-                daemon=True  # 添加守护线程
+                daemon=True,
+                name="TaskThread"
             ).start()
+            self.log(f"🧵 启动任务线程: {threading.current_thread().name}")
         else:
             self._setup_scheduler()
 
@@ -257,19 +267,24 @@ class BillingApp(ctk.CTk):
 
     def execute_task(self, task_type, accounts):
         """执行任务核心逻辑"""
+        self.log("🔍 开始执行任务...")
         for account in accounts:
             if not self.running:
+                self.log("⏹️ 任务已停止")
                 break
             try:
                 self.log(f"🔄 开始处理账户: {account}")
                 session_data = get_active_session(account)
+                self.log(f"🔗 连接浏览器会话: {session_data['ws']['selenium']}")
                 driver = connect_browser(session_data)
                 
                 # 根据任务类型执行操作
                 if task_type == "余额监控":
+                    self.log("📊 执行余额监控操作")
                     accounts = get_business_accounts(driver)
                     process_business_accounts(driver, accounts)
                 elif task_type == "创建广告":
+                    self.log("🛠️ 执行创建广告操作")
                     open_new_tab(driver)
                     click_create_button(driver)
                     select_sales_objective(driver)
@@ -277,7 +292,7 @@ class BillingApp(ctk.CTk):
                 driver.quit()
                 self.log(f"✅ 账户 {account} 处理完成")
             except Exception as e:
-                self.log(f"❌ 处理失败: {str(e)}")
+                self.log(f"🔥 发生未处理异常: {traceback.format_exc()}")
                 continue
 
     def log(self, message):

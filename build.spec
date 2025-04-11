@@ -23,6 +23,7 @@ hiddenimports = [
     'win32api',  # 添加Windows API支持
     'win32con',
     'queue',  # 添加队列支持
+    'traceback',  # 添加异常追踪
 ]
 
 # 动态收集数据文件
@@ -62,7 +63,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,   # 临时启用控制台用于调试
+    console=False,   # 正式发布时关闭
     icon='app_icon.ico',  # 准备一个ICO文件
     disable_windowed_traceback=False,
     target_arch=None,
