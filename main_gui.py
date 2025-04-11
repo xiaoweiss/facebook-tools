@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from fb_billing_operations import main_operation, TaskType
+from core import TaskType, AppConfig, validate_adspower
+from fb_billing_operations import process_account
 import threading
 from datetime import datetime, timedelta
 import schedule
@@ -40,6 +41,9 @@ class BillingApp(ctk.CTk):
             'start_time': '00:00',
             'days': '每天'
         }
+
+        # 初始化配置
+        AppConfig.adspower_path = self.adspower_path
 
     def _show_auth_dialog(self):
         """显示授权码输入对话框"""

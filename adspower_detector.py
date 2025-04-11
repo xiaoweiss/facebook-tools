@@ -7,8 +7,10 @@ from ctypes import windll  # 获取逻辑磁盘
 def find_adspower():
     """智能定位AdsPower安装路径（毫秒级响应）"""
     try:
+        print("🕵️ 开始定位AdsPower...")
         # 1. 检查正在运行的进程路径（最快）
         if path := _get_running_process_path():
+            print(f"✅ 通过进程定位到路径: {path}")
             return path
 
         # 2. 注册表精准查询（专业版安装）

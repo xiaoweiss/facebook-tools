@@ -23,6 +23,7 @@ jobs:
       - name: 安装依赖
         run: |
           choco install 7zip -y
+          pip install psutil pywin32
           pip install -r requirements.txt
 
       - name: 执行打包

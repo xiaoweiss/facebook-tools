@@ -15,7 +15,7 @@ from datetime import datetime
 import re
 from urllib.parse import parse_qs, urlparse
 import time
-from main_gui import BillingApp
+from core import TaskType, AppConfig
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -27,8 +27,8 @@ def connect_browser(api_data):
     """增强浏览器连接稳定性"""
     chrome_options = Options()
 
-    # 使用自动检测的路径
-    debug_address = BillingApp().adspower_path or api_data["ws"]["selenium"]
+    # 使用全局配置
+    debug_address = AppConfig.adspower_path or api_data["ws"]["selenium"]
     if ":" not in debug_address:
         debug_address = f"127.0.0.1:{debug_address}"
 
@@ -486,5 +486,10 @@ def process_ad(driver, biz_id):
     except Exception as e:
         print(f"处理异常: {str(e)}")
         return False
+
+
+def process_account(account, task_type):
+    """独立账户处理函数"""
+    # 原execute_task逻辑移入此处
 
 

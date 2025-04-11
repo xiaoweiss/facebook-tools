@@ -28,7 +28,7 @@ datas, binaries, hiddenimports = collect_all('fb_billing_operations')
 datas.append(('curl_config.json', '.'))  # 配置文件
 
 a = Analysis(
-    ['main_gui.py', 'adspower_detector.py'],  # 添加新模块
+    ['main_gui.py', 'fb_billing_operations.py', 'core/__init__.py'],
     pathex=[],
     binaries=binaries,
     datas=datas,
