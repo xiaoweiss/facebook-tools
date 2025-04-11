@@ -195,7 +195,8 @@ class BillingApp(ctk.CTk):
             font=("Consolas", 10),
             wrap="word",
             scrollbar_button_color="#4B4B4B",
-            fg_color="#2B2B2B"
+            fg_color="#1E1E1E",  # 更深的背景
+            text_color="#FFFFFF"  # 强制白色文字
         )
 
     def toggle_execution(self):
@@ -203,16 +204,22 @@ class BillingApp(ctk.CTk):
             self.stop_execution()
         else:
             self.start_execution()
+        # 添加状态同步延迟
+        time.sleep(0.1)
+        self.update()
 
     def start_execution(self):
         """启动任务执行"""
+        self.running = True  # 先设置运行状态
         if not self.adspower_path:
+            self.running = False
             messagebox.showerror("错误", "请先验证AdsPower路径")
             return
 
         accounts = [acc.strip() for acc in self.accounts_text.get("1.0", "end-1c").split('\n') if acc.strip()]
         
         if not accounts:
+            self.running = False
             self.log("⚠️ 未输入有效账户")
             return
 
@@ -224,11 +231,10 @@ class BillingApp(ctk.CTk):
                 daemon=True,
                 name="TaskThread"
             ).start()
-            self.log(f"🧵 启动任务线程: {threading.current_thread().name}")
+            self.log(f"🧵 启动任务线程: {threading.current_thread().name} | 状态: {self.running}")
         else:
             self._setup_scheduler()
 
-        self.running = True
         self.start_btn.configure(text="停止执行", fg_color="#f44336", hover_color="#d32f2f")
 
     def _setup_scheduler(self):
@@ -268,7 +274,9 @@ class BillingApp(ctk.CTk):
     def execute_task(self, task_type, accounts):
         """执行任务核心逻辑"""
         self.log("🔍 开始执行任务...")
+        self.log(f"🔧 当前运行状态: {self.running}")
         for account in accounts:
+            self.log(f"🔎 处理账户前状态检查: {self.running}")
             if not self.running:
                 self.log("⏹️ 任务已停止")
                 break
@@ -334,7 +342,8 @@ class BillingApp(ctk.CTk):
         if self.scheduler_thread and self.scheduler_thread.is_alive():
             schedule.clear()
         self.start_btn.configure(text="开始执行", fg_color="#4CAF50", hover_color="#45a049")
-        self.log("任务已停止")
+        self.log("⏹️ 任务已强制停止")
+        self.update_idletasks()  # 强制刷新界面
 
     def _update_schedule_config(self, choice):
         """更新定时配置"""
@@ -386,6 +395,13 @@ class BillingApp(ctk.CTk):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.log_text.insert("end", f"[{timestamp}] {message}\n")
         self.log_text.see("end")
+
+    def is_thread_alive(self):
+        """检测任务线程是否存活"""
+        for thread in threading.enumerate():
+            if thread.name == "TaskThread":
+                return thread.is_alive()
+        return False
 
 if __name__ == "__main__":
     app = BillingApp()
