@@ -28,7 +28,7 @@ class PathSelector(ctk.CTkFrame):
     def _browse_path(self):
         """打开文件选择对话框"""
         path = filedialog.askopenfilename(
-            title="选择AdsPower主程序（任意名称的.exe文件）",
+            title="请选择AdsPower安装目录中的主程序（ads.exe）",
             filetypes=[("可执行文件", "*.exe"), ("所有文件", "*.*")]
         )
         if path:

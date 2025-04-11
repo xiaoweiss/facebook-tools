@@ -11,4 +11,6 @@ class AppConfig:
 
 def validate_adspower(path):
     """路径验证逻辑"""
-    return (Path(path) / 'ads.exe').exists() 
+    required_files = {'ads.exe', 'config', 'data'}
+    path_obj = Path(path)
+    return all((path_obj / file).exists() for file in required_files) 

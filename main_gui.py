@@ -285,13 +285,10 @@ class BillingApp(ctk.CTk):
         self.log("🔍 开始执行任务...")
         self.log(f"🔧 当前运行状态: {self.running}")
         for account in accounts:
-            self.log(f"🔎 处理账户前状态检查: {self.running}")
-            if not self.running:
-                self.log("⏹️ 任务已停止")
-                break
             try:
                 self.log(f"🔄 开始处理账户: {account}")
                 session_data = get_active_session(account)
+                self.log(f"📡 API响应数据: {session_data}")  # 显示在GUI日志
                 self.log(f"🔗 连接浏览器会话: {session_data['ws']['selenium']}")
                 driver = connect_browser(session_data)
                 
@@ -387,12 +384,15 @@ class BillingApp(ctk.CTk):
             messagebox.showerror("错误", "请先选择安装路径")
             return
         
-        if Path(path).exists() and path.lower().endswith('.exe'):
-            self.adspower_path = path
+        # 获取安装目录路径
+        install_dir = Path(path).parent if path.lower().endswith('.exe') else Path(path)
+        
+        if (install_dir / "ads.exe").exists():
+            self.adspower_path = str(install_dir)
             AppConfig.adspower_path = path
             messagebox.showinfo("验证成功", f"已选择主程序: {Path(path).name}")
         else:
-            messagebox.showerror("无效路径", "请选择有效的可执行文件")
+            messagebox.showerror("无效路径", "请选择正确的AdsPower安装目录")
 
     def _process_log_queue(self):
         """处理日志队列"""

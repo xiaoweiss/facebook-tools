@@ -40,12 +40,11 @@ def connect_browser(api_data):
     """增强浏览器连接稳定性"""
     chrome_options = Options()
 
-    # 增强地址格式验证
-    raw_address = AppConfig.adspower_path or api_data["ws"]["selenium"]
+    # 正确使用API返回的地址
+    raw_address = api_data["ws"]["selenium"]
     
     # 提取有效端口号
     if ":" in raw_address:
-        # 处理类似 "127.0.0.1:53333" 的格式
         debug_address = raw_address
     else:
         # 处理纯数字端口的情况
@@ -529,8 +528,17 @@ def get_active_session(account):
     api_url = f"http://127.0.0.1:50325/api/v1/browser/active?user_id={account}"
     try:
         response = requests.get(api_url, timeout=10)
+        print(f"🔍 API请求状态码: {response.status_code}")
+        print(f"📄 原始响应内容: {response.text}")  # 打印原始响应
+        
         response.raise_for_status()
         data = response.json()
+        
+        # 详细打印API响应结构
+        print("✅ API响应数据结构:")
+        print(f"   - 状态码: {data.get('code', '无')}")
+        print(f"   - 消息: {data.get('msg', '无')}")
+        print(f"   - 数据: {data.get('data', '无')}")
         
         # 增强响应验证
         required_keys = ["data.ws.selenium", "data.webdriver"]
@@ -543,14 +551,17 @@ def get_active_session(account):
         if not re.match(r"^\d+\.\d+\.\d+\.\d+:\d+$", selenium_address):
             raise ValueError(f"非法Selenium地址格式: {selenium_address}")
             
-        print(f"�� 原始API响应: {data}")  # 调试时添加
-        print(f"🔧 解析后的地址: {selenium_address}")  # 连接前输出
+        print(f"🔗 解析后的Selenium地址: {selenium_address}")
         
         return {
             "ws": {"selenium": selenium_address},
             "webdriver": data["data"]["webdriver"]
         }
     except Exception as e:
+        print(f"‼️ API请求失败详情:")
+        print(f"   请求URL: {api_url}")
+        print(f"   错误类型: {type(e).__name__}")
+        print(f"   错误信息: {str(e)}")
         raise Exception(f"获取会话失败: {str(e)}")
 
 
