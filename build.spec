@@ -17,7 +17,8 @@ hiddenimports = [
     'pytz',      # 时区支持
     'curl_helper', # API客户端
     'selenium.webdriver.chrome.options',
-    'selenium.webdriver.common.action_chains'
+    'selenium.webdriver.common.action_chains',
+    'adspower_detector',  # 新增自动检测模块
 ]
 
 # 动态收集数据文件
@@ -27,7 +28,7 @@ datas, binaries, hiddenimports = collect_all('fb_billing_operations')
 datas.append(('curl_config.json', '.'))  # 配置文件
 
 a = Analysis(
-    ['main_gui.py'],
+    ['main_gui.py', 'adspower_detector.py'],  # 添加新模块
     pathex=[],
     binaries=binaries,
     datas=datas,

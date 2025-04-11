@@ -15,6 +15,7 @@ from datetime import datetime
 import re
 from urllib.parse import parse_qs, urlparse
 import time
+from main_gui import BillingApp
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -26,8 +27,8 @@ def connect_browser(api_data):
     """增强浏览器连接稳定性"""
     chrome_options = Options()
 
-    # 配置调试地址（格式：127.0.0.1:端口）
-    debug_address = api_data["ws"]["selenium"]
+    # 使用自动检测的路径
+    debug_address = BillingApp().adspower_path or api_data["ws"]["selenium"]
     if ":" not in debug_address:
         debug_address = f"127.0.0.1:{debug_address}"
 

@@ -5,6 +5,10 @@ from datetime import datetime, timedelta
 import schedule
 import time
 import re
+from adspower_detector import find_adspower
+from tkinter import messagebox
+import sys
+from pathlib import Path
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
@@ -13,6 +17,14 @@ class BillingApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         
+        # 启动时检测AdsPower
+        self.adspower_path = self._check_adspower()
+        if not self.adspower_path:
+            messagebox.showerror("错误", "未找到AdsPower安装路径，请手动选择安装目录")
+            self._manual_select_path()
+            if not self.adspower_path:
+                sys.exit(1)
+                
         self.title("Facebook广告管理工具")
         self.geometry("800x600")
         self.running = False
@@ -293,6 +305,22 @@ class BillingApp(ctk.CTk):
             'start_time': self.start_time.get(),
             'days': self.date_picker.get()
         })
+
+    def _check_adspower(self):
+        """自动检测AdsPower路径"""
+        path = find_adspower()
+        if path:
+            print(f"✅ 检测到AdsPower路径: {path}")
+            return path
+        return None
+
+    def _manual_select_path(self):
+        """手动选择路径"""
+        path = ctk.filedialog.askdirectory(title="请选择AdsPower安装目录")
+        if path and Path(path).joinpath('ads.exe').exists():
+            self.adspower_path = path
+        else:
+            messagebox.showerror("路径无效", "选择的目录不包含AdsPower主程序")
 
 if __name__ == "__main__":
     app = BillingApp()
