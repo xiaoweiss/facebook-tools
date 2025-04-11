@@ -60,11 +60,16 @@ exe = EXE(
     console=True,   # 临时启用控制台用于调试
     icon='app_icon.ico',  # 准备一个ICO文件
     disable_windowed_traceback=False,
-    onefile=True,  # 关键参数：生成单个文件
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
 )
+
+# 在Analysis后添加打包模式配置
+if sys.platform == 'win32':
+    exe.onefile = True
+else:
+    exe.onefile = False
 
 # 添加Windows图标支持
 if sys.platform == 'win32':

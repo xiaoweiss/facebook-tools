@@ -27,7 +27,7 @@ jobs:
 
       - name: 执行打包
         run: |
-          pyinstaller build.spec --clean --onefile
+          pyinstaller build.spec --clean
           if (-not (Test-Path .\dist\)) {
             Write-Error "构建失败，dist目录不存在"
             exit 1
@@ -37,6 +37,10 @@ jobs:
           if ($env:RUNNER_OS -eq "Windows") {
             Rename-Item -Path ".\dist\FacebookAdManager.exe" -NewName "FacebookAdManager-${{ github.run_number }}.exe"
             7z a FacebookAdManager-${{ github.run_number }}.zip .\dist\FacebookAdManager-${{ github.run_number }}.exe
+            if (-not (Test-Path .\dist\FacebookAdManager\FacebookAdManager.exe)) {
+              Write-Error "EXE文件未生成"
+              exit 1
+            }
           }
           # Linux系统生成可执行文件
           elseif ($env:RUNNER_OS -eq "Linux") {
