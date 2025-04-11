@@ -29,6 +29,7 @@ hiddenimports = [
     'urllib3',   # requests的依赖
     'requests.adapters',
     'urllib3.util.retry',
+    're',  # 正则表达式支持
 ]
 
 # 动态收集数据文件

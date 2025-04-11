@@ -25,16 +25,45 @@ TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=14
 PROCESSED = set()
 
 
+def _validate_port(port_str):
+    """验证端口号有效性"""
+    try:
+        port = int(port_str)
+        if 1 <= port <= 65535:
+            return port
+        return None
+    except ValueError:
+        return None
+
+
 def connect_browser(api_data):
     """增强浏览器连接稳定性"""
     chrome_options = Options()
 
-    # 使用全局配置
-    debug_address = AppConfig.adspower_path or api_data["ws"]["selenium"]
-    if ":" not in debug_address:
-        debug_address = f"127.0.0.1:{debug_address}"
+    # 增强地址格式验证
+    raw_address = AppConfig.adspower_path or api_data["ws"]["selenium"]
+    
+    # 提取有效端口号
+    if ":" in raw_address:
+        # 处理类似 "127.0.0.1:53333" 的格式
+        debug_address = raw_address
+    else:
+        # 处理纯数字端口的情况
+        try:
+            port = int(raw_address)
+            if 1 <= port <= 65535:
+                debug_address = f"127.0.0.1:{port}"
+            else:
+                raise ValueError("端口号超出范围")
+        except ValueError as e:
+            raise Exception(f"无效的调试地址格式: {raw_address} | 错误: {str(e)}")
+
+    # 验证地址格式
+    if not re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$", debug_address):
+        raise Exception(f"非法调试地址格式: {debug_address}")
 
     chrome_options.add_experimental_option("debuggerAddress", debug_address)
+    print(f"🔌 使用调试地址: {debug_address}")
 
     # 更新反检测配置（移除非必要参数）
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
@@ -503,20 +532,25 @@ def get_active_session(account):
         response.raise_for_status()
         data = response.json()
         
-        if data["code"] != 0:
-            raise Exception(f"API错误: {data['msg']}")
+        # 增强响应验证
+        required_keys = ["data.ws.selenium", "data.webdriver"]
+        for key in required_keys:
+            if not data.get(key.split('.')[0], {}).get(key.split('.')[1]):
+                raise KeyError(f"缺少必要字段: {key}")
+        
+        # 验证Selenium地址格式
+        selenium_address = data["data"]["ws"]["selenium"]
+        if not re.match(r"^\d+\.\d+\.\d+\.\d+:\d+$", selenium_address):
+            raise ValueError(f"非法Selenium地址格式: {selenium_address}")
             
-        if data["data"]["status"] != "Active":
-            raise Exception("会话未处于活跃状态")
-            
+        print(f"�� 原始API响应: {data}")  # 调试时添加
+        print(f"🔧 解析后的地址: {selenium_address}")  # 连接前输出
+        
         return {
-            "ws": {"selenium": data["data"]["ws"]["selenium"]},
+            "ws": {"selenium": selenium_address},
             "webdriver": data["data"]["webdriver"]
         }
-        
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"网络请求失败: {str(e)}")
-    except KeyError as e:
-        raise Exception(f"响应数据格式错误: {str(e)}")
+    except Exception as e:
+        raise Exception(f"获取会话失败: {str(e)}")
 
 
