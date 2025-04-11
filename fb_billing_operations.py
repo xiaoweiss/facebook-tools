@@ -16,6 +16,8 @@ import re
 from urllib.parse import parse_qs, urlparse
 import time
 from core import TaskType, AppConfig
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -491,5 +493,30 @@ def process_ad(driver, biz_id):
 def process_account(account, task_type):
     """独立账户处理函数"""
     # 原execute_task逻辑移入此处
+
+
+def get_active_session(account):
+    """通过API获取活跃会话数据"""
+    api_url = f"http://127.0.0.1:50325/api/v1/browser/active?user_id={account}"
+    try:
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        if data["code"] != 0:
+            raise Exception(f"API错误: {data['msg']}")
+            
+        if data["data"]["status"] != "Active":
+            raise Exception("会话未处于活跃状态")
+            
+        return {
+            "ws": {"selenium": data["data"]["ws"]["selenium"]},
+            "webdriver": data["data"]["webdriver"]
+        }
+        
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"网络请求失败: {str(e)}")
+    except KeyError as e:
+        raise Exception(f"响应数据格式错误: {str(e)}")
 
 

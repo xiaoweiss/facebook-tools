@@ -1,6 +1,15 @@
 import customtkinter as ctk
 from core import TaskType, AppConfig, validate_adspower
-from fb_billing_operations import process_account
+from fb_billing_operations import (
+    process_account,
+    get_active_session,
+    connect_browser,
+    get_business_accounts,
+    process_business_accounts,
+    open_new_tab,
+    click_create_button,
+    select_sales_objective
+)
 import threading
 from datetime import datetime, timedelta
 import schedule
@@ -300,7 +309,9 @@ class BillingApp(ctk.CTk):
                 driver.quit()
                 self.log(f"✅ 账户 {account} 处理完成")
             except Exception as e:
-                self.log(f"🔥 发生未处理异常: {traceback.format_exc()}")
+                error_msg = f"🔥 处理账户 {account} 失败: {str(e)}"
+                self.log(error_msg)
+                self.log(f"📄 详细堆栈: {traceback.format_exc()}")
                 continue
 
     def log(self, message):

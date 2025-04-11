@@ -24,6 +24,11 @@ hiddenimports = [
     'win32con',
     'queue',  # 添加队列支持
     'traceback',  # 添加异常追踪
+    'fb_billing_operations',  # 确保包含业务逻辑模块
+    'requests',  # 确保包含requests库
+    'urllib3',   # requests的依赖
+    'requests.adapters',
+    'urllib3.util.retry',
 ]
 
 # 动态收集数据文件
