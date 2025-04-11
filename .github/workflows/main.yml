@@ -35,12 +35,15 @@ jobs:
           Get-ChildItem -Path .\dist -Recurse | Format-Table FullName
           # Windows系统生成exe
           if ($env:RUNNER_OS -eq "Windows") {
-            Rename-Item -Path ".\dist\FacebookAdManager.exe" -NewName "FacebookAdManager-${{ github.run_number }}.exe"
-            7z a FacebookAdManager-${{ github.run_number }}.zip .\dist\FacebookAdManager-${{ github.run_number }}.exe
-            if (-not (Test-Path .\dist\FacebookAdManager\FacebookAdManager.exe)) {
+            # 验证生成路径
+            $exePath = ".\dist\FacebookAdManager.exe"
+            if (-not (Test-Path $exePath)) {
               Write-Error "EXE文件未生成"
               exit 1
             }
+            # 重命名并压缩
+            Rename-Item -Path $exePath -NewName "FacebookAdManager-${{ github.run_number }}.exe"
+            7z a FacebookAdManager-${{ github.run_number }}.zip ".\dist\FacebookAdManager-${{ github.run_number }}.exe"
           }
           # Linux系统生成可执行文件
           elseif ($env:RUNNER_OS -eq "Linux") {
