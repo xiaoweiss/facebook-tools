@@ -19,6 +19,7 @@ hiddenimports = [
     'selenium.webdriver.chrome.options',
     'selenium.webdriver.common.action_chains',
     'adspower_detector',  # 新增自动检测模块
+    'tkinter.filedialog',  # 确保文件对话框支持
 ]
 
 # 动态收集数据文件

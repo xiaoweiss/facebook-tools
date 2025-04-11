@@ -26,8 +26,11 @@ class PathSelector(ctk.CTkFrame):
         self.browse_btn.grid(row=0, column=1, padx=5, pady=5)
     
     def _browse_path(self):
-        """打开目录选择对话框"""
-        path = filedialog.askdirectory(title="选择AdsPower安装目录")
+        """打开文件选择对话框"""
+        path = filedialog.askopenfilename(
+            title="选择AdsPower主程序",
+            filetypes=[("可执行文件", "ads.exe"), ("所有文件", "*.*")]
+        )
         if path:
             self.entry.delete(0, "end")
             self.entry.insert(0, path)

@@ -73,12 +73,12 @@ class BillingApp(ctk.CTk):
     def _create_widgets(self):
         # 主容器
         main_frame = ctk.CTkFrame(self, corner_radius=15)
-        main_frame.pack(pady=20, padx=20, fill="both", expand=True)
+        main_frame.pack(pady=5, padx=20, fill="both", expand=True)
 
         # 任务类型选择
         self.task_label = ctk.CTkLabel(main_frame, text="选择任务类型:", 
                                      font=("Microsoft YaHei", 12))
-        self.task_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.task_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
         
         self.task_combobox = ctk.CTkComboBox(main_frame,
                                             values=["余额监控", "创建广告"],
@@ -156,10 +156,16 @@ class BillingApp(ctk.CTk):
         self.log_label = ctk.CTkLabel(main_frame, text="执行日志:")
         self.log_label.grid(row=5, column=0, padx=10, sticky="w")
         
-        self.log_text = ctk.CTkTextbox(main_frame, width=700, height=200,
-                                     font=("Consolas", 10),
-                                     wrap="word")
-        self.log_text.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+        self.log_text = ctk.CTkTextbox(
+            main_frame,
+            width=700,
+            height=150,  # 减小初始高度
+            font=("Consolas", 10),
+            wrap="word",
+            scrollbar_button_color="#4B4B4B",
+            fg_color="#2B2B2B"  # 深色背景提高可读性
+        )
+        self.log_text.grid(row=6, column=0, columnspan=2, padx=10, pady=5, sticky="nsew")
 
         # 添加版本号显示
         version_label = ctk.CTkLabel(
@@ -168,6 +174,10 @@ class BillingApp(ctk.CTk):
             text_color="#666666"
         )
         version_label.grid(row=7, column=1, sticky="se")
+
+        # 调整主容器布局
+        main_frame.grid_rowconfigure(6, weight=1)  # 允许日志区域扩展
+        main_frame.grid_columnconfigure(1, weight=1)
 
     def toggle_execution(self):
         if self.running:
@@ -325,12 +335,12 @@ class BillingApp(ctk.CTk):
             messagebox.showerror("错误", "请先选择安装路径")
             return
         
-        if (Path(path) / "ads.exe").exists():
+        if Path(path).name.lower() == "ads.exe" and Path(path).exists():
             self.adspower_path = path
             AppConfig.adspower_path = path
             messagebox.showinfo("验证成功", "路径有效")
         else:
-            messagebox.showerror("无效路径", "未找到ads.exe主程序")
+            messagebox.showerror("无效路径", "请选择正确的ads.exe文件")
 
 if __name__ == "__main__":
     app = BillingApp()
