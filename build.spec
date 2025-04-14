@@ -8,6 +8,7 @@ block_cipher = None
 hiddenimports = [
     'selenium.webdriver.common.by',
     'selenium.webdriver.support.ui',
+    'selenium.webdriver.support.expected_conditions',
     'facebook_operations',
     'browser_utils',
     'websockets',

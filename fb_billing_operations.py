@@ -157,64 +157,39 @@ def get_business_accounts(driver):
 
 
 def process_business_accounts(driver, accounts):
-    """处理所有业务账户（优化导航版）"""
-    try:
-        # 获取所有账户链接（提前获取避免元素失效）
-        account_links = [a.get_attribute('href') for a in accounts]
-        
-        for index, link in enumerate(account_links, 1):
-            print(f"\n➡️ 正在处理第 {index} 个业务账户")
-            
-            # 直接导航代替点击元素
-            driver.get(link)
-            
-            # 等待页面核心元素加载
-            WebDriverWait(driver, 30).until(
-                EC.presence_of_element_located((By.XPATH, "//table[contains(@aria-label,'广告账户')]"))
-            )
-            
-            # 从URL解析参数（保持原有参数获取方式）
-            parsed_url = urlparse(link)
-            query_params = parse_qs(parsed_url.query)
-            business_id = query_params['business_id'][0]
-            global_scope_id = query_params['global_scope_id'][0]
-            print(f"📌 提取参数: business_id={business_id} global_scope_id={global_scope_id}")
-
-            # 保留原有广告账户处理流程
-            ad_accounts = parse_ad_accounts_table(driver, business_id, global_scope_id)
-            if not ad_accounts:
-                print(f"⚠️ 未获取到广告账户，跳过当前业务账户")
+    """处理业务账户"""
+    print("🔍 开始处理业务账户...")
+    for account in accounts:
+        try:
+            print(f"🔄 正在处理账户: {account['name']}")
+            # 点击账户行
+            if not click_business_account(driver, account['element']):
+                print("⏭️ 跳过处理该账户")
                 continue
-
-            # 执行原有详细处理流程
-            processed = process_qualified_accounts(driver, ad_accounts)
             
-            # 保持原有结果输出
-            print("\n🧾 单账户处理结果：")
-            for acc in processed:
-                print(f"账户ID: {acc['asset_id']}")
-                print(f"  状态: {acc['status']}")
-                print(f"  精确余额: {acc['exact_balance']}")
-                print(f"  总花费: {acc['total_spend']}")
-                print("-" * 40)
-
-    except Exception as e:
-        print(f"❌ 处理流程异常: {str(e)}")
-        raise
+            # 获取账单信息
+            billing_info = get_billing_info(driver)
+            print(f"📊 账单信息: {billing_info}")
+            
+            # 执行具体操作
+            if AppConfig.current_task == TaskType.CHECK_BALANCE:
+                print("📝 执行余额检查操作")
+                check_balance(driver, billing_info)
+            elif AppConfig.current_task == TaskType.CREATE_AD:
+                print("🛠️ 执行创建广告操作")
+                create_ad_campaign(driver)
+            
+            # 返回账户列表
+            driver.back()
+            print("✅ 账户处理完成")
+        except Exception as e:
+            print(f"❌ 处理失败: {str(e)}")
+            continue
 
 
 def process_business_account(driver, account):
     """处理单个业务账户，返回广告账户数据列表"""
     try:
-        # 获取第一个业务账户
-        # accounts = get_business_accounts(driver)
-        # if not accounts:
-        #     print("⚠️ 未找到有效业务账户")
-        #     return
-        #
-        # first_account = accounts[0]
-        # print(f"\n🔍 开始处理首个业务账户: {first_account['name']}")
-
         # 从href提取参数
         query = parse_qs(urlparse(account['href']).query)
         business_id = query.get('business_id', [''])[0]
@@ -413,10 +388,6 @@ def process_qualified_accounts(driver, accounts):
             total_spend = None
 
             try:
-                # elements = driver.find_elements(By.XPATH, "//span[contains(@class,'_3dfi')]")
-                # rightmost_element = max(elements, key=lambda e: e.location['x'])
-                # total_spend = float(rightmost_element.text.replace('$', '').replace(',', ''))
-                # print("✅ 使用坐标定位方案")
                 spend_element = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located(
                         (By.XPATH, "(//span[contains(@class,'_3dfi') and contains(@class,'_3dfj')])[last()]"))
@@ -563,5 +534,64 @@ def get_active_session(account):
         print(f"   错误类型: {type(e).__name__}")
         print(f"   错误信息: {str(e)}")
         raise Exception(f"获取会话失败: {str(e)}")
+
+
+def create_ad_campaign(driver):
+    """创建广告活动"""
+    print("🚀 开始创建广告活动")
+    try:
+        # 点击创建按钮
+        create_btn = WebDriverWait(driver, 15).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'创建')]"))
+        )
+        create_btn.click()
+        print("🖱️ 已点击创建按钮")
+        
+        # 选择营销目标
+        select_objective("转化量")
+        print("✅ 已选择营销目标")
+        
+        # 填写广告内容
+        fill_ad_content({
+            "标题": "春季大促",
+            "文案": "限时优惠最高5折起",
+            "图片": "promo.jpg"
+        })
+        print("📝 已填写广告内容")
+        
+        # 提交审核
+        submit_btn = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'提交审核')]"))
+        )
+        submit_btn.click()
+        print("📤 已提交审核")
+        
+    except Exception as e:
+        print(f"❌ 创建广告失败: {str(e)}")
+        raise
+
+
+def check_balance(driver, billing_info):
+    """检查账户余额"""
+    print("💰 正在检查账户余额")
+    try:
+        # 导航到账单页面
+        balance_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'balance')]"))
+        )
+        balance = balance_element.text
+        print(f"当前余额: {balance}")
+        
+        # 生成报告
+        generate_report({
+            "账户": billing_info['name'],
+            "余额": balance,
+            "更新时间": datetime.now().strftime("%Y-%m-%d %H:%M")
+        })
+        print("📄 已生成报告")
+        
+    except Exception as e:
+        print(f"❌ 余额检查失败: {str(e)}")
+        raise
 
 
