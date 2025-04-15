@@ -1,3 +1,8 @@
+# 固定关键依赖版本
+"pip==23.3.2"
+"setuptools==68.2.2"
+"wheel==0.40.0"
+
 # Windows核心依赖
 selenium==4.15.2
 requests==2.31.0

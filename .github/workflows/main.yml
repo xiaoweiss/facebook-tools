@@ -24,13 +24,13 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          # 安装Windows构建工具
-          python -m pip install --upgrade pip==23.3.2
-          pip install wheel setuptools
+          # 强制安装指定版本pip
+          python -m pip install --disable-pip-version-check --no-input "pip==23.3.2"
+          python -m pip install "wheel==0.40.0" "setuptools==68.2.2"
 
       - name: Install project dependencies
         run: |
-          pip install -r requirements.txt --no-cache-dir
+          python -m pip install -r requirements.txt --no-cache-dir --use-deprecated=legacy-resolver
 
       - name: Generate icon file
         run: |
