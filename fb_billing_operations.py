@@ -6,6 +6,8 @@ from selenium.common.exceptions import WebDriverException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+
+from curl_helper import APIClient
 from facebook_operations import click_create_button, select_sales_objective, open_new_tab
 from browser_utils import get_active_session
 from task_utils import TaskType, get_billing_info
@@ -15,9 +17,6 @@ from datetime import datetime
 import re
 from urllib.parse import parse_qs, urlparse
 import time
-from core import TaskType, AppConfig
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
 USER_ID = "kw4udka"
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
@@ -25,44 +24,16 @@ TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=14
 PROCESSED = set()
 
 
-def _validate_port(port_str):
-    """验证端口号有效性"""
-    try:
-        port = int(port_str)
-        if 1 <= port <= 65535:
-            return port
-        return None
-    except ValueError:
-        return None
-
-
 def connect_browser(api_data):
     """增强浏览器连接稳定性"""
     chrome_options = Options()
 
-    # 正确使用API返回的地址
-    raw_address = api_data["ws"]["selenium"]
-    
-    # 提取有效端口号
-    if ":" in raw_address:
-        debug_address = raw_address
-    else:
-        # 处理纯数字端口的情况
-        try:
-            port = int(raw_address)
-            if 1 <= port <= 65535:
-                debug_address = f"127.0.0.1:{port}"
-            else:
-                raise ValueError("端口号超出范围")
-        except ValueError as e:
-            raise Exception(f"无效的调试地址格式: {raw_address} | 错误: {str(e)}")
-
-    # 验证地址格式
-    if not re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$", debug_address):
-        raise Exception(f"非法调试地址格式: {debug_address}")
+    # 配置调试地址（格式：127.0.0.1:端口）
+    debug_address = api_data["ws"]["selenium"]
+    if ":" not in debug_address:
+        debug_address = f"127.0.0.1:{debug_address}"
 
     chrome_options.add_experimental_option("debuggerAddress", debug_address)
-    print(f"🔌 使用调试地址: {debug_address}")
 
     # 更新反检测配置（移除非必要参数）
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
@@ -101,6 +72,7 @@ def should_process(account_info):
             "额度" in account_info.get("付款方式", "") and
             account_info.get("asset_id") not in PROCESSED
     )
+
 
 def get_business_accounts(driver):
     """获取所有业务账户的链接和信息"""
@@ -156,40 +128,90 @@ def get_business_accounts(driver):
         return []
 
 
-def process_business_accounts(driver, accounts):
-    """处理业务账户"""
-    print("🔍 开始处理业务账户...")
-    for account in accounts:
-        try:
-            print(f"🔄 正在处理账户: {account['name']}")
-            # 点击账户行
-            if not click_business_account(driver, account['element']):
-                print("⏭️ 跳过处理该账户")
+def process_business_accounts(driver, accounts, username):
+    """处理所有业务账户（优化导航版）"""
+    try:
+        # 获取所有账户链接（提前获取避免元素失效）
+        account_links = [a.get_attribute('href') for a in accounts]
+
+        for index, link in enumerate(account_links, 1):
+            print(f"\n➡️ 正在处理第 {index} 个业务账户")
+
+            # 直接导航代替点击元素
+            driver.get(link)
+
+            # 等待页面核心元素加载
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//table[contains(@aria-label,'广告账户')]"))
+            )
+
+            # 从URL解析参数（保持原有参数获取方式）
+            parsed_url = urlparse(link)
+            query_params = parse_qs(parsed_url.query)
+            business_id = query_params['business_id'][0]
+            global_scope_id = query_params['global_scope_id'][0]
+            print(f"📌 提取参数: business_id={business_id} global_scope_id={global_scope_id}")
+
+            # 保留原有广告账户处理流程
+            ad_accounts = parse_ad_accounts_table(driver, business_id, global_scope_id)
+            if not ad_accounts:
+                print(f"⚠️ 未获取到广告账户，跳过当前业务账户")
                 continue
-            
-            # 获取账单信息
-            billing_info = get_billing_info(driver)
-            print(f"📊 账单信息: {billing_info}")
-            
-            # 执行具体操作
-            if AppConfig.current_task == TaskType.CHECK_BALANCE:
-                print("📝 执行余额检查操作")
-                check_balance(driver, billing_info)
-            elif AppConfig.current_task == TaskType.CREATE_AD:
-                print("🛠️ 执行创建广告操作")
-                create_ad_campaign(driver)
-            
-            # 返回账户列表
-            driver.back()
-            print("✅ 账户处理完成")
-        except Exception as e:
-            print(f"❌ 处理失败: {str(e)}")
-            continue
+
+            # 执行原有详细处理流程
+            processed = process_qualified_accounts(driver, ad_accounts)
+
+            # 保持原有结果输出
+            print("\n🧾 单账户处理结果：")
+            report_data = []
+            for acc in processed:
+                print(f"账户ID: {acc['asset_id']}")
+                print(f"账户信息: {acc['account_info']}")
+                print(f"  状态: {acc['status']}")
+                print(f"  精确余额: {acc['exact_balance']}")
+                print(f"  总花费: {acc['total_spend']}")
+                print("-" * 40)
+
+                # 构建单个上报条目
+                report_data.append({
+                    "account_info": acc["account_info"],
+                    "asset_id": acc["asset_id"],
+                    "status": acc["status"],
+                    "exact_balance": acc["exact_balance"],
+                    "total_spend": acc["total_spend"]
+                })
+            # 实例化 API 客户端
+            client = APIClient()
+
+            # 调用上报接口
+            response = client.report_spend({
+                "report": report_data,
+                "username": username
+            })
+
+            # 输出上报结果
+            if response:
+                print("📡 消费数据上报成功:", response)
+            else:
+                print("❌ 消费数据上报失败")
+
+    except Exception as e:
+        print(f"❌ 处理流程异常: {str(e)}")
+        raise
 
 
 def process_business_account(driver, account):
     """处理单个业务账户，返回广告账户数据列表"""
     try:
+        # 获取第一个业务账户
+        # accounts = get_business_accounts(driver)
+        # if not accounts:
+        #     print("⚠️ 未找到有效业务账户")
+        #     return
+        #
+        # first_account = accounts[0]
+        # print(f"\n🔍 开始处理首个业务账户: {first_account['name']}")
+
         # 从href提取参数
         query = parse_qs(urlparse(account['href']).query)
         business_id = query.get('business_id', [''])[0]
@@ -240,6 +262,7 @@ def parse_ad_accounts_table(driver, business_id, global_scope_id):
                 asset_id = asset_id_match.group(1)
 
                 account_info = {
+                    'account_info': number_cell.text,
                     'business_id': business_id,
                     'global_scope_id': global_scope_id,
                     'asset_id': asset_id,
@@ -294,6 +317,7 @@ def process_qualified_accounts(driver, accounts):
 
             # 提取精确余额
             amount_text = balance_element.text.split('$')[-1].strip()
+
             exact_balance = float(amount_text)
             acc['exact_balance'] = exact_balance
             print(f"✅ 精确余额: ${exact_balance:.2f}")
@@ -388,19 +412,15 @@ def process_qualified_accounts(driver, accounts):
             total_spend = None
 
             try:
-                spend_element = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located(
-                        (By.XPATH, "(//span[contains(@class,'_3dfi') and contains(@class,'_3dfj')])[last()]"))
-                )
-
-                # 增强文本处理
-                raw_text = spend_element.text.replace('$', '').replace(',', '')
-                clean_text = re.search(r'[\d,]+\.?\d*', raw_text).group()
-                total_spend = float(clean_text)
-                print("✅ 使用末位定位方案")
+                elements = driver.find_elements(By.XPATH, "//span[contains(@class,'_3dfi')]")
+                if elements:
+                    last_element = elements[-1]
+                    total_spend = float(last_element.text.replace('$', '').replace(',', ''))
+                    print("✅ 使用列表最后一个元素定位方案")
+                else:
+                    print("⚠️ 没有找到符合条件的元素")
             except Exception as e:
-                print(f"⚠️ 坐标定位失败: {str(e)[:50]}")
-
+                print(f"❌ 定位失败: {str(e)[:50]}")
 
             acc['total_spend'] = total_spend
             print(f"✅ 总花费: ${total_spend:.2f}")
@@ -456,6 +476,7 @@ def is_window_valid(driver):
     except WebDriverException:
         return False
 
+
 def process_ad(driver, biz_id):
     """广告账户核心处理逻辑"""
     try:
@@ -487,111 +508,5 @@ def process_ad(driver, biz_id):
     except Exception as e:
         print(f"处理异常: {str(e)}")
         return False
-
-
-def process_account(account, task_type):
-    """独立账户处理函数"""
-    # 原execute_task逻辑移入此处
-
-
-def get_active_session(account):
-    """通过API获取活跃会话数据"""
-    api_url = f"http://127.0.0.1:50325/api/v1/browser/active?user_id={account}"
-    try:
-        response = requests.get(api_url, timeout=10)
-        print(f"🔍 API请求状态码: {response.status_code}")
-        print(f"📄 原始响应内容: {response.text}")  # 打印原始响应
-        
-        response.raise_for_status()
-        data = response.json()
-        
-        # 详细打印API响应结构
-        print("✅ API响应数据结构:")
-        print(f"   - 状态码: {data.get('code', '无')}")
-        print(f"   - 消息: {data.get('msg', '无')}")
-        print(f"   - 数据: {data.get('data', '无')}")
-        
-        # 增强响应验证
-        required_keys = ["data.ws.selenium", "data.webdriver"]
-        for key in required_keys:
-            if not data.get(key.split('.')[0], {}).get(key.split('.')[1]):
-                raise KeyError(f"缺少必要字段: {key}")
-        
-        # 验证Selenium地址格式
-        selenium_address = data["data"]["ws"]["selenium"]
-        if not re.match(r"^\d+\.\d+\.\d+\.\d+:\d+$", selenium_address):
-            raise ValueError(f"非法Selenium地址格式: {selenium_address}")
-            
-        print(f"🔗 解析后的Selenium地址: {selenium_address}")
-        
-        return {
-            "ws": {"selenium": selenium_address},
-            "webdriver": data["data"]["webdriver"]
-        }
-    except Exception as e:
-        print(f"‼️ API请求失败详情:")
-        print(f"   请求URL: {api_url}")
-        print(f"   错误类型: {type(e).__name__}")
-        print(f"   错误信息: {str(e)}")
-        raise Exception(f"获取会话失败: {str(e)}")
-
-
-def create_ad_campaign(driver):
-    """创建广告活动"""
-    print("🚀 开始创建广告活动")
-    try:
-        # 点击创建按钮
-        create_btn = WebDriverWait(driver, 15).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'创建')]"))
-        )
-        create_btn.click()
-        print("🖱️ 已点击创建按钮")
-        
-        # 选择营销目标
-        select_objective("转化量")
-        print("✅ 已选择营销目标")
-        
-        # 填写广告内容
-        fill_ad_content({
-            "标题": "春季大促",
-            "文案": "限时优惠最高5折起",
-            "图片": "promo.jpg"
-        })
-        print("📝 已填写广告内容")
-        
-        # 提交审核
-        submit_btn = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'提交审核')]"))
-        )
-        submit_btn.click()
-        print("📤 已提交审核")
-        
-    except Exception as e:
-        print(f"❌ 创建广告失败: {str(e)}")
-        raise
-
-
-def check_balance(driver, billing_info):
-    """检查账户余额"""
-    print("💰 正在检查账户余额")
-    try:
-        # 导航到账单页面
-        balance_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'balance')]"))
-        )
-        balance = balance_element.text
-        print(f"当前余额: {balance}")
-        
-        # 生成报告
-        generate_report({
-            "账户": billing_info['name'],
-            "余额": balance,
-            "更新时间": datetime.now().strftime("%Y-%m-%d %H:%M")
-        })
-        print("📄 已生成报告")
-        
-    except Exception as e:
-        print(f"❌ 余额检查失败: {str(e)}")
-        raise
 
 

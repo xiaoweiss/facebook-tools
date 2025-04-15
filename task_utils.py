@@ -1,10 +1,11 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from enum import Enum
 
-class TaskType:
-    CREATE_AD = 1
-    CHECK_BALANCE = 2
+class TaskType(Enum):
+    CHECK_BALANCE = 1
+    CREATE_AD = 2
 
 def get_billing_info(driver):
     """获取账户余额信息"""

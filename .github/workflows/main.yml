@@ -1,66 +1,37 @@
-name: 广告管理工具自动化构建
+name: GUI Build Pipeline
 
 on:
   push:
-    tags: ["v*"]
-  workflow_dispatch:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
-    runs-on: windows-latest
-    timeout-minutes: 30
-
+    runs-on: ubuntu-latest
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: 设置Python环境
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-          architecture: x64
 
-      - name: 安装依赖
+      - name: Install dependencies
         run: |
-          choco install 7zip -y
-          pip install psutil pywin32
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install pyinstaller tkinter selenium requests
 
-      - name: 执行打包
+      - name: Build GUI executable
         run: |
-          pyinstaller build.spec --clean
-          if (-not (Test-Path .\dist\)) {
-            Write-Error "构建失败，dist目录不存在"
-            exit 1
-          }
-          Get-ChildItem -Path .\dist -Recurse | Format-Table FullName
-          # Windows系统生成exe
-          if ($env:RUNNER_OS -eq "Windows") {
-            # 验证生成路径
-            $exePath = ".\dist\FacebookAdManager.exe"
-            if (-not (Test-Path $exePath)) {
-              Write-Error "EXE文件未生成"
-              exit 1
-            }
-            # 重命名并压缩
-            Rename-Item -Path $exePath -NewName "FacebookAdManager-${{ github.run_number }}.exe"
-            7z a FacebookAdManager-${{ github.run_number }}.zip ".\dist\FacebookAdManager-${{ github.run_number }}.exe"
-          }
-          # Linux系统生成可执行文件
-          elseif ($env:RUNNER_OS -eq "Linux") {
-            mv ./dist/FacebookAdManager ./dist/FacebookAdManager-${{ github.run_number }}
-            tar -czvf FacebookAdManager-${{ github.run_number }}.tar.gz -C ./dist FacebookAdManager-${{ github.run_number }}
-          }
-          # macOS系统生成可执行文件
-          else {
-            mv ./dist/FacebookAdManager ./dist/FacebookAdManager-${{ github.run_number }}
-            zip -r FacebookAdManager-${{ github.run_number }}.zip ./dist/FacebookAdManager-${{ github.run_number }}
-          }
+          pyinstaller --onefile --noconsole --name FbAutoTool \
+            --add-data="main.gui:." \
+            --hidden-import=task_utils \
+            --hidden-import=fb_billing_operations \
+            main.py
 
-      - name: 上传成品
-        uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: FacebookAdManager-${{ runner.os }}
-          path: |
-            FacebookAdManager-*
-          retention-days: 7
+          name: fb-auto-tool
+          path: dist/

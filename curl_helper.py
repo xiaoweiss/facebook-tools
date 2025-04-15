@@ -29,7 +29,7 @@ class APIClient:
         base = self.config.get('base_url', '').rstrip('/')
         return f"{base}/{endpoint.lstrip('/')}"
 
-    def get_auth_token(self, username, password):
+    def get_auth_token(self, username):
         """获取认证令牌"""
         endpoint = self.config.get('endpoints', {}).get('get_auth', 'getAuth')
         try:
@@ -37,9 +37,6 @@ class APIClient:
                 url=self._build_url(endpoint),
                 params={
                     "username": username,
-                    "password": password,
-                    "keep": 1,
-                    "source": 3
                 },
                 timeout=self.config.get('timeout', 30)
             )

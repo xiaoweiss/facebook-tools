@@ -1,0 +1,132 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+from threading import Thread
+from main import main_operation, TaskType, APIClient
+
+class BillingGUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Facebook自动化工具")
+        self.geometry("800x600")
+        self._init_components()
+        self.auth_valid = False
+
+    def _init_components(self):
+        main_frame = ttk.Frame(self, padding=20)
+        main_frame.pack(expand=True, fill='both')
+
+        # 授权区
+        auth_frame = ttk.LabelFrame(main_frame, text="系统授权")
+        auth_frame.pack(fill='x', pady=10)
+        
+        ttk.Label(auth_frame, text="授权账号:").grid(row=0, column=0, padx=5)
+        self.auth_entry = ttk.Entry(auth_frame, width=30)
+        self.auth_entry.grid(row=0, column=1, padx=5)
+        
+        self.auth_btn = ttk.Button(auth_frame, text="验证授权", command=self._start_auth)
+        self.auth_btn.grid(row=0, column=2, padx=10)
+        self.auth_status = ttk.Label(auth_frame, text="❌ 未授权", foreground='red')
+        self.auth_status.grid(row=0, column=3, padx=5)
+
+        # 任务区
+        task_frame = ttk.LabelFrame(main_frame, text="任务选择")
+        task_frame.pack(fill='x', pady=10)
+        
+        self.task_var = tk.IntVar(value=1)
+        ttk.Radiobutton(task_frame, text="查询余额", variable=self.task_var,
+                       value=TaskType.CHECK_BALANCE.value).pack(side=tk.LEFT, padx=20)
+        ttk.Radiobutton(task_frame, text="创建广告", variable=self.task_var,
+                       value=TaskType.CREATE_AD.value).pack(side=tk.LEFT, padx=20)
+
+        # 操作区
+        btn_frame = ttk.Frame(main_frame)
+        btn_frame.pack(pady=15)
+        
+        self.start_btn = ttk.Button(btn_frame, text="开始执行", state='disabled', command=self._start_task)
+        self.start_btn.pack(side=tk.LEFT, padx=10)
+        ttk.Button(btn_frame, text="退出", command=self.destroy).pack(side=tk.RIGHT, padx=10)
+
+        # 日志区
+        log_frame = ttk.LabelFrame(main_frame, text="执行日志")
+        log_frame.pack(expand=True, fill='both')
+        
+        self.log_area = tk.Text(log_frame, wrap=tk.WORD, state='disabled')
+        scroll = ttk.Scrollbar(log_frame, command=self.log_area.yview)
+        self.log_area.configure(yscrollcommand=scroll.set)
+        
+        scroll.pack(side=tk.RIGHT, fill='y')
+        self.log_area.pack(expand=True, fill='both')
+
+    def _start_auth(self):
+        """启动授权流程"""
+        username = self.auth_entry.get().strip()
+        if not username:
+            self._show_error("请输入授权账号")
+            return
+        
+        self.auth_btn.config(state='disabled', text="验证中...")
+        Thread(target=self._perform_auth, args=(username,), daemon=True).start()
+
+    def _perform_auth(self, username):
+        """完全复用main.py的鉴权流程"""
+        try:
+            client = APIClient()
+            while True:
+                response = client.get_auth_token(username)
+                
+                if response and response.get('code') == 1:
+                    self.after(0, self._update_auth_status, True, "✅ 授权成功")
+                    self.after(0, self.start_btn.config, {'state': 'normal'})
+                    self._log(f"用户 {username} 授权通过")
+                    break
+                else:
+                    self.after(0, self._show_error, "授权失败，请检查账号")
+                    self.after(0, self.auth_entry.delete, 0, tk.END)
+                    break
+        except Exception as e:
+            self._log(f"授权异常: {str(e)}", error=True)
+        finally:
+            self.after(0, self.auth_btn.config, {'state': 'normal', 'text': '验证授权'})
+
+    def _start_task(self):
+        """启动任务执行"""
+        task_type = self.task_var.get()
+        username = self.auth_entry.get().strip()
+        
+        self.start_btn.config(state='disabled', text="执行中...")
+        Thread(target=self._execute_task, args=(username, task_type), daemon=True).start()
+
+    def _execute_task(self, username, task_type):
+        """执行主任务（保持原有逻辑）"""
+        try:
+            self._log(f"🚀 开始执行任务 | 用户: {username} | 类型: {TaskType(task_type).name}")
+            main_operation(TaskType(task_type), username)
+            self._log("✅ 任务执行完成")
+        except Exception as e:
+            self._log(f"❌ 执行失败: {str(e)}", error=True)
+        finally:
+            self.after(0, self.start_btn.config, {'state': 'normal', 'text': '开始执行'})
+
+    def _update_auth_status(self, success, message):
+        """更新授权状态"""
+        color = 'green' if success else 'red'
+        self.auth_status.config(text=message, foreground=color)
+        self.auth_valid = success
+
+    def _log(self, message, error=False):
+        """记录日志"""
+        self.log_area.config(state='normal')
+        self.log_area.insert(tk.END, message + "\n")
+        if error:
+            self.log_area.tag_add('error', 'end-1c linestart', 'end-1c lineend')
+            self.log_area.tag_config('error', foreground='red')
+        self.log_area.see(tk.END)
+        self.log_area.config(state='disabled')
+
+    def _show_error(self, message):
+        """显示错误提示"""
+        messagebox.showerror("错误", message)
+
+if __name__ == "__main__":
+    app = BillingGUI()
+    app.mainloop() 
