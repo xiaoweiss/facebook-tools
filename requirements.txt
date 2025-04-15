@@ -1,10 +1,6 @@
-customtkinter==5.2.2
-pyinstaller==6.2.0
-selenium==4.15.2
-webdriver-manager==4.0.1
-requests==2.31.0
-python-dateutil==2.8.2
-pywin32==306
+selenium>=4.0.0
+requests>=2.25.1
+pyinstaller==6.12.0
 pyinstaller-hooks-contrib==2023.6
 websockets==12.0
 schedule==1.2.0
