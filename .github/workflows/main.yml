@@ -11,37 +11,50 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.10"]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30 # 增加超时时间
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 解决浅克隆问题
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
           cache: "pip"
+          cache-dependency-path: "requirements.txt"
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-tk
+          sudo apt-get install -y python3-tk xvfb
 
       - name: Install Python dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip==23.3.2  # 锁定pip版本
+          pip install -r requirements.txt --no-cache-dir
 
       - name: Build executable
+        env:
+          PYTHONUNBUFFERED: 1 # 确保实时输出日志
         run: |
-          pyinstaller --onefile --noconsole --name FbAutoTool-${{ runner.os }} \
-            --add-data="main.gui:." \
-            --hidden-import=task_utils \
-            --hidden-import=fb_billing_operations \
+          pyinstaller --noconfirm --clean --onefile \
+            --name FbAutoTool-${{ runner.os }} \
+            --add-data "main.gui:." \
+            --hidden-import task_utils \
+            --hidden-import fb_billing_operations \
+            --icon app.ico \
             main.gui
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: fb-auto-tool-${{ runner.os }}
-          path: dist/
+          path: |
+            dist/
+            app.ico
+          retention-days: 7
