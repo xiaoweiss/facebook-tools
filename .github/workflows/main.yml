@@ -1,60 +1,72 @@
-name: Cross-Platform Build
+name: Windows Build
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10"]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30 # 增加超时时间
+  windows-build:
+    runs-on: windows-latest
+    timeout-minutes: 45 # 延长超时时间
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 解决浅克隆问题
+          fetch-depth: 0
 
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
-          cache-dependency-path: "requirements.txt"
+          python-version: "3.10.11" # 指定精确版本
+          architecture: "x64" # 明确指定架构
 
       - name: Install system dependencies
-        if: runner.os == 'Linux'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-tk xvfb
+          # 安装Windows构建工具
+          python -m pip install --upgrade pip==23.3.2
+          pip install wheel setuptools
 
-      - name: Install Python dependencies
+      - name: Install project dependencies
         run: |
-          python -m pip install --upgrade pip==23.3.2  # 锁定pip版本
           pip install -r requirements.txt --no-cache-dir
 
-      - name: Build executable
-        env:
-          PYTHONUNBUFFERED: 1 # 确保实时输出日志
+      - name: Generate icon file
         run: |
-          pyinstaller --noconfirm --clean --onefile \
-            --name FbAutoTool-${{ runner.os }} \
-            --add-data "main.gui:." \
-            --hidden-import task_utils \
-            --hidden-import fb_billing_operations \
-            --icon app.ico \
+          # 如果不存在图标则生成临时图标
+          if not exist app.ico (
+            echo 生成临时图标...
+            python -c "from PIL import Image, ImageDraw; img = Image.new('ICO', (256,256)); img.save('app.ico')"
+          )
+
+      - name: Build with PyInstaller
+        env:
+          PYTHONUTF8: 1 # 解决中文路径问题
+        run: |
+          pyinstaller --noconfirm --clean --onefile ^
+            --name FbAutoTool-Windows ^
+            --add-data "main.gui;." ^
+            --hidden-import task_utils ^
+            --hidden-import fb_billing_operations ^
+            --icon app.ico ^
+            --runtime-tmpdir . ^
             main.gui
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: fb-auto-tool-${{ runner.os }}
+          name: fb-auto-tool-windows
           path: |
             dist/
             app.ico
           retention-days: 7
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build/
+            dist/
