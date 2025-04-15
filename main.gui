@@ -2,14 +2,47 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from threading import Thread
 from main import main_operation, TaskType, APIClient
+import sys
+import platform
 
 class BillingGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Facebook自动化工具")
         self.geometry("800x600")
+        self._configure_platform()
         self._init_components()
         self.auth_valid = False
+
+    def _configure_platform(self):
+        """平台兼容性配置"""
+        if platform.system() == 'Windows':
+            self._windows_config()
+        elif platform.system() == 'Darwin':
+            self._macos_config()
+
+    def _windows_config(self):
+        """Windows专用配置"""
+        # 高DPI适配
+        if sys.getwindowsversion().build >= 14393:
+            from ctypes import windll
+            windll.shcore.SetProcessDpiAwareness(1)
+        
+        # 设置窗口图标
+        try:
+            self.iconbitmap('app.ico')
+        except Exception as e:
+            print(f"图标加载失败: {str(e)}")
+        
+        # 使用系统主题
+        self.style = ttk.Style()
+        self.style.theme_use('vista')
+
+    def _macos_config(self):
+        """macOS专用配置"""
+        # 隐藏多余菜单项
+        self.tk.call('tk', 'scaling', 2.0)
+        self.tk.call('namespace', 'import', 'ttk::theme::aqua')
 
     def _init_components(self):
         main_frame = ttk.Frame(self, padding=20)

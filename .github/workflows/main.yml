@@ -1,4 +1,4 @@
-name: GUI Build Pipeline
+name: Cross-Platform Build
 
 on:
   push:
@@ -8,7 +8,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
@@ -19,6 +22,7 @@ jobs:
           cache: "pip"
 
       - name: Install system dependencies
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-tk
@@ -26,11 +30,11 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller==6.12.0 selenium requests
+          pip install -r requirements.txt
 
-      - name: Build GUI executable
+      - name: Build executable
         run: |
-          pyinstaller --onefile --noconsole --name FbAutoTool \
+          pyinstaller --onefile --noconsole --name FbAutoTool-${{ runner.os }} \
             --add-data="main.gui:." \
             --hidden-import=task_utils \
             --hidden-import=fb_billing_operations \
@@ -39,5 +43,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: fb-auto-tool
+          name: fb-auto-tool-${{ runner.os }}
           path: dist/

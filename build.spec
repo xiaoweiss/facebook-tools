@@ -39,12 +39,17 @@ datas, binaries, hiddenimports = collect_all('fb_billing_operations')
 # 确保包含数据文件
 datas.append(('curl_config.json', '.'))  # 配置文件
 
+added_files = [
+    ('main.gui', '.'),
+    ('app.ico', '.') if sys.platform == 'win32' else ()
+]
+
 a = Analysis(
-    ['main_gui.py', 'components/path_selector.py', 'fb_billing_operations.py', 'core/__init__.py'],
+    ['main.gui'],
     pathex=[],
-    binaries=binaries,
-    datas=datas,
-    hiddenimports=hiddenimports,
+    binaries=[],
+    datas=added_files,
+    hiddenimports=['task_utils', 'fb_billing_operations'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -62,20 +67,20 @@ exe = EXE(
     a.binaries,
     a.zipfiles,
     a.datas,
-    [],
-    name='FacebookAdManager',
+    name='FbAutoTool',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,   # 正式发布时关闭
-    icon='app_icon.ico',  # 准备一个ICO文件
+    console=False,
     disable_windowed_traceback=False,
+    argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='app.ico' if sys.platform == 'win32' else None,
 )
 
 # 在Analysis后添加打包模式配置
