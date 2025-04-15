@@ -10,10 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -28,10 +28,10 @@ jobs:
             --add-data="main.gui:." \
             --hidden-import=task_utils \
             --hidden-import=fb_billing_operations \
-            main.py
+            main.gui
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: fb-auto-tool
           path: dist/
