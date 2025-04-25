@@ -30,10 +30,8 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          # 转换文件编码为UTF-8
-          $content = Get-Content -Path requirements.txt -Raw
-          $utf8 = [System.Text.Encoding]::UTF8.GetBytes($content)
-          Set-Content -Path requirements.txt -Value $utf8 -Encoding UTF8 -Force
+          # 使用Python进行编码转换
+          python -c "open('requirements.txt', 'w', encoding='utf-8').write(open('requirements.txt', 'r', encoding='utf-8', errors='ignore').read())"
 
           python -m pip install -r requirements.txt --no-cache-dir --use-deprecated=legacy-resolver --no-warn-script-location
         env:
