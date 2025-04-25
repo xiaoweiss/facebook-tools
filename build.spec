@@ -31,6 +31,10 @@ hiddenimports = [
     'requests.adapters',
     'urllib3.util.retry',
     're',  # 正则表达式支持
+    'apscheduler.schedulers',
+    'apscheduler.jobstores',
+    'apscheduler.executors',
+    'apscheduler.events'
 ]
 
 # 动态收集数据文件
@@ -38,6 +42,9 @@ datas, binaries, hiddenimports = collect_all('fb_billing_operations')
 
 # 确保包含数据文件
 datas.append(('curl_config.json', '.'))  # 配置文件
+
+# 包含时区数据
+datas += [('C:/Python310/Lib/site-packages/pytz/zoneinfo', 'pytz/zoneinfo')]
 
 added_files = [
     ('main.gui', '.'),

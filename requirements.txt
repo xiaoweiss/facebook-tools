@@ -18,4 +18,8 @@ Pillow==10.2.0  # 图标生成依赖
 pyinstaller-hooks-contrib==2023.6
 websockets==12.0
 schedule==1.2.0
-python-crontab==3.0.0 
+python-crontab==3.0.0
+apscheduler==3.10.4  # 新增定时任务依赖
+
+# 新增时区支持
+tzlocal==5.2 

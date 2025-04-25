@@ -4,6 +4,7 @@ from threading import Thread
 from main import main_operation, TaskType, APIClient
 import sys
 import platform
+import time
 
 class BillingGUI(tk.Tk):
     def __init__(self):
@@ -71,6 +72,26 @@ class BillingGUI(tk.Tk):
         ttk.Radiobutton(task_frame, text="创建广告", variable=self.task_var,
                        value=TaskType.CREATE_AD.value).pack(side=tk.LEFT, padx=20)
 
+        # 新增定时任务区
+        schedule_frame = ttk.LabelFrame(main_frame, text="定时设置")
+        schedule_frame.pack(fill='x', pady=10)
+        
+        ttk.Label(schedule_frame, text="执行频率:").grid(row=0, column=0)
+        self.schedule_mode = ttk.Combobox(schedule_frame, values=["单次", "每日", "每周"], state="readonly")
+        self.schedule_mode.grid(row=0, column=1)
+        self.schedule_mode.current(0)
+        
+        ttk.Label(schedule_frame, text="间隔小时:").grid(row=0, column=2)
+        self.interval = ttk.Spinbox(schedule_frame, from_=1, to=24, width=5)
+        self.interval.grid(row=0, column=3)
+        
+        self.weekdays_var = tk.StringVar()
+        weekdays_frame = ttk.Frame(schedule_frame)
+        weekdays_frame.grid(row=1, column=0, columnspan=4, pady=5)
+        for i, day in enumerate(["周一","周二","周三","周四","周五","周六","周日"]):
+            cb = ttk.Checkbutton(weekdays_frame, text=day, variable=self.weekdays_var)
+            cb.grid(row=0, column=i, padx=2)
+
         # 操作区
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(pady=15)
@@ -122,12 +143,33 @@ class BillingGUI(tk.Tk):
             self.after(0, self.auth_btn.config, {'state': 'normal', 'text': '验证授权'})
 
     def _start_task(self):
-        """启动任务执行"""
-        task_type = self.task_var.get()
-        username = self.auth_entry.get().strip()
+        """解析定时参数"""
+        schedule_config = {
+            'mode': self.schedule_mode.get(),
+            'interval': int(self.interval.get()),
+            'weekdays': self.weekdays_var.get().split()
+        }
+        Thread(target=self._schedule_runner, args=(schedule_config,)).start()
+
+    def _schedule_runner(self, config):
+        """定时任务执行器"""
+        from apscheduler.schedulers.background import BackgroundScheduler
+        scheduler = BackgroundScheduler()
         
-        self.start_btn.config(state='disabled', text="执行中...")
-        Thread(target=self._execute_task, args=(username, task_type), daemon=True).start()
+        if config['mode'] == '每日':
+            scheduler.add_job(self._execute_task, 'interval', hours=config['interval'])
+        elif config['mode'] == '每周':
+            scheduler.add_job(self._execute_task, 'cron', day_of_week=','.join(config['weekdays']))
+        else:
+            self._execute_task()
+            return
+            
+        scheduler.start()
+        try:
+            while True: 
+                time.sleep(1)
+        except (KeyboardInterrupt, SystemExit):
+            scheduler.shutdown()
 
     def _execute_task(self, username, task_type):
         """执行主任务（保持原有逻辑）"""
