@@ -1,5 +1,5 @@
 # 固定关键依赖版本
-"pip==23.3.2"
+"pip==23.3.2; python_version < '3.12'"
 "setuptools==68.2.2"
 "wheel==0.40.0"
 
