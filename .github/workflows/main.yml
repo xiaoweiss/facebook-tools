@@ -39,11 +39,10 @@ jobs:
 
       - name: Generate icon file
         run: |
-          # 如果不存在图标则生成临时图标
-          if not exist app.ico (
-            echo 生成临时图标...
-            python -c "from PIL import Image, ImageDraw; img = Image.new('ICO', (256,256)); img.save('app.ico')"
-          )
+          if (-not (Test-Path app.ico)) {
+              Write-Output "生成临时图标..."
+              python -c "from PIL import Image, ImageDraw; img = Image.new('ICO', (256,256)); img.save('app.ico')"
+          }
 
       - name: Build with PyInstaller
         env:
