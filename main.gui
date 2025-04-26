@@ -92,6 +92,15 @@ class BillingGUI(tk.Tk):
             cb = ttk.Checkbutton(weekdays_frame, text=day, variable=self.weekdays_var)
             cb.grid(row=0, column=i, padx=2)
 
+        # 新增路径选择组件
+        path_frame = ttk.LabelFrame(main_frame, text="浏览器路径")
+        path_frame.pack(fill='x', pady=10)
+        
+        ttk.Button(path_frame, text="选择Adspower目录", 
+                 command=self._select_adspower_path).grid(row=0, column=0)
+        self.path_entry = ttk.Entry(path_frame, width=50)
+        self.path_entry.grid(row=0, column=1)
+
         # 操作区
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(pady=15)
@@ -201,6 +210,15 @@ class BillingGUI(tk.Tk):
     def _show_error(self, message):
         """显示错误提示"""
         messagebox.showerror("错误", message)
+
+    def _select_adspower_path(self):
+        """打开目录选择对话框"""
+        from tkinter import filedialog
+        path = filedialog.askdirectory(title="选择Adspower安装目录")
+        if path:
+            self.path_entry.delete(0, tk.END)
+            self.path_entry.insert(0, path)
+            self._save_config('adspower_path', path)
 
 if __name__ == "__main__":
     app = BillingGUI()

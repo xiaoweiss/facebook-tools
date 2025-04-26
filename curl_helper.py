@@ -25,9 +25,12 @@ class APIClient:
                 print(f"配置加载失败: {str(e)}")
 
     def _build_url(self, endpoint):
-        """构建完整URL"""
-        base = self.config.get('base_url', '').rstrip('/')
-        return f"{base}/{endpoint.lstrip('/')}"
+        """增强URL构建方法"""
+        base = self.config.get('base_url', '')
+        if not base.startswith(('http://', 'https://')):
+            # 自动添加默认协议
+            base = f'https://{base}' if '.' in base else f'http://{base}'
+        return f"{base.rstrip('/')}/{endpoint.lstrip('/')}"
 
     def get_auth_token(self, username):
         """获取认证令牌"""

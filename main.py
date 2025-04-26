@@ -34,11 +34,9 @@ def connect_browser(api_data):
     chrome_options.add_argument("--disable-infobars")
     chrome_options.add_argument("--start-maximized")
 
-    # 配置WebDriver服务
-    service = Service(
-        executable_path=api_data["webdriver"],
-        service_args=["--log-path=chromedriver.log"]
-    )
+    # 从配置获取路径或使用用户选择路径
+    webdriver_path = api_data.get("webdriver") or get_config('adspower_path')
+    service = Service(executable_path=webdriver_path)
 
     try:
         driver = webdriver.Chrome(service=service, options=chrome_options)
