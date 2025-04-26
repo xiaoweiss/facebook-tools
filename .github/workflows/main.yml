@@ -46,15 +46,15 @@ jobs:
 
       - name: Build with PyInstaller
         env:
-          PYTHONUTF8: 1 # 解决中文路径问题
+          PYTHONUTF8: 1
         run: |
-          pyinstaller --noconfirm --clean --onefile ^
-            --name FbAutoTool-Windows ^
-            --add-data "main.gui;." ^
-            --hidden-import task_utils ^
-            --hidden-import fb_billing_operations ^
-            --icon app.ico ^
-            --runtime-tmpdir . ^
+          pyinstaller --noconfirm --clean --onefile `
+            --name FbAutoTool-Windows `
+            --add-data "main.gui;." `
+            --hidden-import task_utils `
+            --hidden-import fb_billing_operations `
+            --icon app.ico `
+            --runtime-tmpdir . `
             main.gui
 
       - name: Upload artifact
