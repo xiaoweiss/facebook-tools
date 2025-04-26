@@ -21,16 +21,32 @@ class APIClient:
             try:
                 with open(config_file, 'r') as f:
                     self.config = json.load(f)
+                # 新增验证逻辑
+                if not self.config.get('endpoints'):
+                    raise ValueError("endpoints配置缺失")
+                if not isinstance(self.config['endpoints'], dict):
+                    raise TypeError("endpoints必须为字典类型")
             except Exception as e:
                 print(f"配置加载失败: {str(e)}")
 
     def _build_url(self, endpoint):
-        """增强URL构建方法"""
+        """最终版URL构建方法"""
         base = self.config.get('base_url', '')
-        if not base.startswith(('http://', 'https://')):
-            # 自动添加默认协议
-            base = f'https://{base}' if '.' in base else f'http://{base}'
-        return f"{base.rstrip('/')}/{endpoint.lstrip('/')}"
+        
+        # 强制协议修正
+        if base.startswith('http://'):
+            base = base.replace('http://', 'http://')
+        elif base.startswith('https://'):
+            base = base.replace('https://', 'https://')
+        else:
+            base = f'http://{base}' if any(local in base for local in ['localhost', '192.168', '127.0.0.1']) else f'https://{base}'
+        
+        # 路径标准化处理
+        base = base.rstrip('/')
+        endpoint = endpoint.lstrip('/')
+        
+        # 拼接最终URL
+        return f"{base}/{endpoint}"
 
     def get_auth_token(self, username):
         """获取认证令牌"""

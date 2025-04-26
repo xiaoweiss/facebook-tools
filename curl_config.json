@@ -6,7 +6,7 @@
   },
   "timeout": 30,
   "endpoints": {
-    "get_auth": "index.php/api/finance.Callback/getAuth",
+    "get_auth": "/index.php/api/finance.Callback/getAuth",
     "report_spend": "index.php/api/finance.Callback/index"
   }
 }
