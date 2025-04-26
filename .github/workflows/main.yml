@@ -30,9 +30,9 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          # 使用Python进行编码转换
-          python -c "open('requirements.txt', 'w', encoding='utf-8').write(open('requirements.txt', 'r', encoding='utf-8', errors='ignore').read())"
-
+          # 确保Pillow优先安装
+          python -m pip install "Pillow==10.2.0" --no-cache-dir
+          # 安装其他依赖
           python -m pip install -r requirements.txt --no-cache-dir --use-deprecated=legacy-resolver --no-warn-script-location
         env:
           PYTHONIOENCODING: utf-8
