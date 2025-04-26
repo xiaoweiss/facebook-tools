@@ -14,7 +14,7 @@ pywin32==306; sys_platform == 'win32'
 pip==23.3.2; python_version < '3.12'
 setuptools==68.2.2
 wheel==0.40.0
-Pillow==10.2.0
+Pillow==10.3.0
 
 # 其他依赖
 pyinstaller-hooks-contrib==2023.6

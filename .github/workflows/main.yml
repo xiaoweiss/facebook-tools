@@ -41,7 +41,7 @@ jobs:
         run: |
           if (-not (Test-Path app.ico)) {
               Write-Output "生成临时图标..."
-              python -c "from PIL import Image, ImageDraw; img = Image.new('ICO', (256,256)); img.save('app.ico')"
+              python -c "from PIL import Image; img = Image.new('RGBA', (256,256), (0,0,0,0)); img.save('app.ico', format='ICO')"
           }
 
       - name: Build with PyInstaller
