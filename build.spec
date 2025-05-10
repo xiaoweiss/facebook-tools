@@ -52,11 +52,16 @@ for module in ['fb_billing_operations', 'selenium', 'pytz']:
         print(f"警告: 无法收集模块 {module} 的数据，错误信息: {str(e)}")
 
 # 确保包含配置文件
-try:
-    if os.path.exists('curl_config.json'):
-        datas.append(('curl_config.json', '.'))
-except Exception as e:
-    print(f"警告: 无法添加配置文件，错误信息: {str(e)}")
+config_files = ['curl_config.json', 'app_config.json']
+for config_file in config_files:
+    try:
+        if os.path.exists(config_file):
+            datas.append((config_file, '.'))
+            print(f"已添加配置文件: {config_file}")
+        else:
+            print(f"警告: 配置文件 {config_file} 不存在")
+    except Exception as e:
+        print(f"警告: 无法添加配置文件 {config_file}，错误信息: {str(e)}")
 
 # 包含时区数据 - 使用更健壮的方式
 import site
