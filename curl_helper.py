@@ -11,80 +11,21 @@ import sys
 import requests
 import urllib.parse
 
-# 开启模拟认证模式 - 绕过服务器验证直接返回成功
-MOCK_AUTH = True
+# 关闭模拟认证模式，使用内置默认配置进行实际请求
+MOCK_AUTH = False
 
 class APIClient:
     def __init__(self):
         self.config = {}
         self.session = requests.Session()
-        self._load_config()
+        # 直接使用内置默认配置，不尝试加载外部配置文件
+        self._use_default_config()
 
     def _load_config(self, config_file='curl_config.json'):
-        """加载配置文件"""
-        # 定义可能的配置文件路径
-        possible_paths = []
-        
-        # 1. 添加当前工作目录
-        possible_paths.append(config_file)
-        
-        # 2. 添加脚本所在目录
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        possible_paths.append(os.path.join(script_dir, config_file))
-        
-        # 3. 对于PyInstaller打包的应用，添加特殊路径
-        if getattr(sys, 'frozen', False):
-            # PyInstaller打包的情况
-            exe_dir = os.path.dirname(sys.executable)
-            possible_paths.append(os.path.join(exe_dir, config_file))
-            
-            # 在macOS上还需要检查app包内部
-            if sys.platform == 'darwin':
-                app_root = os.path.join(os.path.dirname(sys.executable), '..')
-                resources_dir = os.path.join(app_root, 'Resources')
-                if os.path.exists(resources_dir):
-                    possible_paths.append(os.path.join(resources_dir, config_file))
-                    
-            # 打印调试信息
-            print(f"调试: 运行在PyInstaller环境中，可执行文件路径: {sys.executable}")
-        
-        # 打印所有可能的路径以便调试
-        print(f"调试: 搜索配置文件的可能路径:")
-        for path in possible_paths:
-            print(f" - {path} {'(存在)' if os.path.exists(path) else '(不存在)'}")
-        
-        # 尝试从所有可能路径加载配置
-        config_loaded = False
-        for path in possible_paths:
-            if os.path.exists(path):
-                try:
-                    with open(path, 'r') as f:
-                        self.config = json.load(f)
-                    print(f"成功: 从 {path} 加载了配置")
-                    config_loaded = True
-                    
-                    # 验证配置
-                    if not self.config.get('endpoints'):
-                        print(f"警告: 配置文件 {path} 中缺少endpoints")
-                        continue
-                    if not isinstance(self.config['endpoints'], dict):
-                        print(f"警告: 配置文件 {path} 中endpoints必须为字典类型")
-                        continue
-                    
-                    # 检查并修复base_url
-                    if 'base_url' in self.config:
-                        self.config['base_url'] = self._normalize_base_url(self.config['base_url'])
-                        print(f"配置的base_url: {self.config['base_url']}")
-                    
-                    break
-                    
-                except Exception as e:
-                    print(f"错误: 配置文件 {path} 加载失败: {str(e)}")
-        
-        # 如果所有路径都失败，使用默认配置
-        if not config_loaded:
-            print("警告: 未能加载配置文件，使用内置默认配置")
-            self._use_default_config()
+        """此方法现在不会被调用"""
+        # 直接使用内置默认配置
+        self._use_default_config()
+        return
 
     def _use_default_config(self):
         """使用内置默认配置"""
@@ -100,7 +41,7 @@ class APIClient:
                 "report_spend": "index.php/api/finance.Callback/index"
             }
         }
-        print("已加载内置默认配置")
+        print("直接使用内置默认配置，不尝试加载外部配置")
         # 检查并修复base_url
         if 'base_url' in self.config:
             self.config['base_url'] = self._normalize_base_url(self.config['base_url'])
@@ -152,6 +93,7 @@ class APIClient:
                 raise ValueError("无法构建有效的认证URL")
                 
             print(f"认证请求URL: {url}")
+            print(f"认证参数: username={username}")
             response = self.session.get(
                 url=url,
                 params={
@@ -168,7 +110,9 @@ class APIClient:
                 print(f"无法打印响应内容: {str(e)}")
                 
             response.raise_for_status()
-            return response.json()
+            result = response.json()
+            print(f"解析JSON结果: {str(result)[:200]}...")
+            return result
         except Exception as e:
             print(f"认证失败: {str(e)}")
             # 特殊情况下模拟成功响应，仅用于调试
