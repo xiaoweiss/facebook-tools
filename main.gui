@@ -114,6 +114,8 @@ class BillingGUI(tk.Tk):
         ttk.Label(schedule_frame, text="间隔小时:").grid(row=0, column=2)
         self.interval = ttk.Spinbox(schedule_frame, from_=1, to=24, width=5)
         self.interval.grid(row=0, column=3)
+        # 设置默认值为1
+        self.interval.insert(0, "1")
         
         self.weekdays_var = tk.StringVar()
         weekdays_frame = ttk.Frame(schedule_frame)
@@ -183,12 +185,26 @@ class BillingGUI(tk.Tk):
 
     def _start_task(self):
         """解析定时参数"""
-        schedule_config = {
-            'mode': self.schedule_mode.get(),
-            'interval': int(self.interval.get()),
-            'weekdays': self.weekdays_var.get().split()
-        }
-        Thread(target=self._schedule_runner, args=(schedule_config,)).start()
+        try:
+            # 获取interval值，如果为空或无效则使用默认值1
+            interval_str = self.interval.get().strip()
+            interval_value = 1  # 默认值
+            if interval_str:
+                try:
+                    interval_value = int(interval_str)
+                    if interval_value < 1 or interval_value > 24:
+                        interval_value = 1
+                except ValueError:
+                    self._log("警告: 间隔小时无效，使用默认值1", error=True)
+            
+            schedule_config = {
+                'mode': self.schedule_mode.get(),
+                'interval': interval_value,
+                'weekdays': self.weekdays_var.get().split()
+            }
+            Thread(target=self._schedule_runner, args=(schedule_config,)).start()
+        except Exception as e:
+            self._log(f"启动任务失败: {str(e)}", error=True)
 
     def _schedule_runner(self, config):
         """定时任务执行器"""

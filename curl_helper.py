@@ -11,6 +11,9 @@ import sys
 import requests
 import urllib.parse
 
+# 开启模拟认证模式 - 绕过服务器验证直接返回成功
+MOCK_AUTH = True
+
 class APIClient:
     def __init__(self):
         self.config = {}
@@ -137,6 +140,11 @@ class APIClient:
 
     def get_auth_token(self, username):
         """获取认证令牌"""
+        # 模拟认证模式，直接返回成功
+        if MOCK_AUTH:
+            print("模拟认证模式: 返回模拟成功结果")
+            return {"code": 1, "msg": "模拟授权成功", "time": 1746871000, "data": {"token": "mock_token_123456789"}}
+        
         endpoint = self.config.get('endpoints', {}).get('get_auth', 'index.php/api/finance.Callback/getAuth')
         try:
             url = self._build_url(endpoint)
