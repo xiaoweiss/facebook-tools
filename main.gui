@@ -5,6 +5,36 @@ from main import main_operation, TaskType, APIClient
 import sys
 import platform
 import time
+import os
+import json
+
+# 添加配置管理功能
+def get_config(key, default=None):
+    """获取配置值，如果不存在则返回默认值"""
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app_config.json')
+    try:
+        if os.path.exists(config_file):
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+                return config.get(key, default)
+        return default
+    except Exception:
+        return default
+
+def save_config(key, value):
+    """保存配置值"""
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app_config.json')
+    try:
+        config = {}
+        if os.path.exists(config_file):
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+        config[key] = value
+        with open(config_file, 'w', encoding='utf-8') as f:
+            json.dump(config, f, ensure_ascii=False, indent=2)
+        return True
+    except Exception:
+        return False
 
 class BillingGUI(tk.Tk):
     def __init__(self):
@@ -31,7 +61,7 @@ class BillingGUI(tk.Tk):
         
         # 设置窗口图标
         try:
-            self.iconbitmap('app.ico')
+            self.iconbitmap('app_icon.ico')
         except Exception as e:
             print(f"图标加载失败: {str(e)}")
         
@@ -165,12 +195,19 @@ class BillingGUI(tk.Tk):
         from apscheduler.schedulers.background import BackgroundScheduler
         scheduler = BackgroundScheduler()
         
+        # 获取授权账号
+        username = self.auth_entry.get().strip()
+        # 获取任务类型
+        task_type = self.task_var.get()
+        
         if config['mode'] == '每日':
-            scheduler.add_job(self._execute_task, 'interval', hours=config['interval'])
+            scheduler.add_job(self._execute_task, 'interval', hours=config['interval'], 
+                             args=[task_type, username])
         elif config['mode'] == '每周':
-            scheduler.add_job(self._execute_task, 'cron', day_of_week=','.join(config['weekdays']))
+            scheduler.add_job(self._execute_task, 'cron', day_of_week=','.join(config['weekdays']), 
+                             args=[task_type, username])
         else:
-            self._execute_task()
+            self._execute_task(task_type, username)
             return
             
         scheduler.start()
@@ -180,7 +217,7 @@ class BillingGUI(tk.Tk):
         except (KeyboardInterrupt, SystemExit):
             scheduler.shutdown()
 
-    def _execute_task(self, username, task_type):
+    def _execute_task(self, task_type, username):
         """执行主任务（保持原有逻辑）"""
         try:
             self._log(f"🚀 开始执行任务 | 用户: {username} | 类型: {TaskType(task_type).name}")
@@ -218,7 +255,11 @@ class BillingGUI(tk.Tk):
         if path:
             self.path_entry.delete(0, tk.END)
             self.path_entry.insert(0, path)
-            self._save_config('adspower_path', path)
+            save_config('adspower_path', path)
+            
+    def _save_config(self, key, value):
+        """保存配置"""
+        save_config(key, value)
 
 if __name__ == "__main__":
     app = BillingGUI()

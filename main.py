@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import WebDriverException
+import os
+import json
 
 from curl_helper import APIClient
 from facebook_operations import click_create_button, select_sales_objective, open_new_tab
@@ -17,6 +19,17 @@ from selenium.webdriver.common.by import By
 USER_IDS = ["kw4udka"]
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
 
+def get_config(key, default=None):
+    """获取配置值，如果不存在则返回默认值"""
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app_config.json')
+    try:
+        if os.path.exists(config_file):
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+                return config.get(key, default)
+        return default
+    except Exception:
+        return default
 
 def connect_browser(api_data):
     """增强浏览器连接稳定性"""

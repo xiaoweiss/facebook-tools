@@ -4,16 +4,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import WebDriverException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
 from curl_helper import APIClient
-from facebook_operations import click_create_button, select_sales_objective, open_new_tab
 from browser_utils import get_active_session
-from task_utils import TaskType, get_billing_info
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from datetime import datetime
 import re
 from urllib.parse import parse_qs, urlparse
 import time
@@ -508,5 +504,6 @@ def process_ad(driver, biz_id):
     except Exception as e:
         print(f"处理异常: {str(e)}")
         return False
+
 
 
