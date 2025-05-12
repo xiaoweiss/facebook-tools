@@ -92,6 +92,24 @@ class BillingGUI(tk.Tk):
         self.auth_status = ttk.Label(auth_frame, text="❌ 未授权", foreground='red')
         self.auth_status.grid(row=0, column=3, padx=5)
 
+        # 添加账号ID输入区域
+        account_frame = ttk.LabelFrame(main_frame, text="账号ID设置")
+        account_frame.pack(fill='x', pady=10)
+        
+        ttk.Label(account_frame, text="账号ID列表:").grid(row=0, column=0, padx=5, sticky='nw')
+        ttk.Label(account_frame, text="(多个ID用逗号分隔)").grid(row=1, column=0, padx=5, sticky='nw')
+        
+        # 使用Text组件而不是Entry，支持多行输入
+        self.account_ids_text = tk.Text(account_frame, width=40, height=4)
+        self.account_ids_text.grid(row=0, column=1, rowspan=2, padx=5, pady=5, sticky='w')
+        # 设置默认值
+        self.account_ids_text.insert('1.0', "kw4udka")
+        
+        # 添加滚动条
+        account_scroll = ttk.Scrollbar(account_frame, command=self.account_ids_text.yview)
+        account_scroll.grid(row=0, column=2, rowspan=2, sticky='ns')
+        self.account_ids_text.configure(yscrollcommand=account_scroll.set)
+
         # 任务区
         task_frame = ttk.LabelFrame(main_frame, text="任务选择")
         task_frame.pack(fill='x', pady=10)
@@ -237,7 +255,20 @@ class BillingGUI(tk.Tk):
         """执行主任务（保持原有逻辑）"""
         try:
             self._log(f"🚀 开始执行任务 | 用户: {username} | 类型: {TaskType(task_type).name}")
-            main_operation(TaskType(task_type), username)
+            
+            # 获取账号ID列表
+            account_ids_text = self.account_ids_text.get('1.0', tk.END).strip()
+            account_ids = []
+            if account_ids_text:
+                account_ids = [id.strip() for id in account_ids_text.split(',') if id.strip()]
+            
+            if not account_ids:
+                self._log("⚠️ 未指定账号ID，将使用默认账号")
+            else:
+                self._log(f"📋 处理账号: {', '.join(account_ids)}")
+            
+            # 传递账号ID列表给主操作函数
+            main_operation(TaskType(task_type), username, account_ids)
             self._log("✅ 任务执行完成")
         except Exception as e:
             self._log(f"❌ 执行失败: {str(e)}", error=True)

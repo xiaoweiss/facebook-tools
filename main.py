@@ -16,7 +16,8 @@ from fb_billing_operations import (
 )
 from selenium.webdriver.common.by import By
 
-USER_IDS = ["kw4udka"]
+# 默认账户，但会被用户输入覆盖
+DEFAULT_USER_IDS = ["kw4udka"]
 TARGET_URL = "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=1459530404887635&nav_entry_point=comet_bookmark&nav_source=comet"
 
 def get_config(key, default=None):
@@ -100,9 +101,13 @@ def check_balance_operation(driver, username):
         driver.switch_to.window(current_handle)
 
 
-def main_operation(task_type, username):
+def main_operation(task_type, username, user_ids=None):
+    """主操作函数，支持指定用户ID列表"""
+    if user_ids is None or len(user_ids) == 0:
+        user_ids = DEFAULT_USER_IDS
+        
     try:
-        for user_id in USER_IDS:
+        for user_id in user_ids:
             try:
                 print(f"\n👉 当前账户：{user_id}")
                 session_data = get_active_session(user_id)
@@ -132,18 +137,30 @@ if __name__ == '__main__':
         else:
             print("❌ 授权失败，请重新输入")
 
+    # 获取用户ID列表
+    print("\n请输入要处理的账户ID列表，多个ID用逗号分隔")
+    print("(直接按回车使用默认账户: kw4udka)")
+    user_ids_input = input("账户ID: ").strip()
+    
+    # 解析用户输入的ID
+    user_ids = []
+    if user_ids_input:
+        user_ids = [id.strip() for id in user_ids_input.split(',') if id.strip()]
+    
+    if not user_ids:
+        print("使用默认账户: kw4udka")
+        user_ids = DEFAULT_USER_IDS
+    else:
+        print(f"将处理以下账户: {', '.join(user_ids)}")
 
-
-
-
-    print("请选择要执行的任务：")
+    print("\n请选择要执行的任务：")
     print("1. 查询账户余额")
     print("2. 创建广告活动")
     task_choice = input("请输入选项数字（1/2）: ").strip()
     if task_choice == "1":
-        main_operation(TaskType.CHECK_BALANCE, username)
+        main_operation(TaskType.CHECK_BALANCE, username, user_ids)
     elif task_choice == "2":
-        main_operation(TaskType.CREATE_AD, username)
+        main_operation(TaskType.CREATE_AD, username, user_ids)
     else:
         print("❌ 无效的选项")
 
