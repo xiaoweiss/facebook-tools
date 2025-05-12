@@ -135,11 +135,16 @@ class BillingGUI(tk.Tk):
         # 设置默认值为1
         self.interval.insert(0, "1")
         
-        self.weekdays_var = tk.StringVar()
+        # 修改为使用独立的BooleanVar变量
+        self.weekday_vars = []
+        weekdays = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
         weekdays_frame = ttk.Frame(schedule_frame)
         weekdays_frame.grid(row=1, column=0, columnspan=4, pady=5)
-        for i, day in enumerate(["周一","周二","周三","周四","周五","周六","周日"]):
-            cb = ttk.Checkbutton(weekdays_frame, text=day, variable=self.weekdays_var)
+        
+        for i, day in enumerate(weekdays):
+            var = tk.BooleanVar(value=False)
+            self.weekday_vars.append(var)
+            cb = ttk.Checkbutton(weekdays_frame, text=day, variable=var)
             cb.grid(row=0, column=i, padx=2)
 
         # 新增路径选择组件
@@ -215,11 +220,24 @@ class BillingGUI(tk.Tk):
                 except ValueError:
                     self._log("警告: 间隔小时无效，使用默认值1", error=True)
             
+            # 获取选中的星期几
+            weekdays = []
+            weekday_names = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+            for i, var in enumerate(self.weekday_vars):
+                if var.get():
+                    weekdays.append(weekday_names[i])
+            
             schedule_config = {
                 'mode': self.schedule_mode.get(),
                 'interval': interval_value,
-                'weekdays': self.weekdays_var.get().split()
+                'weekdays': weekdays
             }
+            
+            # 如果没有选择星期但模式是每周，提示错误
+            if schedule_config['mode'] == '每周' and not weekdays:
+                self._show_error("请至少选择一个星期几")
+                return
+                
             Thread(target=self._schedule_runner, args=(schedule_config,)).start()
         except Exception as e:
             self._log(f"启动任务失败: {str(e)}", error=True)
@@ -238,6 +256,7 @@ class BillingGUI(tk.Tk):
             scheduler.add_job(self._execute_task, 'interval', hours=config['interval'], 
                              args=[task_type, username])
         elif config['mode'] == '每周':
+            # 使用修改后的周期列表
             scheduler.add_job(self._execute_task, 'cron', day_of_week=','.join(config['weekdays']), 
                              args=[task_type, username])
         else:
