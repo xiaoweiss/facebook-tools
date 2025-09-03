@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 
 class ReportClient:
-    def __init__(self, base_url="http://192.168.1.34:8082"):
+    def __init__(self, base_url="http://192.168.1.196:8082"):
         self.base_url = base_url
         self.token = None
         self.source = "facebook_ads_tool_v1.0"

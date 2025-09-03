@@ -84,7 +84,7 @@ def main():
     
     # 创建新的curl_config.json文件（作为备份，虽然不会被使用）
     config_data = {
-        "base_url": "http://192.168.1.34:8082",
+        "base_url": "http://192.168.1.196:8082",
         "default_headers": {
             "Content-Type": "application/json",
             "X-Client": "FacebookAdsManager/1.0"

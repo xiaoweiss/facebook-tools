@@ -82,7 +82,7 @@ def ensure_config_files():
     # 检查curl_config.json
     if not os.path.exists("curl_config.json"):
         default_config = {
-            "base_url": "http://192.168.1.34:8082",
+            "base_url": "http://192.168.1.196:8082",
             "default_headers": {
                 "Content-Type": "application/json",
                 "X-Client": "FacebookAdsManager/1.0"

@@ -100,10 +100,8 @@ class BillingGUI(tk.Tk):
         ttk.Label(account_frame, text="(多个ID用逗号分隔)").grid(row=1, column=0, padx=5, sticky='nw')
         
         # 使用Text组件而不是Entry，支持多行输入
-        self.account_ids_text = tk.Text(account_frame, width=40, height=4)
+        self.account_ids_text = tk.Text(account_frame, width=60, height=8)
         self.account_ids_text.grid(row=0, column=1, rowspan=2, padx=5, pady=5, sticky='w')
-        # 设置默认值
-        self.account_ids_text.insert('1.0', "kw4udka")
         
         # 添加滚动条
         account_scroll = ttk.Scrollbar(account_frame, command=self.account_ids_text.yview)
@@ -129,17 +127,22 @@ class BillingGUI(tk.Tk):
         self.schedule_mode.grid(row=0, column=1)
         self.schedule_mode.current(0)
         
-        ttk.Label(schedule_frame, text="间隔小时:").grid(row=0, column=2)
-        self.interval = ttk.Spinbox(schedule_frame, from_=1, to=24, width=5)
+        ttk.Label(schedule_frame, text="间隔值:").grid(row=0, column=2)
+        self.interval = ttk.Spinbox(schedule_frame, from_=1, to=60, width=5)
         self.interval.grid(row=0, column=3)
         # 设置默认值为1
         self.interval.insert(0, "1")
+        
+        # 添加时间单位选择
+        self.time_unit = ttk.Combobox(schedule_frame, values=["分钟", "小时"], width=6, state="readonly")
+        self.time_unit.grid(row=0, column=4)
+        self.time_unit.current(0)  # 默认选择分钟
         
         # 修改为使用独立的BooleanVar变量
         self.weekday_vars = []
         weekdays = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
         weekdays_frame = ttk.Frame(schedule_frame)
-        weekdays_frame.grid(row=1, column=0, columnspan=4, pady=5)
+        weekdays_frame.grid(row=1, column=0, columnspan=5, pady=5)
         
         for i, day in enumerate(weekdays):
             var = tk.BooleanVar(value=False)
@@ -215,10 +218,13 @@ class BillingGUI(tk.Tk):
             if interval_str:
                 try:
                     interval_value = int(interval_str)
-                    if interval_value < 1 or interval_value > 24:
+                    if interval_value < 1:
                         interval_value = 1
                 except ValueError:
-                    self._log("警告: 间隔小时无效，使用默认值1", error=True)
+                    self._log("警告: 间隔值无效，使用默认值1", error=True)
+            
+            # 获取时间单位
+            time_unit = self.time_unit.get()
             
             # 获取选中的星期几
             weekdays = []
@@ -230,6 +236,7 @@ class BillingGUI(tk.Tk):
             schedule_config = {
                 'mode': self.schedule_mode.get(),
                 'interval': interval_value,
+                'time_unit': time_unit,
                 'weekdays': weekdays
             }
             
@@ -253,12 +260,20 @@ class BillingGUI(tk.Tk):
         task_type = self.task_var.get()
         
         if config['mode'] == '每日':
-            scheduler.add_job(self._execute_task, 'interval', hours=config['interval'], 
-                             args=[task_type, username])
+            # 根据时间单位设置不同的间隔
+            if config['time_unit'] == '分钟':
+                self._log(f"⏱️ 设置为每 {config['interval']} 分钟执行一次")
+                scheduler.add_job(self._execute_task, 'interval', minutes=config['interval'], 
+                                args=[task_type, username])
+            else:
+                self._log(f"⏱️ 设置为每 {config['interval']} 小时执行一次")
+                scheduler.add_job(self._execute_task, 'interval', hours=config['interval'], 
+                                args=[task_type, username])
         elif config['mode'] == '每周':
             # 使用修改后的周期列表
+            self._log(f"⏱️ 设置为每周 {', '.join(config['weekdays'])} 执行")
             scheduler.add_job(self._execute_task, 'cron', day_of_week=','.join(config['weekdays']), 
-                             args=[task_type, username])
+                            args=[task_type, username])
         else:
             self._execute_task(task_type, username)
             return

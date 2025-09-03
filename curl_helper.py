@@ -30,7 +30,7 @@ class APIClient:
     def _use_default_config(self):
         """使用内置默认配置"""
         self.config = {
-            "base_url": "http://192.168.1.34:8082/",
+            "base_url": "http://192.168.1.196:8082/",
             "default_headers": {
                 "Content-Type": "application/json",
                 "X-Client": "FacebookAdsManager/1.0"
@@ -50,7 +50,7 @@ class APIClient:
         """标准化处理base_url"""
         if not url:
             print("警告: base_url为空")
-            return "http://192.168.1.34:8082/"
+            return "http://192.168.1.196:8082/"
             
         # 确保URL有协议前缀
         if not url.startswith(('http://', 'https://')):
@@ -68,7 +68,7 @@ class APIClient:
         if not base:
             print("错误: base_url未配置")
             # 使用默认值而不是返回空字符串
-            base = "http://192.168.1.34:8082/"
+            base = "http://192.168.1.196:8082/"
             
         # 去除endpoint开头的斜杠
         endpoint = endpoint.lstrip('/')

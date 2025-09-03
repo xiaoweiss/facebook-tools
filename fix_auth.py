@@ -155,7 +155,7 @@ def fix_curl_helper():
     def _use_default_config(self):
         """使用内置默认配置"""
         self.config = {
-            "base_url": "http://192.168.1.34:8082/",
+            "base_url": "http://192.168.1.196:8082/",
             "default_headers": {
                 "Content-Type": "application/json",
                 "X-Client": "FacebookAdsManager/1.0"
@@ -239,7 +239,7 @@ def fix_config_files():
     """修复配置文件"""
     # 创建正确的curl_config.json文件
     config_data = {
-        "base_url": "http://192.168.1.34:8082",
+        "base_url": "http://192.168.1.196:8082",
         "default_headers": {
             "Content-Type": "application/json",
             "X-Client": "FacebookAdsManager/1.0"

@@ -86,7 +86,7 @@ def fix_config_files(dist_dir, app_path, system):
     """修复配置文件"""
     # 准备配置内容
     config_data = {
-        "base_url": "http://192.168.1.34:8082",
+        "base_url": "http://192.168.1.196:8082",
         "default_headers": {
             "Content-Type": "application/json",
             "X-Client": "FacebookAdsManager/1.0"
