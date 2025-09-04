@@ -9,6 +9,8 @@ jobs:
   windows-build:
     runs-on: windows-latest
     timeout-minutes: 45 # 延长超时时间
+    env:
+      PYTHONIOENCODING: utf-8 # 设置Python IO编码为UTF-8
 
     steps:
       - name: Checkout code
@@ -47,6 +49,7 @@ jobs:
       - name: Build with PyInstaller
         env:
           PYTHONUTF8: 1
+          PYTHONIOENCODING: utf-8
         run: |
           C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -m pyinstaller --noconfirm --clean --onefile `
             --name FbAutoTool-Windows `
