@@ -127,7 +127,7 @@ if __name__ == '__main__':
     # 实例化 API 客户端
     client = APIClient()
 
-    # 鉴权循环
+    # 鉴权循环 1
     while True:
         username = input("请输入授权账号: ").strip()
         response = client.get_auth_token(username)
