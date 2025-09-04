@@ -11,7 +11,7 @@ pytz==2024.1
 pywin32==306; sys_platform == 'win32'
 
 # 构建工具
-pip==23.3.2; python_version < '3.12'
+# pip==23.3.2; python_version < '3.12'  # 注释掉pip版本限制
 setuptools==68.2.2
 wheel==0.40.0
 Pillow==10.3.0

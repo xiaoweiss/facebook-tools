@@ -25,15 +25,15 @@ jobs:
       - name: Install system dependencies
         run: |
           # 强制安装指定版本pip
-          python -m pip install --disable-pip-version-check --no-input "pip==23.3.2" --no-warn-script-location
-          python -m pip install "wheel==0.40.0" "setuptools==68.2.2" --no-warn-script-location
+          C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -m pip install --disable-pip-version-check --no-input "pip==23.3.2" --no-warn-script-location
+          C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -m pip install "wheel==0.40.0" "setuptools==68.2.2" --no-warn-script-location
 
       - name: Install project dependencies
         run: |
           # 确保Pillow优先安装
-          python -m pip install "Pillow==10.2.0" --no-cache-dir
-          # 使用--user选项安装依赖，避免权限问题
-          python -m pip install -r requirements.txt --no-cache-dir --use-deprecated=legacy-resolver --no-warn-script-location --user
+          C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -m pip install "Pillow==10.2.0" --no-cache-dir
+          # 使用错误消息中指定的确切命令
+          C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -m pip install -r requirements.txt --user
         env:
           PYTHONIOENCODING: utf-8
 
@@ -41,14 +41,14 @@ jobs:
         run: |
           if (-not (Test-Path app.ico)) {
               Write-Output "生成临时图标..."
-              python -c "from PIL import Image; img = Image.new('RGBA', (256,256), (0,0,0,0)); img.save('app.ico', format='ICO')"
+              C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -c "from PIL import Image; img = Image.new('RGBA', (256,256), (0,0,0,0)); img.save('app.ico', format='ICO')"
           }
 
       - name: Build with PyInstaller
         env:
           PYTHONUTF8: 1
         run: |
-          python -m pyinstaller --noconfirm --clean --onefile `
+          C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe -m pyinstaller --noconfirm --clean --onefile `
             --name FbAutoTool-Windows `
             --add-data "main.gui;." `
             --hidden-import task_utils `

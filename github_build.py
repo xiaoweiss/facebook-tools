@@ -20,8 +20,17 @@ def main():
     # 确保已安装依赖
     print("📦 安装依赖...")
     try:
+        # 根据系统选择合适的Python路径
+        python_exe = sys.executable
+        if system == "Windows" and os.environ.get("GITHUB_ACTIONS") == "true":
+            # 在GitHub Actions的Windows环境中使用特定路径
+            python_exe = r"C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe"
+            if not os.path.exists(python_exe):
+                print(f"⚠️ 指定的Python路径不存在: {python_exe}，使用默认路径")
+                python_exe = sys.executable
+        
         # 使用--user选项安装依赖，避免权限问题
-        subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt", "--user"], check=True)
+        subprocess.run([python_exe, "-m", "pip", "install", "-r", "requirements.txt", "--user"], check=True)
     except subprocess.CalledProcessError as e:
         print(f"⚠️ 安装依赖失败: {e}")
         # 尝试不使用--user选项
@@ -43,13 +52,21 @@ def main():
     
     # 使用PyInstaller进行构建
     print("🚀 开始构建...")
-    build_command = [sys.executable, "-m", "PyInstaller", "build.spec", "--clean"]
+    python_exe = sys.executable
+    if system == "Windows" and os.environ.get("GITHUB_ACTIONS") == "true":
+        # 在GitHub Actions的Windows环境中使用特定路径
+        python_exe = r"C:\hostedtoolcache\windows\Python\3.10.11\x64\python.exe"
+        if not os.path.exists(python_exe):
+            print(f"⚠️ 指定的Python路径不存在: {python_exe}，使用默认路径")
+            python_exe = sys.executable
+    
+    build_command = [python_exe, "-m", "PyInstaller", "build.spec", "--clean"]
     result = subprocess.run(build_command, check=False)
     
     if result.returncode != 0:
         print("❌ 构建失败，尝试诊断问题...")
         # 尝试显示更多调试信息
-        subprocess.run([sys.executable, "-m", "pip", "list"], check=False)
+        subprocess.run([python_exe, "-m", "pip", "list"], check=False)
         sys.exit(1)
     
     # 构建成功，后处理
