@@ -19,7 +19,13 @@ def main():
     
     # 确保已安装依赖
     print("📦 安装依赖...")
-    subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
+    try:
+        # 使用--user选项安装依赖，避免权限问题
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt", "--user"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"⚠️ 安装依赖失败: {e}")
+        # 尝试不使用--user选项
+        subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
     
     # 更新文件权限
     print("🔒 更新文件权限...")

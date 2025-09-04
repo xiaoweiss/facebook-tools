@@ -32,8 +32,8 @@ jobs:
         run: |
           # 确保Pillow优先安装
           python -m pip install "Pillow==10.2.0" --no-cache-dir
-          # 安装其他依赖
-          python -m pip install -r requirements.txt --no-cache-dir --use-deprecated=legacy-resolver --no-warn-script-location
+          # 使用--user选项安装依赖，避免权限问题
+          python -m pip install -r requirements.txt --no-cache-dir --use-deprecated=legacy-resolver --no-warn-script-location --user
         env:
           PYTHONIOENCODING: utf-8
 
@@ -48,7 +48,7 @@ jobs:
         env:
           PYTHONUTF8: 1
         run: |
-          pyinstaller --noconfirm --clean --onefile `
+          python -m pyinstaller --noconfirm --clean --onefile `
             --name FbAutoTool-Windows `
             --add-data "main.gui;." `
             --hidden-import task_utils `
